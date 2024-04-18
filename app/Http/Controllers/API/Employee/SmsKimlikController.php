@@ -59,7 +59,7 @@ class SmsKimlikController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        $smsKimlik = SmsKimlik::findOrFail($id);
+        $smsKimlik = SmsKimlik::with(['unit', 'sip'])->findOrFail($id);
 
         if (empty($smsKimlik)) {
             return throw new EmployeeNotFoundException();
