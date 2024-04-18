@@ -2,14 +2,14 @@
 
 namespace App\Models\SmsKimlik;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\AbstractModel;
 
 /**
  * Class SmsKimlikBirim
  *
  * @package App\Models
  */
-class SmsKimlikBirim extends Model
+class SmsKimlikBirim extends AbstractModel
 {
     protected $table = 'kaynaksms.dbo.sms_kimlik_birim';
 

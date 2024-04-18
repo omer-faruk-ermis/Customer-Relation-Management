@@ -8,4 +8,5 @@ class DefaultConstant {
     const PAGINATE = 25;
     const CACHE_ONE_DAY = 86400;
     const MIN_PASSWORD_LENGTH = 8;
+    const ALL_COLUMN = '*';
 }

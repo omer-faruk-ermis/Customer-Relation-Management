@@ -4,6 +4,8 @@ namespace App\Models\SmsKimlik;
 
 use App\Filters\SmsKimlik\SmsKimlikFilter;
 use App\Models\AbstractSmsKimlik;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Class SmsKimlik
@@ -35,11 +37,26 @@ class SmsKimlik extends AbstractSmsKimlik
         'sms_kimlik_email_username',
         'sms_kimlik_email_password',
         'mattermost_id',
-        'evtel',
-        'belge_token'
+        'evtel'
     ];
 
     protected $hidden = ['sifre'];
+
+    /**
+     * @return HasOne
+     */
+    public function unit(): HasOne
+    {
+        return $this->hasOne(SmsKimlikBirim::class, 'id', 'birim_id');
+    }
+
+    /**
+     * @return hasMany
+     */
+    public function sip(): hasMany
+    {
+        return $this->hasMany(SmsKimlikSip::class, 'sms_kimlik', 'id');
+    }
 
     /**
      * @param $filters

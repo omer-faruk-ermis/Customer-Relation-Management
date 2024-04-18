@@ -32,7 +32,6 @@ class CreateSmsKimlikTable extends Migration
             $table->string('sms_kimlik_email_password', 255);
             $table->string('mattermost_id', 255);
             $table->string('evtel', 16);
-            $table->string('belge_token', 255);
             $table->timestamps();
         });
     }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\DefaultConstant;
+
 /**
  * Trait QualifiableTrait
  *
@@ -16,6 +18,6 @@ trait QualifiableTrait
      */
     public function qualifyAllColumns(): string
     {
-        return self::qualifyColumn('*');
+        return self::qualifyColumn(DefaultConstant::ALL_COLUMN);
     }
 }

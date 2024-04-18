@@ -4,6 +4,7 @@ use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Code\CodeController;
 use App\Http\Controllers\API\Employee\SmsKimlikController;
 use App\Http\Controllers\API\Employee\SmsKimlikSipController;
+use App\Http\Controllers\API\Employee\SmsKimlikUnitController;
 use App\Http\Controllers\API\Log\LogController;
 use App\Http\Controllers\API\QuestionAnswer\SoruCevapController;
 use App\Http\Controllers\API\QuestionAnswer\SoruCevapKategoriController;
@@ -62,6 +63,11 @@ Route::group(['middleware' => 'auth_with_token'], function () {
             Route::get('/', [SmsKimlikSipController::class, 'index']);
             Route::post('/', [SmsKimlikSipController::class, 'store']);
             Route::delete('/{id}', [SmsKimlikSipController::class, 'destroy']);
+        });
+
+        // Employee Unit
+        Route::prefix('/unit')->group(function () {
+            Route::get('/', [SmsKimlikUnitController::class, 'index']);
         });
 
         Route::get('/{id}', [SmsKimlikController::class, 'show']);

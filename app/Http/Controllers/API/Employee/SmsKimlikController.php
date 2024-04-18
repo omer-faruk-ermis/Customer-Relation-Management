@@ -30,10 +30,10 @@ class SmsKimlikController extends Controller
         return response()->json([
             'message' => true,
             'data'    =>
-                SmsKimlik::select('*')
+                SmsKimlik::with(['unit', 'sip'])
                     ->filter($request->all())
                     ->where('durum', '=', Status::ACTIVE)
-                    ->get()
+                    ->paginate(DefaultConstant::PAGINATE)
         ], Response::HTTP_OK);
     }
 
@@ -86,7 +86,7 @@ class SmsKimlikController extends Controller
             'yetki_type'                => Status::ACTIVE,
             'karel_id'                  => NumericalConstant::ZERO,
             'esirket_id'                => NumericalConstant::ZERO,
-            'sip_id'                    => $request->input('sip'),
+            'sip_id'                    => NumericalConstant::ZERO,
             'birim_id'                  => $request->input('unit'),
             'webuserid'                 => NumericalConstant::ZERO,
             'para_limit'                => $request->input('currency_limit'),
@@ -96,8 +96,7 @@ class SmsKimlikController extends Controller
             'sms_kimlik_email_username' => $request->input('username'),
             'sms_kimlik_email_password' => $request->input('email_password'),
             'mattermost_id'             => NumericalConstant::ZERO,
-            'evtel'                     => $request->input('home_phone'),
-            'belge_token'               => null,
+            'evtel'                     => $request->input('home_phone')
         ]);
 
         $sipRequest = new StoreEmployeeSipRequest([
