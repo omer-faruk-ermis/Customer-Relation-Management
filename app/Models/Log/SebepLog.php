@@ -3,6 +3,8 @@
 namespace App\Models\Log;
 
 use App\Models\AbstractModel;
+use App\Models\Sebep\Sebepler;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Class SebepLog
@@ -12,6 +14,14 @@ use App\Models\AbstractModel;
 class SebepLog extends AbstractModel
 {
     protected $table = 'crm.dbo.sebep_log';
+
+    /**
+     * @return hasOne
+     */
+    public function sebep(): hasOne
+    {
+        return $this->hasOne(Sebepler::class, 'id', 'sebep_id');
+    }
 
     /**
      * The attributes that are mass assignable.

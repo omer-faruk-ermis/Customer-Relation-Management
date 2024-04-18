@@ -32,7 +32,7 @@ class LogController extends Controller
         $sebepLog = SebepLog::getModel();
         $sebepAlanAciklama = SebepAlanAciklama::getModel();
 
-        return SmsKimlikLog::with('sebepLog')
+        return SmsKimlikLog::with(['sebepLog', 'sebepLog.sebep'])
             ->filter($request->all())
             ->select(
                 $smsKimlik->qualifyAllColumns(),

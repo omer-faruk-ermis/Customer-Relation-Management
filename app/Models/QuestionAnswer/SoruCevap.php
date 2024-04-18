@@ -6,7 +6,7 @@ use App\Filters\QuestionAnswer\QuestionAnswerFilter;
 use App\Models\AbstractModel;
 
 /**
- * Class Sebepler
+ * Class SoruCevap
  *
  * @package App\Models
  */

@@ -5,7 +5,7 @@ namespace App\Models\QuestionAnswer;
 use App\Models\AbstractModel;
 
 /**
- * Class Sebepler
+ * Class SoruCevapKategori
  *
  * @package App\Models
  */
