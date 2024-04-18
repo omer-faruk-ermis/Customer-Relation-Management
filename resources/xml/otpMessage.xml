@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<mainbody>
+    <header>
+        <usercode>{USER_CODE}</usercode>
+        <password>{PASSWORD}</password>
+        <msgheader>{MSG_HEADER}</msgheader>
+        <appkey>{APP_KEY}</appkey>
+    </header>
+    <body>
+        <msg>{CODE} doğrulama kodu ile yönetici paneline giriş yapabilirsiniz. Referans Numarası: {REF_CODE}</msg>
+        <no>{GSM}</no>
+    </body>
+</mainbody>

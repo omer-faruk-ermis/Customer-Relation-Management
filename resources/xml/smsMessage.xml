@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mainbody>
+    <header>
+        <company dil="TR">{COMPANY}</company>
+        <usercode>{USER_CODE}</usercode>
+        <password>{PASSWORD}</password>
+        <appkey>{APP_KEY}</appkey>
+        <type>1:n</type>
+        <msgheader>{MSG_HEADER}</msgheader>
+    </header>
+    <body>
+        <msg>
+            <![CDATA[{CODE} doğrulama kodu ile yönetici paneline giriş yapabilirsiniz. Referans Numarası: {REF_CODE}]]>
+        </msg>
+        <no>{GSM}</no>
+    </body>
+</mainbody>
