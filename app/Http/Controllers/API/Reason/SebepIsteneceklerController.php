@@ -2,38 +2,38 @@
 
 namespace App\Http\Controllers\API\Reason;
 
-use App\Enums\DefaultConstant;
 use App\Http\Controllers\Controller;
-use App\Models\Sebep\SebepIstenecekler;
+use App\Http\Resources\Reason\ReasonWantedCollection;
+use App\Services\Reason\ReasonWantedService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
+/**
+ * Class SebepIsteneceklerController
+ *
+ * @package App\Http\Controllers\API\Reason
+ */
 class SebepIsteneceklerController extends Controller
 {
+    /** @var ReasonWantedService $reasonWantedService */
+    private ReasonWantedService $reasonWantedService;
+
     /**
-     * @param Request $request
-     * @return mixed
+     * SebepIsteneceklerController constructor
      */
-    public function index(Request $request)
+    public function __construct()
     {
-        return SebepIstenecekler::limit(DefaultConstant::SEARCH_LIST_LIMIT)->get();
+        $this->reasonWantedService = new ReasonWantedService();
     }
 
     /**
      * @param Request $request
-     * @return Collection
+     *
+     * @return ReasonWantedCollection
      */
-    public function basic(Request $request)
+    public function index(Request $request): ReasonWantedCollection
     {
-        $sebepIstenecekler = SebepIstenecekler::getModel();
+        $reasonWanteds = $this->reasonWantedService->index($request);
 
-        return DB::table($sebepIstenecekler->getTable())
-            ->select(
-                $sebepIstenecekler->getQualifiedKeyName(),
-                $sebepIstenecekler->qualifyColumn('ifade')
-            )
-            ->limit(DefaultConstant::SEARCH_LIST_LIMIT)
-            ->get();
+        return new ReasonWantedCollection($reasonWanteds, 'REASON_WANTED.INDEX.SUCCESS');
     }
 }

@@ -4,11 +4,15 @@ namespace App\Models\WebUser;
 
 use App\Filters\WebUser\WebUserFilter;
 use App\Models\AbstractModel;
+use Illuminate\Database\Query\Builder;
 
 /**
  * Class WebUser
  *
- * @package App\Models
+ * @package App\Models\WebUser
+ * @version April 19, 2024, 1:11 pm UTC
+ *
+ * @property int    $id
  * @property string $name
  * @property string $ad
  * @property string $soyad
@@ -19,6 +23,8 @@ use App\Models\AbstractModel;
  * @property string $abone_no
  * @property string $abonetip
  * @property string $kurumadi
+ *
+ * @method static Builder|WebUser filter(array $filters = [])
  */
 class WebUser extends AbstractModel
 {
@@ -43,6 +49,7 @@ class WebUser extends AbstractModel
 
     /**
      * @param $filters
+     *
      * @return WebUserFilter
      */
     protected function filter($filters): WebUserFilter

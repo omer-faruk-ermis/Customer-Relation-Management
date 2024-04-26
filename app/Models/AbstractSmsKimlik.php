@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\DefaultConstant;
 use DateTimeInterface;
+use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -12,6 +13,8 @@ use Illuminate\Notifications\Notifiable;
  * Class AbstractModel
  *
  * @package App\Models
+ *
+ * @mixin Eloquent
  */
 abstract class AbstractSmsKimlik extends Authenticatable
 {

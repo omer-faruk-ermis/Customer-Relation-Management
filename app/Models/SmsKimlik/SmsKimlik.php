@@ -2,24 +2,51 @@
 
 namespace App\Models\SmsKimlik;
 
+use App\Enums\NumericalConstant;
+use App\Enums\Status;
 use App\Filters\SmsKimlik\SmsKimlikFilter;
 use App\Models\AbstractSmsKimlik;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Notifications\DatabaseNotification;
 
 /**
  * Class SmsKimlik
  *
  * @package App\Models\SmsKimlik
+ * @version April 19, 2024, 1:11 pm UTC
  *
+ * @property int                 $id
+ * @property string              $ad_soyad
+ * @property string              $sifre
+ * @property bool                $loginpage
+ * @property bool                $durum
+ * @property int                 $yetki_type
+ * @property int                 $karel_id
+ * @property int                 $esirket_id
+ * @property int                 $sip_id
+ * @property int                 $birim_id
+ * @property int                 $webuserid
+ * @property float               $para_limit
+ * @property bool                $webportal_izin
+ * @property int                 $ceptel
+ * @property string              $sms_kimlik_email
+ * @property string              $sms_kimlik_email_username
+ * @property string              $sms_kimlik_email_password
+ * @property int                 $mattermost_id
+ * @property int                 $evtel
+ *
+ * @property-read SmsKimlikSip   $sip
+ * @property-read SmsKimlikBirim $unit
+ *
+ * @method static Builder|SmsKimlik filter(array $filters = [])
  */
 class SmsKimlik extends AbstractSmsKimlik
 {
     protected $table = 'kaynaksms.dbo.sms_kimlik';
 
     protected $fillable = [
-        'sms_kimlik_email',
-        'sifre',
         'ad_soyad',
         'sifre',
         'loginpage',
@@ -38,6 +65,17 @@ class SmsKimlik extends AbstractSmsKimlik
         'sms_kimlik_email_password',
         'mattermost_id',
         'evtel'
+    ];
+
+    protected $attributes = [
+        'durum'          => Status::ACTIVE,
+        'yetki_type'     => Status::ACTIVE,
+        'karel_id'       => NumericalConstant::ZERO,
+        'esirket_id'     => NumericalConstant::ZERO,
+        'sip_id'         => NumericalConstant::ZERO,
+        'webuserid'      => NumericalConstant::ZERO,
+        'webportal_izin' => Status::ACTIVE,
+        'mattermost_id'  => NumericalConstant::ZERO,
     ];
 
     protected $hidden = ['sifre'];
@@ -60,6 +98,7 @@ class SmsKimlik extends AbstractSmsKimlik
 
     /**
      * @param $filters
+     *
      * @return SmsKimlikFilter
      */
     protected function filter($filters): SmsKimlikFilter

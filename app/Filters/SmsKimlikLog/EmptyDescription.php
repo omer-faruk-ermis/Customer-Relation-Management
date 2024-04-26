@@ -2,16 +2,16 @@
 
 namespace App\Filters\SmsKimlikLog;
 
-use App\Models\Log\SebepLog;
+use App\Enums\NumericalConstant;
 
 class EmptyDescription
 {
     public function apply($query, $value): void
     {
-        $sebepLog = SebepLog::getModel();
-
-        $query->when($value == 1, function ($query) use ($sebepLog) {
-            $query->whereNull($sebepLog->qualifyColumn('aciklama'));
+        $query->when($value == NumericalConstant::TRUE, function ($query) use ($value) {
+            $query->whereHas('reasonLog', function ($reasonLogQuery) use ($value) {
+                $reasonLogQuery->whereNull('aciklama');
+            });
         });
     }
 }

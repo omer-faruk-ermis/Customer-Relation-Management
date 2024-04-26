@@ -44,18 +44,16 @@ Route::group(['middleware' => 'auth_with_token'], function () {
     Route::get('logs', [LogController::class, 'index']);
     Route::post('update_sebep_log', [LogController::class, 'updateSebepLog']);
 
-    // Logs Reason
-    Route::get('sebep_istenecekler', [SebepIsteneceklerController::class, 'index']);
-    Route::get('sebep_istenecekler_basic', [SebepIsteneceklerController::class, 'basic']);
-
+    // Reason
     Route::get('sebepler', [SebeplerController::class, 'index']);
-    Route::get('sebepler_basic', [SebeplerController::class, 'basic']);
+    Route::get('sebep_istenecekler', [SebepIsteneceklerController::class, 'index']);
 
     // Employee
     Route::prefix('employee')->group(function () {
         Route::get('/', [SmsKimlikController::class, 'index']);
         Route::post('/', [SmsKimlikController::class, 'store']);
         Route::get('/basic', [SmsKimlikController::class, 'basic']);
+        Route::get('/log', [SmsKimlikController::class, 'log']);
         Route::put('/change_password/{id}', [SmsKimlikController::class, 'changePassword']);
 
         // Employee Sip
@@ -95,13 +93,12 @@ Route::group(['middleware' => 'auth_with_token'], function () {
     // Customer
     Route::prefix('web_user')->group(function () {
         Route::get('/', [WebUserController::class, 'index']);
-        Route::get('/basic', [WebUserController::class, 'basic']);
         Route::get('/{id}', [WebUserController::class, 'show']);
     });
 });
 
 // Sms Code
-Route::get('sms_code', [CodeController::class, 'smsCode']);
+Route::get('sms_code', [SmsController::class, 'smsCode']);
 Route::post('sms_verification', [SmsController::class, 'smsVerification']);
 
 Route::get('security_code', [CodeController::class, 'securityCode']);

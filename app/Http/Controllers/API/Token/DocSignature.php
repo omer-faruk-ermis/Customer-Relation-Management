@@ -2,33 +2,38 @@
 
 namespace App\Http\Controllers\API\Token;
 
-use App\Enums\DefaultConstant;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
+use App\Http\Resources\TokenResource;
+use App\Services\Token\DocSignatureService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
+/**
+ * Class DocSignature
+ *
+ * @package App\Http\Controllers\API\Token
+ */
 class DocSignature extends Controller
 {
+    /** @var DocSignatureService $docSignatureService */
+    private DocSignatureService $docSignatureService;
+
+    /**
+     * DocSignature constructor
+     */
+    public function __construct()
+    {
+        $this->docSignatureService = new DocSignatureService();
+    }
+
     /**
      * @param Request $request
-     * @return JsonResponse
+     *
+     * @return TokenResource
      */
-    public static function getSignatureToken(Request $request): JsonResponse
+    public function getSignatureToken(Request $request): TokenResource
     {
-        $netgsmsessionid = $request->input('netgsmsessionid');
-        $sms_kimlik = Cache::get("sms_kimlik_$netgsmsessionid");
+        $docSignatureToken = $this->docSignatureService->getSignatureToken($request);
 
-        $value = array(
-            'id'       => $sms_kimlik['id'],
-            'ad_soyad' => $sms_kimlik['ad_soyad'],
-            'time'     => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT)
-        );
-        $value = json_encode($value, JSON_UNESCAPED_UNICODE);
-        $token = substr(hash('md5', $value), 0, 32);
-
-       // Cache::store('memcached')->put("pdfimzalasrv_bearertoken_:$token", $value, DefaultConstant::CACHE_ONE_DAY);
-
-        return response()->json(['success' => $token]);
+        return new TokenResource((object) $docSignatureToken, 'DOC_SIGNATURE.SUCCESS');
     }
 }

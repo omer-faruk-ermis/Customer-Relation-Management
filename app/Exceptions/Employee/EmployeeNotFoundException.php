@@ -9,7 +9,7 @@ use Throwable;
 class EmployeeNotFoundException extends AbstractException
 {
     public function __construct(
-        string    $message = 'Personel bulunamadı!',
+        string    $message = 'Personel kaydı bulunamadı!',
         int       $code = Response::HTTP_NOT_FOUND,
         Throwable $previous = null)
     {

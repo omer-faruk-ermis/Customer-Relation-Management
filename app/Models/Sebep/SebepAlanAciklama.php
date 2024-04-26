@@ -7,7 +7,16 @@ use App\Models\AbstractModel;
 /**
  * Class SebepAlanAciklama
  *
- * @package App\Models
+ * @package App\Models\Sebep
+ * @version April 19, 2024, 2:11 pm UTC
+ *
+ * @property int    $id
+ * @property string $tablo_adi
+ * @property string $alan_adi
+ * @property bool   $deger
+ * @property string $aciklama
+ * @property string $sql_cumle
+ * @property bool   $tur
  */
 class SebepAlanAciklama extends AbstractModel
 {

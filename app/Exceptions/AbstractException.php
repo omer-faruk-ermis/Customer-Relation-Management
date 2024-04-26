@@ -2,13 +2,14 @@
 
 namespace App\Exceptions;
 
+use App\Enums\NumericalConstant;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Throwable;
 
 class AbstractException extends Exception
 {
-    public function __construct(string $message = "", int $code = 0, Throwable $previous = null)
+    public function __construct(string $message = "", int $code = NumericalConstant::ZERO, Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }

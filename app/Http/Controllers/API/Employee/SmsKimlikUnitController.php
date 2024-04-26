@@ -2,24 +2,37 @@
 
 namespace App\Http\Controllers\API\Employee;
 
-use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Employee\IndexEmployeeUnitRequest;
-use App\Models\SmsKimlik\SmsKimlikBirim;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
+use App\Http\Resources\Employee\EmployeeUnitCollection;
+use App\Services\Employee\EmployeeUnitService;
 
+/**
+ * Class SmsKimlikUnitController
+ *
+ * @package App\Http\Controllers\API\Employee
+ */
 class SmsKimlikUnitController extends Controller
 {
+    /** @var EmployeeUnitService $employeeSipService */
+    private EmployeeUnitService $employeeUnitService;
+
+    /**
+     * SmsKimlikUnitController constructor
+     */
+    public function __construct()
+    {
+        $this->employeeUnitService = new EmployeeUnitService();
+    }
+
     /**
      * @param IndexEmployeeUnitRequest $request
-     * @return JsonResponse
+     * @return EmployeeUnitCollection
      */
-    public function index(IndexEmployeeUnitRequest $request): JsonResponse
+    public function index(IndexEmployeeUnitRequest $request): EmployeeUnitCollection
     {
-        return response()->json([
-            'message' => true,
-            'data'    => SmsKimlikBirim::get()->where('durum', '=', Status::ACTIVE)
-        ], Response::HTTP_OK);
+        $employeeUnits = $this->employeeUnitService->index($request);
+
+        return new EmployeeUnitCollection($employeeUnits, 'EMPLOYEE.UNIT.INDEX.SUCCESS');
     }
 }

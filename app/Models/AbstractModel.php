@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\DefaultConstant;
 use DateTimeInterface;
+use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-abstract class AbstractModel extends Model
+abstract class AbstractModel extends Eloquent
 {
     use QualifiableTrait;
 
@@ -33,16 +34,6 @@ abstract class AbstractModel extends Model
      * @var bool
      */
     public $timestamps = false;
-
-    /**
-     * Get a new instance of the model.
-     *
-     * @return static
-     */
-    public static function getModel(): static
-    {
-        return new static();
-    }
 
     /**
      * @param $filters

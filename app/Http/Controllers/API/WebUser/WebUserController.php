@@ -2,48 +2,53 @@
 
 namespace App\Http\Controllers\API\WebUser;
 
-use App\Enums\DefaultConstant;
+use App\Exceptions\WebUser\WebUserNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\WebUser\IndexWebUserRequest;
-use App\Models\WebUser\WebUser;
-use Illuminate\Http\JsonResponse;
+use App\Http\Resources\WebUser\WebUserCollection;
+use App\Http\Resources\WebUser\WebUserResource;
+use App\Services\WebUser\WebUserService;
 
+/**
+ * Class WebUserController
+ *
+ * @package App\Http\Controllers\API\WebUser
+ */
 class WebUserController extends Controller
 {
-    /**
-     * @param IndexWebUserRequest $request
-     * @return mixed
-     */
-    public function index(IndexWebUserRequest $request): mixed
-    {
-        $webUser = WebUser::getModel();
+    /** @var WebUserService $webUserService */
+    private WebUserService $webUserService;
 
-        return $webUser->filter($request->all())
-            ->select([
-                $webUser->getQualifiedKeyName(),
-                $webUser->qualifyColumn('ad'),
-                $webUser->qualifyColumn('soyad'),
-                $webUser->qualifyColumn('ceptel'),
-                $webUser->qualifyColumn('kullanici_tipi'),
-                $webUser->qualifyColumn('tckimlik'),
-                $webUser->qualifyColumn('abone_no'),
-                $webUser->qualifyColumn('abonetip'),
-                $webUser->qualifyColumn('kurumadi'),
-            ])
-            ->orderByRaw('ad', 'COLLATE Turkish_CI_AS')
-            ->orderByRaw('soyad', 'COLLATE Turkish_CI_AS')
-            ->orderByRaw('kurumadi', 'COLLATE Turkish_CI_AS')
-            ->limit(DefaultConstant::SEARCH_LIST_LIMIT)
-            ->get();
+    /**
+     * WebUserController constructor
+     */
+    public function __construct()
+    {
+        $this->webUserService = new WebUserService();
     }
 
     /**
-     * @param int $id
-     * @return JsonResponse
+     * @param IndexWebUserRequest  $request
+     *
+     * @return WebUserCollection
      */
-    public function show(int $id): JsonResponse
+    public function index(IndexWebUserRequest $request): WebUserCollection
     {
-        $webUser = WebUser::findOrFail($id);
-        return response()->json(['data' => $webUser]);
+        $webUsers = $this->webUserService->index($request);
+
+        return new WebUserCollection($webUsers, 'WEB_USER.INDEX.SUCCESS');
+    }
+
+    /**
+     * @param int  $id
+     *
+     * @return WebUserResource
+     * @throws WebUserNotFoundException
+     */
+    public function show(int $id): WebUserResource
+    {
+        $webUser = $this->webUserService->show($id);
+
+        return new WebUserResource($webUser, 'WEB_USER.SHOW.SUCCESS');
     }
 }

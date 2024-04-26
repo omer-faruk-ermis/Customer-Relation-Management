@@ -2,39 +2,40 @@
 
 namespace App\Http\Controllers\API\Reason;
 
-use App\Enums\DefaultConstant;
 use App\Http\Controllers\Controller;
-use App\Models\Sebep\Sebepler;
+use App\Http\Resources\Reason\ReasonCollection;
+use App\Services\Reason\ReasonService;
+use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
+/**
+ * Class SebeplerController
+ *
+ * @package App\Http\Controllers\API\Reason
+ */
 class SebeplerController extends Controller
 {
+    /** @var ReasonService $reasonService */
+    private ReasonService $reasonService;
+
     /**
-     * @param Request $request
-     * @return mixed
+     * SebeplerController constructor
      */
-    public function index(Request $request)
+    public function __construct()
     {
-        return Sebepler::limit(DefaultConstant::SEARCH_LIST_LIMIT)->get();
+        $this->reasonService = new ReasonService();
     }
 
     /**
-     * @param Request $request
-     * @return Collection
+     * @param Request  $request
+     *
+     * @return ReasonCollection
+     * @throws Exception
      */
-    public function basic(Request $request)
+    public function index(Request $request): ReasonCollection
     {
-        $sebepler = Sebepler::getModel();
+        $reasons = $this->reasonService->index($request);
 
-        return DB::table($sebepler->getTable())
-            ->select(
-                $sebepler->getQualifiedKeyName(),
-                $sebepler->qualifyColumn('ust_id'),
-                $sebepler->qualifyColumn('aciklama'),
-            )
-            ->limit(DefaultConstant::SEARCH_LIST_LIMIT)
-            ->get();
+        return new ReasonCollection($reasons, 'REASON.INDEX.SUCCESS');
     }
 }

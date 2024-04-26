@@ -2,83 +2,85 @@
 
 namespace App\Http\Controllers\API\QuestionAnswer;
 
-use App\Enums\Status;
 use App\Exceptions\QuestionAnswer\QuestionAnswerCategoryNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\QuestionAnswerCategory\IndexQuestionAnswerCategoryRequest;
 use App\Http\Requests\QuestionAnswerCategory\StoreQuestionAnswerCategoryRequest;
 use App\Http\Requests\QuestionAnswerCategory\UpdateQuestionAnswerCategoryRequest;
-use App\Models\QuestionAnswer\SoruCevapKategori;
-use Illuminate\Http\JsonResponse;
+use App\Http\Resources\QuestionAnswer\QuestionAnswerCategoryCollection;
+use App\Http\Resources\QuestionAnswer\QuestionAnswerCategoryResource;
+use App\Http\Resources\SuccessResource;
+use App\Services\QuestionAnswer\QuestionAnswerCategoryService;
 use Illuminate\Http\Response;
 
+/**
+ * Class SoruCevapKategoriController
+ *
+ * @package App\Http\Controllers\API\QuestionAnswer
+ */
 class SoruCevapKategoriController extends Controller
 {
+    /** @var QuestionAnswerCategoryService $questionAnswerService */
+    private QuestionAnswerCategoryService $questionAnswerCategoryService;
+
+    /**
+     * SoruCevapKategoriController constructor
+     */
+    public function __construct()
+    {
+        $this->questionAnswerCategoryService = new QuestionAnswerCategoryService();
+    }
+
     /**
      * @param IndexQuestionAnswerCategoryRequest $request
-     * @return mixed
+     *
+     * @return QuestionAnswerCategoryCollection
      */
-    public function index(IndexQuestionAnswerCategoryRequest $request): mixed
+    public function index(IndexQuestionAnswerCategoryRequest $request): QuestionAnswerCategoryCollection
     {
-        return response()->json([
-            'message' => true,
-            'data'    => SoruCevapKategori::where('kategori_durum', '=', Status::ACTIVE)->get()
-        ], Response::HTTP_OK);
+        $questionAnswerCategories = $this->questionAnswerCategoryService->index($request);
+
+        return new QuestionAnswerCategoryCollection($questionAnswerCategories, 'QUESTION_ANSWER_CATEGORY.INDEX.SUCCESS');
     }
 
     /**
      * @param StoreQuestionAnswerCategoryRequest $request
-     * @return JsonResponse
+     *
+     * @return QuestionAnswerCategoryResource
      */
-    public function store(StoreQuestionAnswerCategoryRequest $request): JsonResponse
+    public function store(StoreQuestionAnswerCategoryRequest $request): QuestionAnswerCategoryResource
     {
-        $category = SoruCevapKategori::create([
-            'kategori_adi'   => $request->category_name,
-            'kategori_durum' => Status::ACTIVE,
-        ]);
+        $questionAnswerCategories = $this->questionAnswerCategoryService->store($request);
 
-        return response()->json([
-            'message' => 'Kategori başarıyla oluşturuldu.',
-            'data' => $category
-        ], Response::HTTP_CREATED);
+        return new QuestionAnswerCategoryResource($questionAnswerCategories, 'QUESTION_ANSWER_CATEGORY.CREATE.SUCCESS', Response::HTTP_CREATED);
     }
 
     /**
      * @param UpdateQuestionAnswerCategoryRequest $request
      * @param int $id
-     * @return JsonResponse
+     *
+     * @return QuestionAnswerCategoryResource
+     *
      * @throws QuestionAnswerCategoryNotFoundException
      */
-    public function update(UpdateQuestionAnswerCategoryRequest $request, int $id): JsonResponse
+    public function update(UpdateQuestionAnswerCategoryRequest $request, int $id): QuestionAnswerCategoryResource
     {
-        $category = SoruCevapKategori::findOrFail($id);
-        if (empty($category)) {
-            return throw new QuestionAnswerCategoryNotFoundException();
-        }
+        $questionAnswerCategories = $this->questionAnswerCategoryService->update($request, $id);
 
-        $category->update(['kategori_adi' => $request->category_name]);
-
-        return response()->json([
-            'message' => 'Kategori başarıyla güncellendi.',
-            'data' => $category
-        ], Response::HTTP_OK);
+        return new QuestionAnswerCategoryResource($questionAnswerCategories, 'QUESTION_ANSWER_CATEGORY.UPDATE.SUCCESS');
     }
 
     /**
      * @param int $id
-     * @return JsonResponse
+     *
+     * @return SuccessResource
+     *
      * @throws QuestionAnswerCategoryNotFoundException
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(int $id): SuccessResource
     {
-        $soruCevapKategori = SoruCevapKategori::findOrFail($id);
-        if (empty($soruCevapKategori)) {
-            return throw new QuestionAnswerCategoryNotFoundException();
-        }
+        $this->questionAnswerCategoryService->destroy($id);
 
-        $soruCevapKategori->kategori_durum = Status::PASSIVE;
-        $soruCevapKategori->update();
-
-        return response()->json('Kategori Başarıyla silindi.', Response::HTTP_OK);
+        return new SuccessResource('QUESTION_ANSWER_CATEGORY.DESTROY.SUCCESS');
     }
 }
