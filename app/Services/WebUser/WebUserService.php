@@ -10,7 +10,7 @@ use App\Models\WebUser\WebUser;
 /**
  * Class WebUserService
  *
- * @package App\Service\Reason
+ * @package App\Service\WebUser
  */
 class WebUserService
 {
@@ -50,7 +50,7 @@ class WebUserService
      */
     public function show(int $id): WebUser
     {
-        $webUser = WebUser::findOrFail($id);
+        $webUser = WebUser::find($id);
 
         if (empty($webUser)) {
             throw new WebUserNotFoundException();

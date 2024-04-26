@@ -15,6 +15,7 @@ use App\Http\Requests\Employee\UpdateEmployeeRequest;
 use App\Models\SmsKimlik\SmsKimlik;
 use App\Services\Log\LogService;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
@@ -61,13 +62,14 @@ class EmployeeService
     }
 
     /**
-     * @param int $id
-     * @return array
+     * @param int  $id
+     *
+     * @return Model
      * @throws EmployeeNotFoundException
      */
-    public function show(int $id): array
+    public function show(int $id): Model
     {
-        $smsKimlik = SmsKimlik::with(['unit', 'sip'])->findOrFail($id);
+        $smsKimlik = SmsKimlik::with(['unit', 'sip'])->find($id);
 
         if (empty($smsKimlik)) {
             throw new EmployeeNotFoundException();
