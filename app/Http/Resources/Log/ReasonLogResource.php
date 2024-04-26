@@ -27,7 +27,7 @@ class ReasonLogResource extends AbstractResource
             'register_ip'   => $this->kayit_ip,
             'register_date' => $this->kayit_tar,
             'meeting_id'    => $this->gorusme_id,
-            'reason_log'    => ReasonResource::make($this->whenLoaded('reason')),
+            'reason'        => ReasonResource::make($this->whenLoaded('reason')),
         ];
     }
 }

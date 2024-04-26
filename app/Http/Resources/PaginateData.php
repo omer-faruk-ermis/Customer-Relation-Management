@@ -18,7 +18,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class PaginateData
 {
-    public function apply($data): AnonymousResourceCollection|array
+    public static function apply($data): AnonymousResourceCollection|array
     {
         if ($data->first()) {
             $resourceMapping = [
@@ -31,11 +31,9 @@ class PaginateData
 
             if ($resourceClass && is_subclass_of($resourceClass, JsonResource::class)) {
                 return $resourceClass::collection($data->resource->items());
-            } else {
-                return [];
             }
-        } else {
-            return [];
         }
+
+        return [];
     }
 }
