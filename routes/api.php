@@ -39,8 +39,8 @@ Route::group(['middleware' => 'auth_with_token'], function () {
     // Token
     Route::get('get_signature_token', [DocSignature::class, 'getSignatureToken']);
 
-    // Logs
-    Route::get('logs', [LogController::class, 'index']);
+    // Log
+    Route::get('log', [LogController::class, 'index']);
     Route::post('update_sebep_log', [LogController::class, 'updateSebepLog']);
 
     // Reason
