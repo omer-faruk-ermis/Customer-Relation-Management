@@ -52,11 +52,11 @@ class EmployeeService
     }
 
     /**
-     * @param Request $request
+     * @param Request  $request
      *
-     * @return Collection
+     * @return mixed
      */
-    public function log(Request $request): Collection
+    public function log(Request $request): mixed
     {
         return (new LogService())->index($request);
     }
