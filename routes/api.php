@@ -35,7 +35,6 @@ Route::group(['middleware' => 'auth_with_token'], function () {
     // Auth
     Route::post('login_verification', [AuthController::class, 'loginVerification']);
     Route::post('change_password', [AuthController::class, 'changePassword']);
-    Route::post('new_password', [AuthController::class, 'newPassword']);
 
     // Token
     Route::get('get_signature_token', [DocSignature::class, 'getSignatureToken']);
@@ -104,6 +103,7 @@ Route::post('sms_verification', [SmsController::class, 'smsVerification']);
 Route::get('security_code', [CodeController::class, 'securityCode']);
 
 Route::post('forgot_password', [AuthController::class, 'forgotPassword']);
+Route::post('new_password', [AuthController::class, 'newPassword']);
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);

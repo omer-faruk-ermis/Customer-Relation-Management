@@ -151,7 +151,7 @@ class AuthService
 
         $token = $request->input('netgsmsessionid');
         $sms_kimlik = Cache::get("sms_kimlik_$token");
-        if ($sms_kimlik['sifre'] !== $request->input('old_password')) {
+        if (empty($sms_kimlik) && (Arr::get($sms_kimlik,'sifre') !== $request->input('old_password'))) {
             throw new OldPasswordException();
         }
         Arr::except($sms_kimlik, 'netgsmsessionid');
