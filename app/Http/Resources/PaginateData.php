@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Enums\Model;
+use App\Http\Resources\Employee\EmployeeResource;
 use App\Http\Resources\Log\LogResource;
 use App\Http\Resources\QuestionAnswer\QuestionAnswerResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -23,6 +24,7 @@ class PaginateData
             $resourceMapping = [
                 Model::LOG             => LogResource::class,
                 Model::QUESTION_ANSWER => QuestionAnswerResource::class,
+                Model::EMPLOYEE        => EmployeeResource::class,
             ];
 
             $resourceClass = $resourceMapping[class_basename($data->first())] ?? null;

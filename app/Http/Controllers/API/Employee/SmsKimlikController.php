@@ -11,15 +11,12 @@ use App\Http\Requests\Employee\IndexEmployeeRequest;
 use App\Http\Requests\Employee\StoreEmployeeRequest;
 use App\Http\Requests\Employee\UpdateEmployeeRequest;
 use App\Http\Resources\Employee\EmployeeBasicCollection;
-use App\Http\Resources\Employee\EmployeeCollection;
 use App\Http\Resources\Employee\EmployeeResource;
 use App\Http\Resources\PaginationResource;
 use App\Http\Resources\SuccessResource;
 use App\Services\Employee\EmployeeService;
-use App\Services\Log\LogService;
 use Exception;
 use Illuminate\Http\Response;
-use Illuminate\Support\Collection;
 
 /**
  * Class SmsKimlikController
@@ -41,13 +38,13 @@ class SmsKimlikController extends Controller
 
     /**
      * @param IndexEmployeeRequest $request
-     * @return EmployeeCollection
+     * @return PaginationResource
      */
-    public function index(IndexEmployeeRequest $request): EmployeeCollection
+    public function index(IndexEmployeeRequest $request): PaginationResource
     {
         $employees = $this->employeeService->index($request);
 
-        return new EmployeeCollection($employees, 'EMPLOYEE.INDEX.SUCCESS');
+        return new PaginationResource($employees, 'EMPLOYEE.INDEX.SUCCESS');
     }
 
     /**

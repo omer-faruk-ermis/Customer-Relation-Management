@@ -8,7 +8,6 @@ use App\Enums\Status;
 use App\Exceptions\Employee\EmployeeNotFoundException;
 use App\Http\Requests\Employee\BasicEmployeeRequest;
 use App\Http\Requests\Employee\ChangePasswordEmployeeRequest;
-use App\Http\Requests\Employee\IndexEmployeeLogRequest;
 use App\Http\Requests\Employee\IndexEmployeeRequest;
 use App\Http\Requests\Employee\StoreEmployeeRequest;
 use App\Http\Requests\Employee\StoreEmployeeSipRequest;
@@ -27,10 +26,11 @@ use Illuminate\Support\Collection;
 class EmployeeService
 {
     /**
-     * @param IndexEmployeeRequest $request
-     * @return array
+     * @param IndexEmployeeRequest  $request
+     *
+     * @return mixed
      */
-    public function index(IndexEmployeeRequest $request): array
+    public function index(IndexEmployeeRequest $request): mixed
     {
         return SmsKimlik::with(['unit', 'sip'])
             ->filter($request->all())

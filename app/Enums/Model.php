@@ -6,4 +6,5 @@ class Model
 {
     const LOG = 'SmsKimlikLog';
     const QUESTION_ANSWER = 'SoruCevap';
+    const EMPLOYEE = 'SmsKimlik';
 }
