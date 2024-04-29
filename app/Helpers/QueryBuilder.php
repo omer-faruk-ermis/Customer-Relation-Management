@@ -13,7 +13,7 @@ class QueryBuilder
      *
      * @return Expression
      */
-    public static function collate(string $column, string $collation = 'Turkish_CI_AS'): Expression
+    public static function collate(string $column, string $collation = 'SQL_Latin1_General_CP1254_CI_AS'): Expression
     {
         return DB::raw("$column COLLATE $collation");
     }

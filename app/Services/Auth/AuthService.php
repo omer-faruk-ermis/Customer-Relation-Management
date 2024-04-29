@@ -49,10 +49,10 @@ class AuthService
                 ->whereNotNull('sms_kimlik_email')
                 ->whereNotNull('sifre')
                 ->whereNotNull('ceptel')
-                ->where('sms_kimlik_email', '=', $request->input('sms_kimlik_email'))
+                ->where('sms_kimlik_email', '=', $request->input('email'))
                 ->where('loginpage', '=', Status::ACTIVE)
                 ->where('durum', '=', Status::ACTIVE)
-                ->where('sifre', '=', $request->input('sifre'))
+                ->where('sifre', '=', $request->input('password'))
                 ->first();
 
         if (empty($sms_kimlik)) {
@@ -74,7 +74,6 @@ class AuthService
     public function loginVerification(LoginVerificationRequest $request): SmsKimlik
     {
         $netgsmsessionid = $request->input('netgsmsessionid');
-        $sms_kimlik = Cache::get("sms_kimlik_$netgsmsessionid");
         $sms_kimlik = SmsKimlikBuilder::handle(Cache::get("sms_kimlik_$netgsmsessionid"));
 
         Redis::connection('prod')->set("yonetimsession:$netgsmsessionid", json_encode(Arr::except($sms_kimlik, ['unit','sip'])));
@@ -98,7 +97,7 @@ class AuthService
             SmsKimlik::whereNotNull('sms_kimlik_email')
                 ->whereNotNull('ceptel')
                 ->whereNotNull('sifre')
-                ->where('sms_kimlik_email', '=', $request->input('sms_kimlik_email'))
+                ->where('sms_kimlik_email', '=', $request->input('email'))
                 ->where('durum', '=', Status::ACTIVE)
                 ->first();
 

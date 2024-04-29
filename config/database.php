@@ -117,8 +117,8 @@ return [
             'database'                 => env('DB_CRM_DATABASE', 'crm'),
             'username'                 => env('DB_USERNAME', 'omerfaruk'),
             'password'                 => env('DB_PASSWORD', ''),
-            'charset'                  => 'utf8',
-            'collation'                => 'Turkish_CI_AS',
+            'charset'                  => 'utf8mb4',
+            'collate'                  => 'SQL_Latin1_General_CP1254_CI_AS',
             'prefix'                   => '',
             'prefix_indexes'           => true,
             'trust_server_certificate' => 'true'

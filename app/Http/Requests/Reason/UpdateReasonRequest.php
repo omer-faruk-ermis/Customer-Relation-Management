@@ -9,11 +9,9 @@ class UpdateReasonRequest extends AbstractRequest
     public function rules(): array
     {
         return [
-            'logid'    => 'required',
-            'sebep_id' => 'required',
-            'kayit_id' => 'sometimes|integer',
-            'kayit_ip' => 'sometimes|ip',
-            'aciklama' => 'sometimes'
+            'log_id'      => 'required|integer',
+            'reason_id'   => 'required|integer',
+            'description' => 'sometimes|string'
         ];
     }
 }

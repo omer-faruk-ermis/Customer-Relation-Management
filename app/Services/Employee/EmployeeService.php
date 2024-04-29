@@ -117,7 +117,7 @@ class EmployeeService
      */
     public function update(UpdateEmployeeRequest $request, int $id): SmsKimlik
     {
-        $smsKimlik = SmsKimlik::findOrFail($id);
+        $smsKimlik = SmsKimlik::find($id);
         if (empty($smsKimlik)) {
             throw new EmployeeNotFoundException();
         }
@@ -145,7 +145,7 @@ class EmployeeService
      */
     public function changePassword(ChangePasswordEmployeeRequest $request, int $id): void
     {
-        $smsKimlik = SmsKimlik::findOrFail($id);
+        $smsKimlik = SmsKimlik::find($id);
         if (empty($smsKimlik)) {
             throw new EmployeeNotFoundException();
         }
@@ -160,7 +160,7 @@ class EmployeeService
      */
     public function destroy(int $id): void
     {
-        $smsKimlik = SmsKimlik::findOrFail($id);
+        $smsKimlik = SmsKimlik::find($id);
         if (empty($smsKimlik)) {
             throw new EmployeeNotFoundException();
         }

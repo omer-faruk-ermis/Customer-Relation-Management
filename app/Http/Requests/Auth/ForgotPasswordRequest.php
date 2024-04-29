@@ -9,7 +9,7 @@ class ForgotPasswordRequest extends AbstractRequest
     public function rules(): array
     {
         return [
-            'sms_kimlik_email'   => 'required|email',
+            'email'              => 'required|email',
             'security_code'      => 'required|string',
             'security_code_path' => 'required|string',
         ];

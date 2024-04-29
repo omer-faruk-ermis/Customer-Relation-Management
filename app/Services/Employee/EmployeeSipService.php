@@ -47,7 +47,7 @@ class EmployeeSipService
      */
     public function destroy(int $id): void
     {
-        $smsKimlikSip = SmsKimlikSip::findOrFail($id);
+        $smsKimlikSip = SmsKimlikSip::find($id);
         if (empty($smsKimlikSip)) {
             throw new EmployeeSipNotFoundException();
         }

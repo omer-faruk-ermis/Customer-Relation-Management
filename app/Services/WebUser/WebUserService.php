@@ -51,7 +51,6 @@ class WebUserService
     public function show(int $id): WebUser
     {
         $webUser = WebUser::find($id);
-
         if (empty($webUser)) {
             throw new WebUserNotFoundException();
         }

@@ -31,9 +31,13 @@ class LogService
             ->filter($request->all())
             ->paginate(DefaultConstant::PAGINATE);
 
-        $logs->each(function ($item) {
-            if ($item?->reasonWanted->alan_adi !== $item->alanadi) {
-                $item->unsetRelation('reasonWanted');
+        $logs->each(function ($item, $key) use ($request, $logs) {
+            if ($request->input('log_subject') && $item?->reasonWanted?->ifade !== $request->input('log_subject')) {
+                unset($logs[$key]);
+            } else {
+                if ($item?->reasonWanted->alan_adi !== $item->alanadi) {
+                    $item->unsetRelation('reasonWanted');
+                }
             }
         });
 
@@ -48,18 +52,14 @@ class LogService
      */
     public function updateSebepLog(Request $request): SebepLog
     {
-        $sebepLog = SebepLog::where('logid', '=', $request->logid)->first();
-
+        $sebepLog = SebepLog::where('logid', '=', $request->input('log_id'))->first();
         if (empty($sebepLog)) {
             throw new LogRecordNotFoundException();
         }
 
         $sebepLog->update([
-            'sebep_id'  => $request->input('sebep_id', $sebepLog->sebep_id),
-            'kayit_id'  => $request->input('kayit_id', $sebepLog->kayit_id),
-            'kayit_ip'  => $request->ip(),
-            'kayit_tar' => $sebepLog->kayit_tar,
-            'aciklama'  => $request->input('aciklama', $sebepLog->aciklama),
+            'sebep_id'  => $request->input('reason_id', $sebepLog->sebep_id),
+            'aciklama'  => $request->input('description', $sebepLog->aciklama),
         ]);
 
         return $sebepLog;

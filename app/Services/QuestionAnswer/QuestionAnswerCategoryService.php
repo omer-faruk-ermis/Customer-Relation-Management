@@ -2,24 +2,14 @@
 
 namespace App\Services\QuestionAnswer;
 
-use App\Enums\DefaultConstant;
-use App\Enums\NumericalConstant;
 use App\Enums\Status;
 use App\Exceptions\QuestionAnswer\QuestionAnswerCategoryNotFoundException;
-use App\Exceptions\QuestionAnswer\QuestionAnswerNotFoundException;
-use App\Http\Requests\QuestionAnswer\IndexQuestionAnswerRequest;
-use App\Http\Requests\QuestionAnswer\StoreQuestionAnswerRequest;
-use App\Http\Requests\QuestionAnswer\UpdateQuestionAnswerRequest;
 use App\Http\Requests\QuestionAnswerCategory\IndexQuestionAnswerCategoryRequest;
 use App\Http\Requests\QuestionAnswerCategory\StoreQuestionAnswerCategoryRequest;
 use App\Http\Requests\QuestionAnswerCategory\UpdateQuestionAnswerCategoryRequest;
-use App\Models\QuestionAnswer\SoruCevap;
 use App\Models\QuestionAnswer\SoruCevapKategori;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Class QuestionAnswerCategoryService
@@ -62,7 +52,7 @@ class QuestionAnswerCategoryService
      */
     public function update(UpdateQuestionAnswerCategoryRequest $request, int $id): SoruCevapKategori
     {
-        $category = SoruCevapKategori::findOrFail($id);
+        $category = SoruCevapKategori::find($id);
         if (empty($category)) {
             throw new QuestionAnswerCategoryNotFoundException();
         }
@@ -81,7 +71,7 @@ class QuestionAnswerCategoryService
      */
     public function destroy(int $id): void
     {
-        $questionAnswerCategory = SoruCevapKategori::findOrFail($id);
+        $questionAnswerCategory = SoruCevapKategori::find($id);
         if (empty($questionAnswerCategory)) {
             throw new QuestionAnswerCategoryNotFoundException();
         }

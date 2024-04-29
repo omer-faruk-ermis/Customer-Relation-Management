@@ -78,8 +78,8 @@ class QuestionAnswerService
      */
     public function update(UpdateQuestionAnswerRequest $request, int $id): SoruCevap
     {
-        $questionAnswer = SoruCevap::findOrFail($id);
-        if (empty($soruCevap)) {
+        $questionAnswer = SoruCevap::find($id);
+        if (empty($questionAnswer)) {
             throw new QuestionAnswerNotFoundException();
         }
 
@@ -103,7 +103,7 @@ class QuestionAnswerService
      */
     public function destroy(int $id): void
     {
-        $questionAnswer = SoruCevap::findOrFail($id);
+        $questionAnswer = SoruCevap::find($id);
         if (empty($questionAnswer)) {
             throw new QuestionAnswerNotFoundException();
         }

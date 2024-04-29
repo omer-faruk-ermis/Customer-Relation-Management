@@ -9,8 +9,8 @@ class LoginRequest extends AbstractRequest
     public function rules(): array
     {
         return [
-            'sms_kimlik_email'   => 'required|email',
-            'sifre'              => 'required|string',
+            'email'              => 'required|email',
+            'password'           => 'required|string',
             'security_code'      => 'required|string',
             'security_code_path' => 'required|string',
         ];
