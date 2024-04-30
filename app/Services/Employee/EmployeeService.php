@@ -6,6 +6,7 @@ use App\Enums\DefaultConstant;
 use App\Enums\NumericalConstant;
 use App\Enums\Status;
 use App\Exceptions\Employee\EmployeeNotFoundException;
+use App\Exceptions\Employee\HaveAlreadyEmployeeException;
 use App\Http\Requests\Employee\BasicEmployeeRequest;
 use App\Http\Requests\Employee\ChangePasswordEmployeeRequest;
 use App\Http\Requests\Employee\IndexEmployeeRequest;
@@ -40,7 +41,7 @@ class EmployeeService
     }
 
     /**
-     * @param BasicEmployeeRequest $request
+     * @param BasicEmployeeRequest  $request
      *
      * @return Collection
      */
@@ -70,7 +71,6 @@ class EmployeeService
     public function show(int $id): Model
     {
         $smsKimlik = SmsKimlik::with(['unit', 'sip'])->find($id);
-
         if (empty($smsKimlik)) {
             throw new EmployeeNotFoundException();
         }
@@ -79,13 +79,24 @@ class EmployeeService
     }
 
     /**
-     * @param StoreEmployeeRequest $request
+     * @param StoreEmployeeRequest  $request
+     *
      * @return SmsKimlik
      * @throws Exception
      */
     public function store(StoreEmployeeRequest $request): SmsKimlik
     {
-        $smsKimlik = SmsKimlik::create([
+        $sms_kimlik =
+            SmsKimlik::whereNotNull('sms_kimlik_email')
+                ->where('sms_kimlik_email', '=', $request->input('email'))
+                ->where('durum', '=', Status::ACTIVE)
+                ->get();
+
+        if (!empty($sms_kimlik)) {
+            throw new HaveAlreadyEmployeeException();
+        }
+
+        $newSmsKimlik = SmsKimlik::create([
             'ad_soyad'                  => $request->input('full_name'),
             'sifre'                     => $request->input('password'),
             'loginpage'                 => $request->input('login_permission'),
@@ -100,18 +111,19 @@ class EmployeeService
 
         $sipRequest = new StoreEmployeeSipRequest([
             'sip'              => $request->input('sip'),
-            'sms_kimlik'       => $smsKimlik->id,
+            'sms_kimlik'       => $newSmsKimlik->id,
             'not_send_message' => $request->input('not_send_message', NumericalConstant::ZERO)
         ]);
 
         (new EmployeeSipService)->store($sipRequest);
 
-        return $smsKimlik;
+        return $newSmsKimlik;
     }
 
     /**
-     * @param UpdateEmployeeRequest $request
-     * @param int $id
+     * @param UpdateEmployeeRequest  $request
+     * @param int                    $id
+     *
      * @return SmsKimlik
      * @throws EmployeeNotFoundException
      */
@@ -138,8 +150,9 @@ class EmployeeService
     }
 
     /**
-     * @param ChangePasswordEmployeeRequest $request
-     * @param int $id
+     * @param ChangePasswordEmployeeRequest  $request
+     * @param int                            $id
+     *
      * @return void
      * @throws EmployeeNotFoundException
      */
@@ -154,7 +167,8 @@ class EmployeeService
     }
 
     /**
-     * @param int $id
+     * @param int  $id
+     *
      * @return void
      * @throws EmployeeNotFoundException
      */

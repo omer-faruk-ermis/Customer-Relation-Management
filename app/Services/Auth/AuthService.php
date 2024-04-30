@@ -53,6 +53,7 @@ class AuthService
                 ->where('loginpage', '=', Status::ACTIVE)
                 ->where('durum', '=', Status::ACTIVE)
                 ->where('sifre', '=', $request->input('password'))
+                ->latest('id')
                 ->first();
 
         if (empty($sms_kimlik)) {
