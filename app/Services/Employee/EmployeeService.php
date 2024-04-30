@@ -90,7 +90,7 @@ class EmployeeService
             SmsKimlik::whereNotNull('sms_kimlik_email')
                 ->where('sms_kimlik_email', '=', $request->input('email'))
                 ->where('durum', '=', Status::ACTIVE)
-                ->get();
+                ->first();
 
         if (!empty($sms_kimlik)) {
             throw new HaveAlreadyEmployeeException();
