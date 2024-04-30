@@ -3,7 +3,7 @@
 namespace App\Services\Log;
 
 use App\Enums\DefaultConstant;
-use App\Exceptions\Log\LogRecordNotFoundException;
+use App\Exceptions\Log\LogReasonRecordNotFoundException;
 use App\Models\Log\SebepLog;
 use App\Models\Log\SmsKimlikLog;
 use Illuminate\Http\Request;
@@ -48,13 +48,13 @@ class LogService
      * @param Request  $request
      *
      * @return SebepLog
-     * @throws LogRecordNotFoundException
+     * @throws LogReasonRecordNotFoundException
      */
     public function updateSebepLog(Request $request): SebepLog
     {
         $sebepLog = SebepLog::where('logid', '=', $request->input('log_id'))->first();
         if (empty($sebepLog)) {
-            throw new LogRecordNotFoundException();
+            throw new LogReasonRecordNotFoundException();
         }
 
         $sebepLog->update([
