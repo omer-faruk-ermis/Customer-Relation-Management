@@ -20,11 +20,11 @@ class PaginationResource extends AbstractResource
     {
         return [
             'data'         => PaginateData::apply($this),
-            'current_page' => $this->resource->currentPage(),
-            'last_page'    => $this->resource->lastPage(),
-            'per_page'     => $this->resource->perPage(),
-            'to'           => $this->resource->lastItem(),
-            'total'        => $this->resource->total(),
+            'current_page' => $this->currentPage(),
+            'last_page'    => $this->lastPage(),
+            'per_page'     => $this->perPage(),
+            'to'           => $this->lastItem(),
+            'total'        => $this->total(),
         ];
     }
 }

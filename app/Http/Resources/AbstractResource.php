@@ -6,7 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class AbstractResource
+ * Abstract class AbstractResource
  *
  * @package App\Http\Resources
  */

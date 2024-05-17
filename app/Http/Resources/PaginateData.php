@@ -30,7 +30,7 @@ class PaginateData
             $resourceClass = $resourceMapping[class_basename($data->first())] ?? null;
 
             if ($resourceClass && is_subclass_of($resourceClass, JsonResource::class)) {
-                return $resourceClass::collection($data->resource->items());
+                return $resourceClass::collection($data->items());
             }
         }
 

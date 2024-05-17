@@ -5,10 +5,10 @@ namespace App\Models;
 use App\Enums\DefaultConstant;
 use DateTimeInterface;
 use Eloquent;
-use Illuminate\Database\Eloquent\Model;
+use Str;
 
 /**
- * Class AbstractModel
+ * Abstract class AbstractModel
  *
  * @package App\Models
  */
@@ -37,6 +37,7 @@ abstract class AbstractModel extends Eloquent
 
     /**
      * @param $filters
+     *
      * @return null
      */
     protected function filter($filters)
@@ -45,8 +46,9 @@ abstract class AbstractModel extends Eloquent
     }
 
     /**
-     * @param $builder
-     * @param array $filters
+     * @param        $builder
+     * @param array  $filters
+     *
      * @return mixed
      */
     public function scopeFilter($builder, array $filters = []): mixed
@@ -60,7 +62,8 @@ abstract class AbstractModel extends Eloquent
     }
 
     /**
-     * @param DateTimeInterface $date
+     * @param DateTimeInterface  $date
+     *
      * @return string
      */
     protected function serializeDate(DateTimeInterface $date): string

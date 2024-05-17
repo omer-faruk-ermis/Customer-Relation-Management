@@ -2,12 +2,18 @@
 
 namespace App\Http\Requests;
 
+use App\Utils\Security;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
-class AbstractRequest extends FormRequest
+/**
+ * Abstract class AbstractRequest
+ *
+ * @package App\Http\Resources
+ */
+abstract class AbstractRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,6 +31,24 @@ class AbstractRequest extends FormRequest
     public function rules(): array
     {
         return [];
+    }
+
+    protected $fieldsToDecrypt = [];
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        foreach ($this->fieldsToDecrypt as $field) {
+            if ($this->has($field)) {
+                $this->merge([
+                                 $field => Security::decrypt($this->input($field))
+                             ]);
+            }
+        }
     }
 
     /**

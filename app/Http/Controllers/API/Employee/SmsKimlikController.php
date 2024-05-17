@@ -37,7 +37,8 @@ class SmsKimlikController extends Controller
     }
 
     /**
-     * @param IndexEmployeeRequest $request
+     * @param IndexEmployeeRequest  $request
+     *
      * @return PaginationResource
      */
     public function index(IndexEmployeeRequest $request): PaginationResource
@@ -48,7 +49,8 @@ class SmsKimlikController extends Controller
     }
 
     /**
-     * @param BasicEmployeeRequest $request
+     * @param BasicEmployeeRequest  $request
+     *
      * @return EmployeeBasicCollection
      */
     public function basic(BasicEmployeeRequest $request): EmployeeBasicCollection
@@ -59,7 +61,7 @@ class SmsKimlikController extends Controller
     }
 
     /**
-     * @param IndexEmployeeLogRequest $request
+     * @param IndexEmployeeLogRequest  $request
      *
      * @return PaginationResource
      */
@@ -71,11 +73,12 @@ class SmsKimlikController extends Controller
     }
 
     /**
-     * @param int $id
+     * @param string  $id
+     *
      * @return EmployeeResource
      * @throws EmployeeNotFoundException
      */
-    public function show(int $id): EmployeeResource
+    public function show(string $id): EmployeeResource
     {
         $employee = $this->employeeService->show($id);
 
@@ -83,7 +86,8 @@ class SmsKimlikController extends Controller
     }
 
     /**
-     * @param StoreEmployeeRequest $request
+     * @param StoreEmployeeRequest  $request
+     *
      * @return EmployeeResource
      * @throws Exception
      */
@@ -95,12 +99,13 @@ class SmsKimlikController extends Controller
     }
 
     /**
-     * @param UpdateEmployeeRequest $request
-     * @param int $id
+     * @param UpdateEmployeeRequest  $request
+     * @param string                 $id
+     *
      * @return EmployeeResource
      * @throws EmployeeNotFoundException
      */
-    public function update(UpdateEmployeeRequest $request, int $id): EmployeeResource
+    public function update(UpdateEmployeeRequest $request, string $id): EmployeeResource
     {
         $employee = $this->employeeService->update($request, $id);
 
@@ -108,12 +113,13 @@ class SmsKimlikController extends Controller
     }
 
     /**
-     * @param ChangePasswordEmployeeRequest $request
-     * @param int $id
+     * @param ChangePasswordEmployeeRequest  $request
+     * @param string                         $id
+     *
      * @return SuccessResource
      * @throws EmployeeNotFoundException
      */
-    public function changePassword(ChangePasswordEmployeeRequest $request, int $id): SuccessResource
+    public function changePassword(ChangePasswordEmployeeRequest $request, string $id): SuccessResource
     {
         $this->employeeService->changePassword($request, $id);
 
@@ -121,11 +127,12 @@ class SmsKimlikController extends Controller
     }
 
     /**
-     * @param int $id
+     * @param string  $id
+     *
      * @return SuccessResource
      * @throws EmployeeNotFoundException
      */
-    public function destroy(int $id): SuccessResource
+    public function destroy(string $id): SuccessResource
     {
         $this->employeeService->destroy($id);
 

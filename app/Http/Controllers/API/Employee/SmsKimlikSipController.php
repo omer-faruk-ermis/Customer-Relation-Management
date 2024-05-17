@@ -32,7 +32,8 @@ class SmsKimlikSipController extends Controller
     }
 
     /**
-     * @param IndexEmployeeSipRequest $request
+     * @param IndexEmployeeSipRequest  $request
+     *
      * @return EmployeeSipCollection
      */
     public function index(IndexEmployeeSipRequest $request): EmployeeSipCollection
@@ -43,7 +44,8 @@ class SmsKimlikSipController extends Controller
     }
 
     /**
-     * @param StoreEmployeeSipRequest $request
+     * @param StoreEmployeeSipRequest  $request
+     *
      * @return EmployeeSipResource
      * @throws Exception
      */
@@ -55,11 +57,12 @@ class SmsKimlikSipController extends Controller
     }
 
     /**
-     * @param int $id
+     * @param string  $id
+     *
      * @return SuccessResource
      * @throws EmployeeSipNotFoundException
      */
-    public function destroy(int $id): SuccessResource
+    public function destroy(string $id): SuccessResource
     {
         $this->employeeSipService->destroy($id);
 

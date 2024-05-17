@@ -6,26 +6,22 @@ use App\Http\Controllers\API\Employee\SmsKimlikController;
 use App\Http\Controllers\API\Employee\SmsKimlikSipController;
 use App\Http\Controllers\API\Employee\SmsKimlikUnitController;
 use App\Http\Controllers\API\Log\LogController;
+use App\Http\Controllers\API\Menu\DetayMenuController;
+use App\Http\Controllers\API\Menu\MenuTanimController;
 use App\Http\Controllers\API\QuestionAnswer\SoruCevapController;
 use App\Http\Controllers\API\QuestionAnswer\SoruCevapKategoriController;
 use App\Http\Controllers\API\Reason\SebepIsteneceklerController;
 use App\Http\Controllers\API\Reason\SebeplerController;
 use App\Http\Controllers\API\Sms\SmsController;
+use App\Http\Controllers\API\Staff\PersonelGrupController;
+use App\Http\Controllers\API\Subscriber\AboneKutukYetkiController;
 use App\Http\Controllers\API\Token\DocSignature;
+use App\Http\Controllers\API\Url\UrlTanimController;
+use App\Http\Controllers\API\WebPortal\WebPortalYetkiController;
 use App\Http\Controllers\API\WebUser\WebUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -93,6 +89,32 @@ Route::group(['middleware' => 'auth_with_token'], function () {
     Route::prefix('web_user')->group(function () {
         Route::get('/', [WebUserController::class, 'index']);
         Route::get('/{id}', [WebUserController::class, 'show']);
+    });
+
+    // Menu-Url Tanim // SmsManagement type=1
+    Route::prefix('sms_management')->group(function () {
+        Route::get('/menu', [MenuTanimController::class, 'menu']);
+        Route::get('/page', [UrlTanimController::class, 'page']);
+    });
+
+    // DetailMenu // BlueScreen type=2
+    Route::prefix('blue_screen')->group(function () {
+        Route::get('/menu', [DetayMenuController::class, 'menu']);
+        Route::get('/page', [DetayMenuController::class, 'page']);
+    });
+
+    // WebPortalAuthorization // Authorization type=3
+    Route::get('web_portal_authorization', [WebPortalYetkiController::class, 'index']);
+
+    // SubscriberBilletAuthorization // SubscriberBillet type=4
+    Route::get('subscriber_billet_authorization', [AboneKutukYetkiController::class, 'index']);
+
+    // StaffGroup
+    Route::prefix('staff_group')->group(function () {
+        Route::get('/', [PersonelGrupController::class, 'index']);
+        Route::post('/', [PersonelGrupController::class, 'store']);
+        Route::put('/{id}', [PersonelGrupController::class, 'update']);
+        Route::delete('/{id}', [PersonelGrupController::class, 'destroy']);
     });
 });
 

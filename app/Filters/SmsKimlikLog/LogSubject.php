@@ -10,6 +10,6 @@ class LogSubject
     {
         $query->whereHas('reasonWanted', function ($reasonWantedQuery) use ($value) {
             $reasonWantedQuery->where(QueryBuilder::collate('ifade'), 'LIKE', '%' . $value . '%');
-        });
+        }); //TODO kontrol et ön yüzdeki son halini sor. İFADENİN İD SİNE GÖRE KONTROL ET LIKE İŞLEMİNE GEREK YOK.
     }
 }

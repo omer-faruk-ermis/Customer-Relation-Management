@@ -8,8 +8,6 @@ class IndexEmployeeUnitRequest extends AbstractRequest
 {
     public function rules(): array
     {
-        return [
-            'id' => 'sometimes|integer',
-        ];
+        return [];
     }
 }

@@ -33,7 +33,7 @@ class SoruCevapController extends Controller
     }
 
     /**
-     * @param IndexQuestionAnswerRequest $request
+     * @param IndexQuestionAnswerRequest  $request
      *
      * @return PaginationResource
      */
@@ -45,7 +45,7 @@ class SoruCevapController extends Controller
     }
 
     /**
-     * @param StoreQuestionAnswerRequest $request
+     * @param StoreQuestionAnswerRequest  $request
      *
      * @return QuestionAnswerResource
      *
@@ -59,28 +59,28 @@ class SoruCevapController extends Controller
     }
 
     /**
-     * @param UpdateQuestionAnswerRequest $request
-     * @param int $id
+     * @param UpdateQuestionAnswerRequest  $request
+     * @param string                       $id
      *
      * @return QuestionAnswerResource
      *
      * @throws QuestionAnswerNotFoundException
      */
-    public function update(UpdateQuestionAnswerRequest $request, int $id): QuestionAnswerResource
+    public function update(UpdateQuestionAnswerRequest $request, string $id): QuestionAnswerResource
     {
-        $questionAnswers = $this->questionAnswerService->update($request, $id);
+        $questionAnswer = $this->questionAnswerService->update($request, $id);
 
-        return new QuestionAnswerResource($questionAnswers, 'QUESTION_ANSWER.UPDATE.SUCCESS');
+        return new QuestionAnswerResource($questionAnswer, 'QUESTION_ANSWER.UPDATE.SUCCESS');
     }
 
     /**
-     * @param int $id
+     * @param string  $id
      *
      * @return SuccessResource
      *
      * @throws QuestionAnswerNotFoundException
      */
-    public function destroy(int $id): SuccessResource
+    public function destroy(string $id): SuccessResource
     {
         $this->questionAnswerService->destroy($id);
 

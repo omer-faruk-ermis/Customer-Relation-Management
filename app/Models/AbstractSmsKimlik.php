@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 /**
- * Class AbstractModel
+ * Abstract class AbstractModel
  *
  * @package App\Models
  *

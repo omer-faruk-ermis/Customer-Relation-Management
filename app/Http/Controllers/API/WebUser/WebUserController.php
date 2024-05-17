@@ -40,12 +40,12 @@ class WebUserController extends Controller
     }
 
     /**
-     * @param int  $id
+     * @param string  $id
      *
      * @return WebUserResource
      * @throws WebUserNotFoundException
      */
-    public function show(int $id): WebUserResource
+    public function show(string $id): WebUserResource
     {
         $webUser = $this->webUserService->show($id);
 

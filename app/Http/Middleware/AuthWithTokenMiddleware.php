@@ -7,7 +7,6 @@ use App\Helpers\TokenValidate;
 use Closure;
 use Illuminate\Http\Request;
 use Exception;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class AuthWithTokenMiddleware

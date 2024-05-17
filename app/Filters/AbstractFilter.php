@@ -2,6 +2,11 @@
 
 namespace App\Filters;
 
+/**
+ * Abstract class AbstractFilter
+ *
+ * @package App\Http\Resources
+ */
 abstract class AbstractFilter
 {
     protected $filters;

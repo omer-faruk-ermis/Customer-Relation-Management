@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Employee;
 
 use App\Http\Resources\AbstractResource;
+use App\Utils\Security;
 
 /**
  * Class EmployeeSipResource
@@ -21,9 +22,9 @@ class EmployeeSipResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'               => $this->getKey(),
-            'sip_id'           => $this->sip_id,
-            'employee_id'      => $this->sms_kimlik,
+            'id'               => Security::encrypt($this->getKey()),
+            'sip'              => $this->sip_id,
+            'employee_id'      => Security::encrypt($this->sms_kimlik),
             'not_send_message' => $this->mesajgitmesin,
         ];
     }

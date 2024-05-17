@@ -15,6 +15,7 @@ use App\Http\Requests\Employee\StoreEmployeeSipRequest;
 use App\Http\Requests\Employee\UpdateEmployeeRequest;
 use App\Models\SmsKimlik\SmsKimlik;
 use App\Services\Log\LogService;
+use App\Utils\Security;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -35,9 +36,9 @@ class EmployeeService
     public function index(IndexEmployeeRequest $request): mixed
     {
         return SmsKimlik::with(['unit', 'sip'])
-            ->filter($request->all())
-            ->where('durum', '=', Status::ACTIVE)
-            ->paginate(DefaultConstant::PAGINATE);
+                        ->filter($request->all())
+                        ->where('durum', '=', Status::ACTIVE)
+                        ->paginate(DefaultConstant::PAGINATE);
     }
 
     /**
@@ -48,8 +49,8 @@ class EmployeeService
     public function basic(BasicEmployeeRequest $request): Collection
     {
         return SmsKimlik::select(['id', 'ad_soyad'])
-            ->limit(DefaultConstant::SEARCH_LIST_LIMIT)
-            ->get();
+                        ->limit(DefaultConstant::SEARCH_LIST_LIMIT)
+                        ->get();
     }
 
     /**
@@ -63,14 +64,14 @@ class EmployeeService
     }
 
     /**
-     * @param int  $id
+     * @param string  $id
      *
      * @return Model
      * @throws EmployeeNotFoundException
      */
-    public function show(int $id): Model
+    public function show(string $id): Model
     {
-        $smsKimlik = SmsKimlik::with(['unit', 'sip'])->find($id);
+        $smsKimlik = SmsKimlik::with(['unit', 'sip'])->find(Security::decrypt($id));
         if (empty($smsKimlik)) {
             throw new EmployeeNotFoundException();
         }
@@ -88,32 +89,32 @@ class EmployeeService
     {
         $sms_kimlik =
             SmsKimlik::whereNotNull('sms_kimlik_email')
-                ->where('sms_kimlik_email', '=', $request->input('email'))
-                ->where('durum', '=', Status::ACTIVE)
-                ->first();
+                     ->where('sms_kimlik_email', '=', $request->input('email'))
+                     ->where('durum', '=', Status::ACTIVE)
+                     ->first();
 
         if (!empty($sms_kimlik)) {
             throw new HaveAlreadyEmployeeException();
         }
 
         $newSmsKimlik = SmsKimlik::create([
-            'ad_soyad'                  => $request->input('full_name'),
-            'sifre'                     => $request->input('password'),
-            'loginpage'                 => $request->input('login_permission'),
-            'birim_id'                  => $request->input('unit'),
-            'para_limit'                => $request->input('currency_limit'),
-            'ceptel'                    => $request->input('mobile_phone'),
-            'sms_kimlik_email'          => $request->input('email'),
-            'sms_kimlik_email_username' => $request->input('username'),
-            'sms_kimlik_email_password' => $request->input('email_password'),
-            'evtel'                     => $request->input('home_phone')
-        ]);
+                                              'ad_soyad'                  => $request->input('full_name'),
+                                              'sifre'                     => $request->input('password'),
+                                              'loginpage'                 => $request->input('login_permission'),
+                                              'birim_id'                  => $request->input('unit'),
+                                              'para_limit'                => $request->input('currency_limit'),
+                                              'ceptel'                    => $request->input('mobile_phone'),
+                                              'sms_kimlik_email'          => $request->input('email'),
+                                              'sms_kimlik_email_username' => $request->input('username'),
+                                              'sms_kimlik_email_password' => $request->input('email_password'),
+                                              'evtel'                     => $request->input('home_phone')
+                                          ]);
 
         $sipRequest = new StoreEmployeeSipRequest([
-            'sip'              => $request->input('sip'),
-            'sms_kimlik'       => $newSmsKimlik->id,
-            'not_send_message' => $request->input('not_send_message', NumericalConstant::ZERO)
-        ]);
+                                                      'sip'              => $request->input('sip'),
+                                                      'employee_id'      => $newSmsKimlik->id,
+                                                      'not_send_message' => $request->input('not_send_message', NumericalConstant::ZERO)
+                                                  ]);
 
         (new EmployeeSipService)->store($sipRequest);
 
@@ -122,43 +123,43 @@ class EmployeeService
 
     /**
      * @param UpdateEmployeeRequest  $request
-     * @param int                    $id
+     * @param string                 $id
      *
      * @return SmsKimlik
      * @throws EmployeeNotFoundException
      */
-    public function update(UpdateEmployeeRequest $request, int $id): SmsKimlik
+    public function update(UpdateEmployeeRequest $request, string $id): SmsKimlik
     {
-        $smsKimlik = SmsKimlik::find($id);
+        $smsKimlik = SmsKimlik::find(Security::decrypt($id));
         if (empty($smsKimlik)) {
             throw new EmployeeNotFoundException();
         }
 
         $smsKimlik->update([
-            'ad_soyad'                  => $request->input('full_name'),
-            'loginpage'                 => $request->input('login_permission'),
-            'birim_id'                  => $request->input('unit'),
-            'para_limit'                => $request->input('currency_limit'),
-            'ceptel'                    => $request->input('mobile_phone'),
-            'sms_kimlik_email'          => $request->input('email'),
-            'sms_kimlik_email_username' => $request->input('username'),
-            'sms_kimlik_email_password' => $request->input('email_password'),
-            'evtel'                     => $request->input('home_phone'),
-        ]);
+                               'ad_soyad'                  => $request->input('full_name'),
+                               'loginpage'                 => $request->input('login_permission'),
+                               'birim_id'                  => $request->input('unit'),
+                               'para_limit'                => $request->input('currency_limit'),
+                               'ceptel'                    => $request->input('mobile_phone'),
+                               'sms_kimlik_email'          => $request->input('email'),
+                               'sms_kimlik_email_username' => $request->input('username'),
+                               'sms_kimlik_email_password' => $request->input('email_password'),
+                               'evtel'                     => $request->input('home_phone'),
+                           ]);
 
         return $smsKimlik;
     }
 
     /**
      * @param ChangePasswordEmployeeRequest  $request
-     * @param int                            $id
+     * @param string                         $id
      *
      * @return void
      * @throws EmployeeNotFoundException
      */
-    public function changePassword(ChangePasswordEmployeeRequest $request, int $id): void
+    public function changePassword(ChangePasswordEmployeeRequest $request, string $id): void
     {
-        $smsKimlik = SmsKimlik::find($id);
+        $smsKimlik = SmsKimlik::find(Security::decrypt($id));
         if (empty($smsKimlik)) {
             throw new EmployeeNotFoundException();
         }
@@ -167,14 +168,14 @@ class EmployeeService
     }
 
     /**
-     * @param int  $id
+     * @param string  $id
      *
      * @return void
      * @throws EmployeeNotFoundException
      */
-    public function destroy(int $id): void
+    public function destroy(string $id): void
     {
-        $smsKimlik = SmsKimlik::find($id);
+        $smsKimlik = SmsKimlik::find(Security::decrypt($id));
         if (empty($smsKimlik)) {
             throw new EmployeeNotFoundException();
         }

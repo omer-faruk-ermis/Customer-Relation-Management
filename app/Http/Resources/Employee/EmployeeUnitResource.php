@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Employee;
 
 use App\Http\Resources\AbstractResource;
+use App\Utils\Security;
 
 /**
  * Class EmployeeUnitResource
@@ -21,7 +22,7 @@ class EmployeeUnitResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'   => $this->getKey(),
+            'id'   => Security::encrypt($this->getKey()),
             'unit' => $this->birim
         ];
     }

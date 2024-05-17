@@ -3,13 +3,16 @@
 namespace App\Http\Requests\QuestionAnswer;
 
 use App\Http\Requests\AbstractRequest;
+use App\Utils\Security;
 
 class StoreQuestionAnswerRequest extends AbstractRequest
 {
+    protected $fieldsToDecrypt = ['category_id'];
+
     public function rules(): array
     {
         return [
-            'category_id'       => 'required|integer',
+            'category_id'       => 'required|string',
             'question'          => 'required|string',
             'answer'            => 'required|string',
             'question_keywords' => 'required|string',

@@ -8,6 +8,7 @@ use App\Http\Requests\QuestionAnswerCategory\IndexQuestionAnswerCategoryRequest;
 use App\Http\Requests\QuestionAnswerCategory\StoreQuestionAnswerCategoryRequest;
 use App\Http\Requests\QuestionAnswerCategory\UpdateQuestionAnswerCategoryRequest;
 use App\Models\QuestionAnswer\SoruCevapKategori;
+use App\Utils\Security;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -29,30 +30,30 @@ class QuestionAnswerCategoryService
     }
 
     /**
-     * @param StoreQuestionAnswerCategoryRequest $request
+     * @param StoreQuestionAnswerCategoryRequest  $request
      *
      * @return SoruCevapKategori
      */
     public function store(StoreQuestionAnswerCategoryRequest $request): SoruCevapKategori
     {
         return SoruCevapKategori::create([
-            'kategori_adi'   => $request->input('category_name'),
-            'kategori_durum' => Status::ACTIVE,
-        ]);
+                                             'kategori_adi'   => $request->input('category_name'),
+                                             'kategori_durum' => Status::ACTIVE,
+                                         ]);
     }
 
 
     /**
-     * @param UpdateQuestionAnswerCategoryRequest $request
-     * @param int $id
+     * @param UpdateQuestionAnswerCategoryRequest  $request
+     * @param string                               $id
      *
      * @return SoruCevapKategori
      *
      * @throws QuestionAnswerCategoryNotFoundException
      */
-    public function update(UpdateQuestionAnswerCategoryRequest $request, int $id): SoruCevapKategori
+    public function update(UpdateQuestionAnswerCategoryRequest $request, string $id): SoruCevapKategori
     {
-        $category = SoruCevapKategori::find($id);
+        $category = SoruCevapKategori::find(Security::decrypt($id));
         if (empty($category)) {
             throw new QuestionAnswerCategoryNotFoundException();
         }
@@ -63,15 +64,15 @@ class QuestionAnswerCategoryService
     }
 
     /**
-     * @param int $id
+     * @param string  $id
      *
      * @return void
      *
      * @throws QuestionAnswerCategoryNotFoundException
      */
-    public function destroy(int $id): void
+    public function destroy(string $id): void
     {
-        $questionAnswerCategory = SoruCevapKategori::find($id);
+        $questionAnswerCategory = SoruCevapKategori::find(Security::decrypt($id));
         if (empty($questionAnswerCategory)) {
             throw new QuestionAnswerCategoryNotFoundException();
         }

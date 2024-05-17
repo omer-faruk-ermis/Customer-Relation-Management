@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Reason;
 
 use App\Http\Resources\AbstractResource;
+use App\Utils\Security;
 
 /**
  * Class ReasonResource
@@ -21,9 +22,9 @@ class ReasonResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'              => $this->getKey(),
+            'id'              => Security::encrypt($this->getKey()),
             'description'     => $this->aciklama,
-            'upper_id'        => $this->ust_id,
+            'top_id'          => Security::encrypt($this->ust_id),
             'blacklist_level' => $this->karaliste_seviye,
             'meeting_id'      => $this->gorusme_id,
         ];

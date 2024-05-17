@@ -3,9 +3,12 @@
 namespace App\Http\Requests\Employee;
 
 use App\Http\Requests\AbstractRequest;
+use App\Utils\Security;
 
 class IndexEmployeeLogRequest extends AbstractRequest
 {
+    protected $fieldsToDecrypt = ['agent'];
+
     public function rules(): array
     {
         return [
@@ -14,7 +17,7 @@ class IndexEmployeeLogRequest extends AbstractRequest
             'min_date'          => 'sometimes|date',
             'log_subject'       => 'sometimes|string',
             'page'              => 'sometimes|integer',
-            'agent'             => 'required|integer',
+            'agent'             => 'required|string',
             'description'       => 'sometimes|string',
             'reason'            => 'sometimes|string',
             'empty_reason'      => 'sometimes|boolean',

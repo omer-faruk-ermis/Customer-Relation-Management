@@ -32,7 +32,7 @@ class SoruCevapKategoriController extends Controller
     }
 
     /**
-     * @param IndexQuestionAnswerCategoryRequest $request
+     * @param IndexQuestionAnswerCategoryRequest  $request
      *
      * @return QuestionAnswerCategoryCollection
      */
@@ -44,7 +44,7 @@ class SoruCevapKategoriController extends Controller
     }
 
     /**
-     * @param StoreQuestionAnswerCategoryRequest $request
+     * @param StoreQuestionAnswerCategoryRequest  $request
      *
      * @return QuestionAnswerCategoryResource
      */
@@ -56,28 +56,28 @@ class SoruCevapKategoriController extends Controller
     }
 
     /**
-     * @param UpdateQuestionAnswerCategoryRequest $request
-     * @param int $id
+     * @param UpdateQuestionAnswerCategoryRequest  $request
+     * @param string                               $id
      *
      * @return QuestionAnswerCategoryResource
      *
      * @throws QuestionAnswerCategoryNotFoundException
      */
-    public function update(UpdateQuestionAnswerCategoryRequest $request, int $id): QuestionAnswerCategoryResource
+    public function update(UpdateQuestionAnswerCategoryRequest $request, string $id): QuestionAnswerCategoryResource
     {
-        $questionAnswerCategories = $this->questionAnswerCategoryService->update($request, $id);
+        $questionAnswerCategorY = $this->questionAnswerCategoryService->update($request, $id);
 
-        return new QuestionAnswerCategoryResource($questionAnswerCategories, 'QUESTION_ANSWER_CATEGORY.UPDATE.SUCCESS');
+        return new QuestionAnswerCategoryResource($questionAnswerCategorY, 'QUESTION_ANSWER_CATEGORY.UPDATE.SUCCESS');
     }
 
     /**
-     * @param int $id
+     * @param string  $id
      *
      * @return SuccessResource
      *
      * @throws QuestionAnswerCategoryNotFoundException
      */
-    public function destroy(int $id): SuccessResource
+    public function destroy(string $id): SuccessResource
     {
         $this->questionAnswerCategoryService->destroy($id);
 

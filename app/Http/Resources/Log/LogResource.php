@@ -5,6 +5,8 @@ namespace App\Http\Resources\Log;
 use App\Http\Resources\AbstractResource;
 use App\Http\Resources\Employee\EmployeeResource;
 use App\Http\Resources\Reason\ReasonWantedResource;
+use App\Utils\DateUtil;
+use App\Utils\Security;
 
 /**
  * Class LogResource
@@ -23,13 +25,13 @@ class LogResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'            => $this->getKey(),
-            'user_id'       => $this->userid,
-            'register_id'   => $this->kayitid,
+            'id'            => Security::encrypt($this->getKey()),
+            'user_id'       => Security::encrypt($this->userid),
+            'register_id'   => Security::encrypt($this->kayitid),
             'before'        => $this->i1,
             'after'         => $this->i2,
             'ip'            => $this->ip,
-            'date'          => $this->tarih,
+            'date'          => DateUtil::dateFormat($this->tarih),
             'looked_at'     => $this->bakildi,
             'employee'      => EmployeeResource::make($this->whenLoaded('employee')),
             'reason_log'    => ReasonLogResource::collection($this->whenLoaded('reasonLog')),

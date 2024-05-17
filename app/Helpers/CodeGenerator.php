@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Cache;
 class CodeGenerator
 {
     /**
-     * Generates a random security code.
+     * Generates a random security code [0-9][A-F].
      *
      * @param int $length
      * @return string
@@ -18,6 +18,17 @@ class CodeGenerator
     public static function generateCode(int $length = 6): string
     {
         return strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, $length));
+    }
+
+    /**
+     * Generates a random code [0-9][A-Z][a-z].
+     *
+     * @param int $length
+     * @return string
+     */
+    public static function generateRandomAlphanumericCode(int $length = 15): string
+    {
+        return substr(str_shuffle(Code::ALPHANUMERIC_CODE), 0, $length);
     }
 
     /**

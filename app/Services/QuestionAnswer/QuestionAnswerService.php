@@ -11,6 +11,7 @@ use App\Http\Requests\QuestionAnswer\StoreQuestionAnswerRequest;
 use App\Http\Requests\QuestionAnswer\UpdateQuestionAnswerRequest;
 use App\Models\QuestionAnswer\SoruCevap;
 use App\Models\QuestionAnswer\SoruCevapKategori;
+use App\Utils\Security;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -31,20 +32,20 @@ class QuestionAnswerService
         $questionAnswerCategory = SoruCevapKategori::getModel();
 
         return SoruCevap::with('category')
-            ->select([
-                $questionAnswer->qualifyAllColumns(),
-                DB::raw($questionAnswerCategory->getQualifiedKeyName() . ' AS kategori_id'),
-                $questionAnswerCategory->qualifyColumn('kategori_adi'),
-                $questionAnswerCategory->qualifyColumn('kategori_durum'),
-            ])
-            ->filter($request->all())
-            ->join($questionAnswerCategory->getTable(),
-                $questionAnswer->qualifyColumn('kategori_id'),
-                '=',
-                $questionAnswerCategory->getQualifiedKeyName())
-            ->where($questionAnswer->qualifyColumn('durum'), '=', Status::ACTIVE)
-            ->where($questionAnswerCategory->qualifyColumn('kategori_durum'), '=', Status::ACTIVE)
-            ->paginate(DefaultConstant::PAGINATE);
+                        ->select([
+                                     $questionAnswer->qualifyAllColumns(),
+                                     DB::raw($questionAnswerCategory->getQualifiedKeyName() . ' AS kategori_id'),
+                                     $questionAnswerCategory->qualifyColumn('kategori_adi'),
+                                     $questionAnswerCategory->qualifyColumn('kategori_durum'),
+                                 ])
+                        ->filter($request->all())
+                        ->join($questionAnswerCategory->getTable(),
+                               $questionAnswer->qualifyColumn('kategori_id'),
+                               '=',
+                               $questionAnswerCategory->getQualifiedKeyName())
+                        ->where($questionAnswer->qualifyColumn('durum'), '=', Status::ACTIVE)
+                        ->where($questionAnswerCategory->qualifyColumn('kategori_durum'), '=', Status::ACTIVE)
+                        ->paginate(DefaultConstant::PAGINATE);
     }
 
     /**
@@ -55,55 +56,55 @@ class QuestionAnswerService
     public function store(StoreQuestionAnswerRequest $request): SoruCevap
     {
         return SoruCevap::create([
-            'kategori_id'    => $request->input('category_id'),
-            'soru'           => $request->input('question'),
-            'sayac'          => NumericalConstant::ZERO,
-            'cevap'          => $request->input('answer'),
-            'durum'          => Status::ACTIVE,
-            'soru_keywords'  => $request->input('question_keywords'),
-            'cevap_keywords' => $request->input('answer_keywords'),
-            'kaydeden_ip'    => $request->ip(),
-            'kayit_tarih'    => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT),
-        ]);
+                                     'kategori_id'    => $request->input('category_id'),
+                                     'soru'           => $request->input('question'),
+                                     'sayac'          => NumericalConstant::ZERO,
+                                     'cevap'          => $request->input('answer'),
+                                     'durum'          => Status::ACTIVE,
+                                     'soru_keywords'  => $request->input('question_keywords'),
+                                     'cevap_keywords' => $request->input('answer_keywords'),
+                                     'kaydeden_ip'    => $request->ip(),
+                                     'kayit_tarih'    => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT),
+                                 ]);
     }
 
 
     /**
      * @param UpdateQuestionAnswerRequest  $request
-     * @param int                          $id
+     * @param string                       $id
      *
      * @return SoruCevap
      *
      * @throws QuestionAnswerNotFoundException
      */
-    public function update(UpdateQuestionAnswerRequest $request, int $id): SoruCevap
+    public function update(UpdateQuestionAnswerRequest $request, string $id): SoruCevap
     {
-        $questionAnswer = SoruCevap::find($id);
+        $questionAnswer = SoruCevap::find(Security::decrypt($id));
         if (empty($questionAnswer)) {
             throw new QuestionAnswerNotFoundException();
         }
 
         $questionAnswer->update([
-            'kategori_id'    => $request->input('category_id', $questionAnswer->kategori_id),
-            'soru'           => $request->input('question', $questionAnswer->soru),
-            'cevap'          => $request->input('answer', $questionAnswer->soru),
-            'soru_keywords'  => $request->input('question_keywords', $questionAnswer->soru_keywords),
-            'cevap_keywords' => $request->input('answer_keywords', $questionAnswer->cevap_keywords),
-        ]);
+                                    'kategori_id'    => $request->input('category_id', $questionAnswer->kategori_id),
+                                    'soru'           => $request->input('question', $questionAnswer->soru),
+                                    'cevap'          => $request->input('answer', $questionAnswer->soru),
+                                    'soru_keywords'  => $request->input('question_keywords', $questionAnswer->soru_keywords),
+                                    'cevap_keywords' => $request->input('answer_keywords', $questionAnswer->cevap_keywords),
+                                ]);
 
         return $questionAnswer;
     }
 
     /**
-     * @param int  $id
+     * @param string  $id
      *
      * @return void
      *
      * @throws QuestionAnswerNotFoundException
      */
-    public function destroy(int $id): void
+    public function destroy(string $id): void
     {
-        $questionAnswer = SoruCevap::find($id);
+        $questionAnswer = SoruCevap::find(Security::decrypt($id));
         if (empty($questionAnswer)) {
             throw new QuestionAnswerNotFoundException();
         }

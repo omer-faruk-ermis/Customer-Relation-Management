@@ -14,15 +14,69 @@ use Illuminate\Database\Query\Builder;
  *
  * @property int    $id
  * @property string $name
+ * @property string $pwd
  * @property string $ad
  * @property string $soyad
- * @property string $ceptel
- * @property string $full_name
+ * @property string $aciklama
+ * @property int    $tel
+ * @property string $email
+ * @property int    $ceptel
+ * @property string $songir_tar
+ * @property bool   $goster
+ * @property string $ipadres
+ * @property string $kayit_tar
  * @property string $kullanici_tipi
+ * @property string $detay
+ * @property int    $telefon
+ * @property string $adres
+ * @property bool   $odeme_tipi
+ * @property string $kaynaksmscep
+ * @property bool   $onay
+ * @property bool   $gsm_tip
+ * @property int    $birimfiyat
+ * @property int    $ust_id
+ * @property int    $dogumid
+ * @property int    $evlilikid
  * @property string $tckimlik
- * @property string $abone_no
- * @property string $abonetip
+ * @property float  $chip_user
+ * @property bool   $tanidikmi
+ * @property int    $parayatir
+ * @property int    $dogsms_ucretsiz
+ * @property bool   $kfm_fatura_kesilen
+ * @property int    $oncelikli
+ * @property bool   $sozlesme
+ * @property int    $abone_no
+ * @property bool   $bayiarayuzu
+ * @property int    $deg_kimlik
+ * @property string $deg_ip
+ * @property int    $deg_usr
+ * @property string $sozlesme_tarih
+ * @property int    $dog_yil
+ * @property string $sabittel
+ * @property int    $abonetip
  * @property string $kurumadi
+ * @property int    $kurumturu
+ * @property int    $kurumislemyapan
+ * @property bool   $islemtipi
+ * @property string $sozlesme_guncel_tar
+ * @property bool   $jobsmsi_gelmesin
+ * @property bool   $aboneno_tercih
+ * @property bool   $dialerpin
+ * @property string $sifre
+ * @property bool   $tanidiga_duyarli
+ * @property int    $abonebag
+ * @property bool   $namukerrer
+ * @property bool   $telmukerrer
+ * @property int    $kopkodu
+ * @property bool   $maxoncelik
+ * @property int    $transit_op_kodu
+ * @property int    $vergino
+ * @property string $vergidairesi
+ * @property int    $vno
+ * @property int    $mersisno
+ * @property string $vergidairesino
+ *
+ * @property string $full_name
  *
  * @method static Builder|WebUser filter(array $filters = [])
  */
