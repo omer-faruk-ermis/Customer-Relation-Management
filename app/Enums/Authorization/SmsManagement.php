@@ -2,8 +2,10 @@
 
 namespace App\Enums\Authorization;
 
-class SmsManagement {
+use App\Enums\AbstractEnum;
 
+class SmsManagement extends AbstractEnum
+{
     // Main Menu
     const USER_OPERATIONS = 1;
     const MANAGEMENT_OPERATIONS = 2;
@@ -29,7 +31,7 @@ class SmsManagement {
     const READY_MESSAGES = 45;
     const PAYMENT_NOTIFICATIONS = 46;
     const BLOCK_NUMBER = 47;
-    const APP = 49;
+    const APP_EMPLOYEE = 49;
     const MATCH_AUDIO_RECORD = 57;
     const RETURN_USERS = 62;
     const STATUS_TABLE = 65;

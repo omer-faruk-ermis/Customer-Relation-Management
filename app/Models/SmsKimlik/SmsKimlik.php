@@ -6,10 +6,10 @@ use App\Enums\NumericalConstant;
 use App\Enums\Status;
 use App\Filters\SmsKimlik\SmsKimlikFilter;
 use App\Models\AbstractSmsKimlik;
+use App\Models\MaskableTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Notifications\DatabaseNotification;
 
 /**
  * Class SmsKimlik
@@ -44,6 +44,8 @@ use Illuminate\Notifications\DatabaseNotification;
  */
 class SmsKimlik extends AbstractSmsKimlik
 {
+    use MaskableTrait;
+
     protected $table = 'kaynaksms.dbo.sms_kimlik';
 
     protected $fillable = [

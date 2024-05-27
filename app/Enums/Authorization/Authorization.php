@@ -2,7 +2,10 @@
 
 namespace App\Enums\Authorization;
 
-class Authorization {
+use App\Enums\AbstractEnum;
+
+class Authorization extends AbstractEnum
+{
     const SEND_SMS = 1;
     const GUIDE_OPERATIONS = 2;
     const GIVE_CREDIT_PAGE_WILL_NOT_BE_BILLED_OPERATION = 4;

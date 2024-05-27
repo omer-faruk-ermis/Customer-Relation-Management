@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\API\WebPortal;
 
+use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\WebPortal\IndexWebPortalAuthorizationRequest;
 use App\Http\Resources\WebPortal\WebPortalAuthorizationCollection;
 use App\Services\WebPortal\WebPortalAuthorizationService;
+use Illuminate\Http\Request;
 
 /**
  * Class WebPortalYetkiController
@@ -19,10 +21,12 @@ class WebPortalYetkiController extends Controller
 
     /**
      * WebPortalYetkiController constructor
+     *
+     * @throws ForbiddenException
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->webPortalAuthorizationService = new WebPortalAuthorizationService();
+        $this->webPortalAuthorizationService = new WebPortalAuthorizationService($request);
     }
 
     /**

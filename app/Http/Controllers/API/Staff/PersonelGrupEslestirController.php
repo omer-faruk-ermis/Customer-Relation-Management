@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\API\Staff;
 
-use App\Exceptions\Staff\StaffGroupAuthorizationMatchNotFoundException;
+use App\Exceptions\ForbiddenException;
 use App\Exceptions\Staff\StaffGroupMatchNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Staff\StoreStaffGroupRequest;
-use App\Http\Resources\Staff\StaffGroupAuthorizationMatchResource;
+use App\Http\Requests\Staff\StoreStaffGroupMatchRequest;
 use App\Http\Resources\Staff\StaffGroupMatchResource;
 use App\Http\Resources\SuccessResource;
-use App\Services\Staff\StaffGroupAuthorizationMatchService;
 use App\Services\Staff\StaffGroupMatchService;
+use Illuminate\Http\Request;
 
 /**
  * Class PersonelGrupEslestirController
@@ -24,18 +23,20 @@ class PersonelGrupEslestirController extends Controller
 
     /**
      * PersonelGrupEslestirController constructor
+     *
+     * @throws ForbiddenException
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->staffGroupMatchService = new StaffGroupMatchService();
+        $this->staffGroupMatchService = new StaffGroupMatchService($request);
     }
 
     /**
-     * @param StoreStaffGroupRequest  $request
+     * @param StoreStaffGroupMatchRequest  $request
      *
      * @return StaffGroupMatchResource
      */
-    public function store(StoreStaffGroupRequest $request): StaffGroupMatchResource
+    public function store(StoreStaffGroupMatchRequest $request): StaffGroupMatchResource
     {
         $staffGroupMatch = $this->staffGroupMatchService->store($request);
 

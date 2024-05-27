@@ -3,7 +3,6 @@
 namespace App\Http\Resources\Employee;
 
 use App\Http\Resources\AbstractResource;
-use App\Utils\Security;
 
 /**
  * Class EmployeeBasicResource
@@ -21,8 +20,15 @@ class EmployeeBasicResource extends AbstractResource
      */
     public function toArray($request): array
     {
+        if ($this->relationLoaded('members')) {
+            return [
+                'id'                    => $this->whenLoaded('members')?->id,
+                'full_name'             => $this->whenLoaded('members')?->ad_soyad
+            ];
+        }
+
         return [
-            'id'                    => Security::encrypt($this->getKey()),
+            'id'                    => $this->getKey(),
             'full_name'             => $this->ad_soyad
         ];
     }

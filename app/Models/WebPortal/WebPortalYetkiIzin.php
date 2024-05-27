@@ -3,9 +3,11 @@
 namespace App\Models\WebPortal;
 
 use App\Models\AbstractModel;
+use App\Models\SmsKimlik\SmsKimlik;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * Class WebPortalYetki
+ * Class WebPortalYetkiIzin
  *
  * @package App\Models\WebPortal
  * @version April 29, 2024, 2:20 pm UTC
@@ -21,4 +23,12 @@ use App\Models\AbstractModel;
 class WebPortalYetkiIzin extends AbstractModel
 {
     protected $table = 'kaynaksms_diger.dbo.webportal_yetki_izin';
+
+    /**
+     * @return hasOne
+     */
+    public function members(): hasOne
+    {
+        return $this->hasOne(SmsKimlik::class, 'id', 'userid');
+    }
 }

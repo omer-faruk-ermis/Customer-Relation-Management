@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Staff;
 
+use App\Exceptions\ForbiddenException;
 use App\Exceptions\Staff\StaffGroupNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Staff\IndexStaffGroupRequest;
@@ -11,6 +12,7 @@ use App\Http\Resources\Staff\StaffGroupCollection;
 use App\Http\Resources\Staff\StaffGroupResource;
 use App\Http\Resources\SuccessResource;
 use App\Services\Staff\StaffGroupService;
+use Illuminate\Http\Request;
 
 /**
  * Class PersonelGrupController
@@ -24,10 +26,12 @@ class PersonelGrupController extends Controller
 
     /**
      * PersonelGrupController constructor
+     *
+     * @throws ForbiddenException
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->staffGroupService = new StaffGroupService();
+        $this->staffGroupService = new StaffGroupService($request);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\QuestionAnswer;
 
+use App\Exceptions\ForbiddenException;
 use App\Exceptions\QuestionAnswer\QuestionAnswerCategoryNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\QuestionAnswerCategory\IndexQuestionAnswerCategoryRequest;
@@ -11,6 +12,7 @@ use App\Http\Resources\QuestionAnswer\QuestionAnswerCategoryCollection;
 use App\Http\Resources\QuestionAnswer\QuestionAnswerCategoryResource;
 use App\Http\Resources\SuccessResource;
 use App\Services\QuestionAnswer\QuestionAnswerCategoryService;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 /**
@@ -25,10 +27,12 @@ class SoruCevapKategoriController extends Controller
 
     /**
      * SoruCevapKategoriController constructor
+     *
+     * @throws ForbiddenException
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->questionAnswerCategoryService = new QuestionAnswerCategoryService();
+        $this->questionAnswerCategoryService = new QuestionAnswerCategoryService($request);
     }
 
     /**

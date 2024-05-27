@@ -33,7 +33,7 @@ class UrlDefinitionResource extends AbstractResource
             'tab_id'        => Security::encrypt($this->tab_id),
             'recorder'      => EmployeeBasicResource::make($this->whenLoaded('recorder')),
             'menu'          => MenuDefinitionResource::make($this->whenLoaded('menu')),
-            'members'       => EmployeeBasicResource::collection($this->members),
+            'members'       => EmployeeBasicResource::collection($this->whenLoaded('authorizations'))
         ];
     }
 }

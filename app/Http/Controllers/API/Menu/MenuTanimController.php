@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\API\Menu;
 
+use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Menu\IndexMenuDefinitionRequest;
 use App\Http\Resources\Menu\MenuDefinitionCollection;
 use App\Services\Menu\MenuDefinitionService;
+use Illuminate\Http\Request;
 
 /**
  * Class MenuTanimController
@@ -19,10 +21,12 @@ class MenuTanimController extends Controller
 
     /**
      * MenuTanimController constructor
+     *
+     * @throws ForbiddenException
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->menuDefinitionService = new MenuDefinitionService();
+        $this->menuDefinitionService = new MenuDefinitionService($request);
     }
 
     /**

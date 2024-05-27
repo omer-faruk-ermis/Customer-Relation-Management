@@ -4,6 +4,7 @@ namespace App\Models\WebUser;
 
 use App\Filters\WebUser\WebUserFilter;
 use App\Models\AbstractModel;
+use App\Models\MaskableTrait;
 use Illuminate\Database\Query\Builder;
 
 /**
@@ -82,6 +83,8 @@ use Illuminate\Database\Query\Builder;
  */
 class WebUser extends AbstractModel
 {
+    use MaskableTrait;
+
     protected $table = 'kaynaksms.dbo.webuser';
 
     /**

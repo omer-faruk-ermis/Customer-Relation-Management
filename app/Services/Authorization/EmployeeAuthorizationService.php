@@ -2,11 +2,17 @@
 
 namespace App\Services\Authorization;
 
+use App\Enums\Authorization\AuthorizationTypeName;
+use App\Enums\Authorization\SmsManagement;
 use App\Enums\Status;
 use App\Exceptions\Authorization\EmployeeAuthorizationNotFoundException;
+use App\Helpers\CacheOperation;
+use App\Http\Requests\Authorization\StoreEmployeeAuthorizationRequest;
 use App\Models\Authorization\SmsKimlikYetki;
+use App\Services\AbstractService;
 use App\Utils\Security;
-use Illuminate\Http\Request;
+use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -14,22 +20,34 @@ use Illuminate\Support\Facades\Cache;
  *
  * @package App\Service\Authorization
  */
-class EmployeeAuthorizationService
+class EmployeeAuthorizationService extends AbstractService
 {
+    protected array $serviceAuthorizations = [
+        AuthorizationTypeName::SMS_MANAGEMENT => [
+            SmsManagement::AUTHORIZED_GROUPS,
+            SmsManagement::AUTHORIZED_GROUPS_GROUP,
+            SmsManagement::APP_MANAGEMENT,
+            SmsManagement::APP_EMPLOYEE
+        ],
+    ];
+
     /**
-     * @param Request  $request
+     * @param StoreEmployeeAuthorizationRequest  $request
      *
      * @return void
+     * @throws Exception
      */
-    public function store(Request $request): void
+    public function store(StoreEmployeeAuthorizationRequest $request): void
     {
         SmsKimlikYetki::create([
                                    'sms_kimlik' => $request->input('employee_id'),
                                    'url_id'     => $request->input('url_id'),
                                    'durum'      => Status::ACTIVE,
-                                   'kayit_id'   => Cache::get("sms_kimlik_$request->input('netgsmsessionid')"),
+                                   'kayit_id'   => Auth::id(),
                                    'kayit_ip'   => $request->ip(),
                                ]);
+
+        CacheOperation::setSession($request);
     }
 
     /**
@@ -37,6 +55,7 @@ class EmployeeAuthorizationService
      *
      * @return void
      * @throws EmployeeAuthorizationNotFoundException
+     * @throws Exception
      */
     public function destroy(string $id): void
     {
@@ -47,5 +66,7 @@ class EmployeeAuthorizationService
 
         $employeeAuthorization->durum = Status::PASSIVE;
         $employeeAuthorization->update();
+
+        CacheOperation::setSession($this->request);
     }
 }

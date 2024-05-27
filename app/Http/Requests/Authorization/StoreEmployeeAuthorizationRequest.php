@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Authorization;
 
 use App\Http\Requests\AbstractRequest;
-use App\Utils\Security;
 
 class StoreEmployeeAuthorizationRequest extends AbstractRequest
 {
@@ -12,7 +11,7 @@ class StoreEmployeeAuthorizationRequest extends AbstractRequest
     public function rules(): array
     {
         return [
-            'employee_id' => 'required|string',
+            'employee_id' => 'sometimes|string',
             'url_id'      => 'required|string',
         ];
     }

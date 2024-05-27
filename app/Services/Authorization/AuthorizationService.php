@@ -29,13 +29,16 @@ class AuthorizationService
 {
     private array $authorizations;
     private int $id;
+    private int $pluck;
 
     /**
-     * @param int  $id
+     * @param int   $id
+     * @param bool  $pluck
      */
-    public function __construct(int $id)
+    public function __construct(int $id, bool $pluck = false)
     {
         $this->id = $id;
+        $this->pluck = $pluck;
         $this->authorizations = [
             AuthorizationTypeName::SMS_MANAGEMENT    => self::mergeAuthorization($this->smsManagement(), AuthorizationType::SMS_MANAGEMENT),
             AuthorizationTypeName::BLUE_SCREEN       => self::mergeAuthorization($this->blueScreen(), AuthorizationType::BLUE_SCREEN),
@@ -53,22 +56,64 @@ class AuthorizationService
     }
 
     /**
-     * @param array|Collection  $authorizations
-     * @param int               $type
+     * @return string
+     */
+    public function getAuthorizationString(): string
+    {
+        $authorization = ((new AuthorizationService($this->id, true))->getAuthorizations());
+
+        $sms_management_ids = implode(',', $authorization['sms_management']->toArray());
+        $blue_screen_ids = implode(',', $authorization['blue_screen']->toArray());
+        $authorization_ids = implode(',', $authorization['authorization']->toArray());
+        $subscriber_billet_ids = implode(',', $authorization['subscriber_billet']->toArray());
+
+        return $sms_management_ids . '#' . $blue_screen_ids . '#' . $authorization_ids . '#' . $subscriber_billet_ids;
+    }
+
+    /**
+     * @param string|null  $authorizationString
      *
      * @return array
      */
-    protected function mergeAuthorization(array|Collection $authorizations, int $type): array
+    public static function parseAuthorizationString(?string $authorizationString): array
+    {
+        if (is_null($authorizationString)) {
+            return [];
+        }
+
+        $parts = explode('#', $authorizationString);
+
+        return [
+            'sms_management'    => explode(',', $parts[0]),
+            'blue_screen'       => explode(',', $parts[1]),
+            'authorization'     => explode(',', $parts[2]),
+            'subscriber_billet' => explode(',', $parts[3]),
+        ];
+    }
+
+    /**
+     * @param array|Collection  $authorizations
+     * @param int               $type
+     *
+     * @return Collection|array
+     */
+    protected function mergeAuthorization(array|Collection $authorizations, int $type): Collection|array
     {
         $employeeGroups = self::authorizationGroup($type);
 
         if (AuthorizationType::SMS_MANAGEMENT == $type) {
             $employeeGroup = self::authorizationMatch(self::smsManagement($employeeGroups), $authorizations);
+            if ($this->pluck) {
+                return $employeeGroup->pluck('id');
+            }
 
             return $employeeGroup->groupBy('menu')
                                  ->toArray();
         } else if (AuthorizationType::BLUE_SCREEN == $type) {
             $employeeGroup = self::authorizationMatch(self::blueScreen($employeeGroups), $authorizations);
+            if ($this->pluck) {
+                return $employeeGroup->pluck('id');
+            }
 
             return $employeeGroup->groupBy(fn($q) => $q->menu_id)
                                  ->mapWithKeys(fn($group) => [
@@ -77,13 +122,19 @@ class AuthorizationService
                                  ->toArray();
         } else if (AuthorizationType::AUTHORIZATION == $type) {
             $employeeGroup = self::authorizationMatch(self::authorization($employeeGroups), $authorizations);
+            if ($this->pluck) {
+                return $employeeGroup->pluck('id');
+            }
 
             return $employeeGroup->groupBy('authorization')
                                  ->toArray();
         } else if (AuthorizationType::SUBSCRIBER_BILLET == $type) {
             $employeeGroup = self::authorizationMatch(self::subscriberBillet($employeeGroups), $authorizations);
+            if ($this->pluck) {
+                return $employeeGroup->pluck('id');
+            }
 
-            return ['Abone Kütük Yetkileri' => $employeeGroup->toArray()];
+            return $employeeGroup->toArray() ? ['Abone Kütük Yetkileri' => $employeeGroup->toArray()] : [];
         }
     }
 

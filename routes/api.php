@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\API\Authorization\SmsKimlikYetkiController;
 use App\Http\Controllers\API\Code\CodeController;
 use App\Http\Controllers\API\Employee\SmsKimlikController;
 use App\Http\Controllers\API\Employee\SmsKimlikSipController;
 use App\Http\Controllers\API\Employee\SmsKimlikUnitController;
 use App\Http\Controllers\API\Log\LogController;
 use App\Http\Controllers\API\Menu\DetayMenuController;
+use App\Http\Controllers\API\Menu\DetayMenuUserController;
 use App\Http\Controllers\API\Menu\MenuTanimController;
 use App\Http\Controllers\API\QuestionAnswer\SoruCevapController;
 use App\Http\Controllers\API\QuestionAnswer\SoruCevapKategoriController;
@@ -14,10 +16,13 @@ use App\Http\Controllers\API\Reason\SebepIsteneceklerController;
 use App\Http\Controllers\API\Reason\SebeplerController;
 use App\Http\Controllers\API\Sms\SmsController;
 use App\Http\Controllers\API\Staff\PersonelGrupController;
+use App\Http\Controllers\API\Staff\PersonelGrupEslestirController;
+use App\Http\Controllers\API\Staff\PersonelGrupYetkiEslestirController;
 use App\Http\Controllers\API\Subscriber\AboneKutukYetkiController;
 use App\Http\Controllers\API\Token\DocSignature;
 use App\Http\Controllers\API\Url\UrlTanimController;
 use App\Http\Controllers\API\WebPortal\WebPortalYetkiController;
+use App\Http\Controllers\API\WebPortal\WebPortalYetkiIzinController;
 use App\Http\Controllers\API\WebUser\WebUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -37,11 +42,11 @@ Route::group(['middleware' => 'auth_with_token'], function () {
 
     // Log
     Route::get('log', [LogController::class, 'index']);
-    Route::post('update_sebep_log', [LogController::class, 'updateSebepLog']);
+    Route::post('update_reason_log', [LogController::class, 'updateReasonLog']);
 
     // Reason
-    Route::get('sebepler', [SebeplerController::class, 'index']);
-    Route::get('sebep_istenecekler', [SebepIsteneceklerController::class, 'index']);
+    Route::get('reasons', [SebeplerController::class, 'index']);
+    Route::get('reason_wanted', [SebepIsteneceklerController::class, 'index']);
 
     // Employee
     Route::prefix('employee')->group(function () {
@@ -66,7 +71,6 @@ Route::group(['middleware' => 'auth_with_token'], function () {
         Route::get('/{id}', [SmsKimlikController::class, 'show']);
         Route::put('/{id}', [SmsKimlikController::class, 'update']);
         Route::delete('/{id}', [SmsKimlikController::class, 'destroy']);
-
     });
 
     // Question-Answer
@@ -95,16 +99,36 @@ Route::group(['middleware' => 'auth_with_token'], function () {
     Route::prefix('sms_management')->group(function () {
         Route::get('/menu', [MenuTanimController::class, 'menu']);
         Route::get('/page', [UrlTanimController::class, 'page']);
+
+        // DetailMenuUser
+        Route::prefix('/authorization')->group(function () {
+            Route::post('/', [SmsKimlikYetkiController::class, 'store']);
+            Route::delete('/{id}', [SmsKimlikYetkiController::class, 'destroy']);
+        });
     });
 
     // DetailMenu // BlueScreen type=2
     Route::prefix('blue_screen')->group(function () {
         Route::get('/menu', [DetayMenuController::class, 'menu']);
         Route::get('/page', [DetayMenuController::class, 'page']);
+
+        // DetailMenuUser
+        Route::prefix('/authorization')->group(function () {
+            Route::post('/', [DetayMenuUserController::class, 'store']);
+            Route::delete('/{id}', [DetayMenuUserController::class, 'destroy']);
+        });
     });
 
     // WebPortalAuthorization // Authorization type=3
-    Route::get('web_portal_authorization', [WebPortalYetkiController::class, 'index']);
+    Route::prefix('/web_portal_authorization')->group(function () {
+        Route::get('/', [WebPortalYetkiController::class, 'index']);
+
+        // WebPortalAuthorizationPermission
+        Route::prefix('/authorization')->group(function () {
+            Route::post('/', [WebPortalYetkiIzinController::class, 'store']);
+            Route::delete('/{id}', [WebPortalYetkiIzinController::class, 'destroy']);
+        });
+    });
 
     // SubscriberBilletAuthorization // SubscriberBillet type=4
     Route::get('subscriber_billet_authorization', [AboneKutukYetkiController::class, 'index']);
@@ -115,6 +139,18 @@ Route::group(['middleware' => 'auth_with_token'], function () {
         Route::post('/', [PersonelGrupController::class, 'store']);
         Route::put('/{id}', [PersonelGrupController::class, 'update']);
         Route::delete('/{id}', [PersonelGrupController::class, 'destroy']);
+
+        // StaffGroupMatch
+        Route::prefix('/match')->group(function () {
+            Route::post('/', [PersonelGrupEslestirController::class, 'store']);
+            Route::delete('/{id}', [PersonelGrupEslestirController::class, 'destroy']);
+
+            // StaffGroupAuthorizationMatch
+            Route::prefix('/authorization')->group(function () {
+                Route::post('/', [PersonelGrupYetkiEslestirController::class, 'store']);
+                Route::delete('/{id}', [PersonelGrupYetkiEslestirController::class, 'destroy']);
+            });
+        });
     });
 });
 

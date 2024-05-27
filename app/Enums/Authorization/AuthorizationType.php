@@ -2,7 +2,10 @@
 
 namespace App\Enums\Authorization;
 
-class AuthorizationType {
+use App\Enums\AbstractEnum;
+
+class AuthorizationType extends AbstractEnum
+{
     const SMS_MANAGEMENT = 1;
     const BLUE_SCREEN = 2;
     const AUTHORIZATION = 3;

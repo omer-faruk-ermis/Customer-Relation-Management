@@ -29,6 +29,18 @@ class SmsKimlikYetki extends AbstractModel
 
     use RecorderTrait;
 
+    protected $fillable = [
+        'sms_kimlik',
+        'url_id',
+        'kayit_id',
+        'kayit_ip'
+    ];
+
+    protected $casts = [
+        'url_id'     => 'integer',
+        'sms_kimlik' => 'integer',
+    ];
+
     /**
      * @return hasOne
      */

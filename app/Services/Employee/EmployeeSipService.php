@@ -2,11 +2,14 @@
 
 namespace App\Services\Employee;
 
+use App\Enums\Authorization\AuthorizationTypeName;
+use App\Enums\Authorization\SmsManagement;
 use App\Enums\NumericalConstant;
 use App\Exceptions\Employee\EmployeeSipNotFoundException;
 use App\Http\Requests\Employee\IndexEmployeeSipRequest;
 use App\Http\Requests\Employee\StoreEmployeeSipRequest;
 use App\Models\SmsKimlik\SmsKimlikSip;
+use App\Services\AbstractService;
 use App\Utils\Security;
 use Exception;
 use Illuminate\Support\Collection;
@@ -16,8 +19,14 @@ use Illuminate\Support\Collection;
  *
  * @package App\Service\Employee
  */
-class EmployeeSipService
+class EmployeeSipService extends AbstractService
 {
+    protected array $serviceAuthorizations = [
+        AuthorizationTypeName::SMS_MANAGEMENT => [
+            SmsManagement::APP_EMPLOYEE
+        ],
+    ];
+
     /**
      * @param IndexEmployeeSipRequest  $request
      *
@@ -51,11 +60,11 @@ class EmployeeSipService
      */
     public function destroy(string $id): void
     {
-        $smsKimlikSip = SmsKimlikSip::find(Security::decrypt($id));
-        if (empty($smsKimlikSip)) {
+        $employeeSip = SmsKimlikSip::find(Security::decrypt($id));
+        if (empty($employeeSip)) {
             throw new EmployeeSipNotFoundException();
         }
 
-        $smsKimlikSip->delete();
+        $employeeSip->delete();
     }
 }

@@ -17,13 +17,13 @@ abstract class AbstractCollection extends ResourceCollection
     /**
      * AbstractCollection constructor.
      *
-     * @param mixed       $resource
-     * @param string|null $message
-     * @param int         $statusCode
+     * @param mixed        $resource
+     * @param string|null  $message
+     * @param int          $statusCode
      */
     public function __construct($resource, ?string $message = null, int $statusCode = Response::HTTP_OK)
     {
-            parent::__construct($resource);
+        parent::__construct($resource);
 
         $this->message = $message;
         $this->statusCode = $statusCode;

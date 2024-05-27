@@ -2,12 +2,15 @@
 
 namespace App\Services\QuestionAnswer;
 
+use App\Enums\Authorization\AuthorizationTypeName;
+use App\Enums\Authorization\SmsManagement;
 use App\Enums\Status;
 use App\Exceptions\QuestionAnswer\QuestionAnswerCategoryNotFoundException;
 use App\Http\Requests\QuestionAnswerCategory\IndexQuestionAnswerCategoryRequest;
 use App\Http\Requests\QuestionAnswerCategory\StoreQuestionAnswerCategoryRequest;
 use App\Http\Requests\QuestionAnswerCategory\UpdateQuestionAnswerCategoryRequest;
 use App\Models\QuestionAnswer\SoruCevapKategori;
+use App\Services\AbstractService;
 use App\Utils\Security;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -17,8 +20,14 @@ use Illuminate\Database\Eloquent\Collection;
  *
  * @package App\Service\QuestionAnswer
  */
-class QuestionAnswerCategoryService
+class QuestionAnswerCategoryService extends AbstractService
 {
+    protected array $serviceAuthorizations = [
+        AuthorizationTypeName::SMS_MANAGEMENT => [
+            SmsManagement::MANAGEMENT_READY_QUESTION_ANSWERS,
+        ],
+    ];
+
     /**
      * @param IndexQuestionAnswerCategoryRequest  $request
      *

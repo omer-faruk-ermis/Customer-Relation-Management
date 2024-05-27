@@ -2,25 +2,32 @@
 
 namespace App\Services\Token;
 
+use App\Enums\Authorization\AuthorizationTypeName;
+use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
-use App\Http\Controllers\Controller;
+use App\Services\AbstractService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
-class DocSignatureService extends Controller
+class DocSignatureService extends AbstractService
 {
+    protected array $serviceAuthorizations = [
+        AuthorizationTypeName::SMS_MANAGEMENT => [
+            SmsManagement::NEW_ANNOUNCEMENTS,
+        ]
+    ];
+
     /**
-     * @param Request $request
+     * @param Request  $request
+     *
      * @return array
      */
     public static function getSignatureToken(Request $request): array
     {
-        $netgsmsessionid = $request->input('netgsmsessionid');
-        $sms_kimlik = Cache::get("sms_kimlik_$netgsmsessionid");
-
         $value = array(
-            'id'       => $sms_kimlik['id'],
-            'ad_soyad' => $sms_kimlik['ad_soyad'],
+            'id'       => Auth::id(),
+            'ad_soyad' => Auth::user()->ad_soyad,
             'time'     => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT)
         );
         $value = json_encode($value, JSON_UNESCAPED_UNICODE);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\QuestionAnswer;
 
+use App\Exceptions\ForbiddenException;
 use App\Exceptions\QuestionAnswer\QuestionAnswerNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\QuestionAnswer\IndexQuestionAnswerRequest;
@@ -12,6 +13,7 @@ use App\Http\Resources\QuestionAnswer\QuestionAnswerResource;
 use App\Http\Resources\SuccessResource;
 use App\Services\QuestionAnswer\QuestionAnswerService;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 /**
@@ -26,10 +28,12 @@ class SoruCevapController extends Controller
 
     /**
      * SoruCevapController constructor
+     *
+     * @throws ForbiddenException
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->questionAnswerService = new QuestionAnswerService();
+        $this->questionAnswerService = new QuestionAnswerService($request);
     }
 
     /**

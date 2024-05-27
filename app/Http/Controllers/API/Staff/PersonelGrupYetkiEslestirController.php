@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\API\Staff;
 
+use App\Exceptions\ForbiddenException;
 use App\Exceptions\Staff\StaffGroupAuthorizationMatchNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Staff\StoreStaffGroupRequest;
+use App\Http\Requests\Staff\StoreStaffGroupAuthorizationMatchRequest;
 use App\Http\Resources\Staff\StaffGroupAuthorizationMatchResource;
 use App\Http\Resources\SuccessResource;
 use App\Services\Staff\StaffGroupAuthorizationMatchService;
+use Illuminate\Http\Request;
 
 /**
  * Class PersonelGrupYetkiEslestirController
@@ -21,18 +23,20 @@ class PersonelGrupYetkiEslestirController extends Controller
 
     /**
      * PersonelGrupYetkiEslestirController constructor
+     *
+     * @throws ForbiddenException
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->staffGroupAuthorizationMatchService = new StaffGroupAuthorizationMatchService();
+        $this->staffGroupAuthorizationMatchService = new StaffGroupAuthorizationMatchService($request);
     }
 
     /**
-     * @param StoreStaffGroupRequest  $request
+     * @param StoreStaffGroupAuthorizationMatchRequest  $request
      *
      * @return StaffGroupAuthorizationMatchResource
      */
-    public function store(StoreStaffGroupRequest $request): StaffGroupAuthorizationMatchResource
+    public function store(StoreStaffGroupAuthorizationMatchRequest $request): StaffGroupAuthorizationMatchResource
     {
         $staffGroupAuthorizationMatch = $this->staffGroupAuthorizationMatchService->store($request);
 

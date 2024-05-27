@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Url;
 
+use App\Exceptions\ForbiddenException;
 use App\Exceptions\Url\UrlDefinitionNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Url\IndexUrlDefinitionRequest;
@@ -12,6 +13,7 @@ use App\Http\Resources\Url\UrlDefinitionCollection;
 use App\Http\Resources\Url\UrlDefinitionResource;
 use App\Services\Url\UrlDefinitionService;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 /**
@@ -26,10 +28,12 @@ class UrlTanimController extends Controller
 
     /**
      * UrlTanimController constructor
+     *
+     * @throws ForbiddenException
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->urlDefinitionService = new UrlDefinitionService();
+        $this->urlDefinitionService = new UrlDefinitionService($request);
     }
 
     /**

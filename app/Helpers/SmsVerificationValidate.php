@@ -24,7 +24,7 @@ class SmsVerificationValidate
     public static function handle(Request $request): void
     {
         $token = $request->input('netgsmsessionid');
-        CacheClear::imageClear($token);
+        CacheOperation::imageClear($token);
 
         if (!Cache::has("verification_code_info_$token")) {
             throw new SessionTimeOutException();

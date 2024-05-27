@@ -2,6 +2,8 @@
 
 namespace App\Services\QuestionAnswer;
 
+use App\Enums\Authorization\AuthorizationTypeName;
+use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
 use App\Enums\NumericalConstant;
 use App\Enums\Status;
@@ -11,6 +13,7 @@ use App\Http\Requests\QuestionAnswer\StoreQuestionAnswerRequest;
 use App\Http\Requests\QuestionAnswer\UpdateQuestionAnswerRequest;
 use App\Models\QuestionAnswer\SoruCevap;
 use App\Models\QuestionAnswer\SoruCevapKategori;
+use App\Services\AbstractService;
 use App\Utils\Security;
 use Illuminate\Support\Facades\DB;
 
@@ -19,8 +22,14 @@ use Illuminate\Support\Facades\DB;
  *
  * @package App\Service\QuestionAnswer
  */
-class QuestionAnswerService
+class QuestionAnswerService extends AbstractService
 {
+    protected array $serviceAuthorizations = [
+        AuthorizationTypeName::SMS_MANAGEMENT => [
+            SmsManagement::MANAGEMENT_READY_QUESTION_ANSWERS,
+        ],
+    ];
+
     /**
      * @param IndexQuestionAnswerRequest  $request
      *

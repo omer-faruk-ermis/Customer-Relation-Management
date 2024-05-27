@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-class Model
+class Model extends AbstractEnum
 {
     const LOG = 'SmsKimlikLog';
     const QUESTION_ANSWER = 'SoruCevap';

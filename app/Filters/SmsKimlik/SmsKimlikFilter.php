@@ -20,6 +20,7 @@ class SmsKimlikFilter extends AbstractFilter
             'username'         => Username::class,
             'email_password'   => EmailPassword::class,
             'home_phone'       => HomePhone::class,
+            'state'            => State::class,
         ];
     }
 }

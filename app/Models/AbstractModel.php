@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\DefaultConstant;
 use DateTimeInterface;
 use Eloquent;
-use Str;
 
 /**
  * Abstract class AbstractModel

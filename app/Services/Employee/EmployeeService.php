@@ -2,11 +2,16 @@
 
 namespace App\Services\Employee;
 
+use App\Enums\Authorization\AuthorizationTypeName;
+use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
+use App\Enums\Method;
 use App\Enums\NumericalConstant;
 use App\Enums\Status;
 use App\Exceptions\Employee\EmployeeNotFoundException;
 use App\Exceptions\Employee\HaveAlreadyEmployeeException;
+use App\Exceptions\ForbiddenException;
+use App\Http\Requests\Authorization\StoreEmployeeAuthorizationRequest;
 use App\Http\Requests\Employee\BasicEmployeeRequest;
 use App\Http\Requests\Employee\ChangePasswordEmployeeRequest;
 use App\Http\Requests\Employee\IndexEmployeeRequest;
@@ -14,6 +19,8 @@ use App\Http\Requests\Employee\StoreEmployeeRequest;
 use App\Http\Requests\Employee\StoreEmployeeSipRequest;
 use App\Http\Requests\Employee\UpdateEmployeeRequest;
 use App\Models\SmsKimlik\SmsKimlik;
+use App\Services\AbstractService;
+use App\Services\Authorization\EmployeeAuthorizationService;
 use App\Services\Log\LogService;
 use App\Utils\Security;
 use Exception;
@@ -26,8 +33,16 @@ use Illuminate\Support\Collection;
  *
  * @package App\Service\Employee
  */
-class EmployeeService
+class EmployeeService extends AbstractService
 {
+    protected array $serviceAuthorizations = [
+        AuthorizationTypeName::SMS_MANAGEMENT => [
+            SmsManagement::APP_EMPLOYEE
+        ],
+    ];
+
+    protected array $publicMethods = [Method::INDEX, Method::BASIC];
+
     /**
      * @param IndexEmployeeRequest  $request
      *
@@ -37,7 +52,6 @@ class EmployeeService
     {
         return SmsKimlik::with(['unit', 'sip'])
                         ->filter($request->all())
-                        ->where('durum', '=', Status::ACTIVE)
                         ->paginate(DefaultConstant::PAGINATE);
     }
 
@@ -49,6 +63,7 @@ class EmployeeService
     public function basic(BasicEmployeeRequest $request): Collection
     {
         return SmsKimlik::select(['id', 'ad_soyad'])
+                        ->filter($request->all())
                         ->limit(DefaultConstant::SEARCH_LIST_LIMIT)
                         ->get();
     }
@@ -57,10 +72,11 @@ class EmployeeService
      * @param Request  $request
      *
      * @return mixed
+     * @throws ForbiddenException
      */
     public function log(Request $request): mixed
     {
-        return (new LogService())->index($request);
+        return (new LogService($request))->index($request);
     }
 
     /**
@@ -71,12 +87,12 @@ class EmployeeService
      */
     public function show(string $id): Model
     {
-        $smsKimlik = SmsKimlik::with(['unit', 'sip'])->find(Security::decrypt($id));
-        if (empty($smsKimlik)) {
+        $employee = SmsKimlik::with(['unit', 'sip'])->find(Security::decrypt($id));
+        if (empty($employee)) {
             throw new EmployeeNotFoundException();
         }
 
-        return $smsKimlik;
+        return $employee;
     }
 
     /**
@@ -87,38 +103,32 @@ class EmployeeService
      */
     public function store(StoreEmployeeRequest $request): SmsKimlik
     {
-        $sms_kimlik =
-            SmsKimlik::whereNotNull('sms_kimlik_email')
-                     ->where('sms_kimlik_email', '=', $request->input('email'))
-                     ->where('durum', '=', Status::ACTIVE)
-                     ->first();
+        $employee = SmsKimlik::whereNotNull('sms_kimlik_email')
+                             ->where('sms_kimlik_email', '=', $request->input('email'))
+                             ->where('durum', '=', Status::ACTIVE)
+                             ->first();
 
-        if (!empty($sms_kimlik)) {
+        if (!empty($employee)) {
             throw new HaveAlreadyEmployeeException();
         }
 
-        $newSmsKimlik = SmsKimlik::create([
-                                              'ad_soyad'                  => $request->input('full_name'),
-                                              'sifre'                     => $request->input('password'),
-                                              'loginpage'                 => $request->input('login_permission'),
-                                              'birim_id'                  => $request->input('unit'),
-                                              'para_limit'                => $request->input('currency_limit'),
-                                              'ceptel'                    => $request->input('mobile_phone'),
-                                              'sms_kimlik_email'          => $request->input('email'),
-                                              'sms_kimlik_email_username' => $request->input('username'),
-                                              'sms_kimlik_email_password' => $request->input('email_password'),
-                                              'evtel'                     => $request->input('home_phone')
-                                          ]);
+        $newEmployee = SmsKimlik::create([
+                                             'ad_soyad'                  => $request->input('full_name'),
+                                             'sifre'                     => $request->input('password'),
+                                             'loginpage'                 => $request->input('login_permission'),
+                                             'birim_id'                  => $request->input('unit'),
+                                             'para_limit'                => $request->input('currency_limit'),
+                                             'ceptel'                    => $request->input('mobile_phone'),
+                                             'sms_kimlik_email'          => $request->input('email'),
+                                             'sms_kimlik_email_username' => $request->input('username'),
+                                             'sms_kimlik_email_password' => $request->input('email_password'),
+                                             'evtel'                     => $request->input('home_phone')
+                                         ]);
 
-        $sipRequest = new StoreEmployeeSipRequest([
-                                                      'sip'              => $request->input('sip'),
-                                                      'employee_id'      => $newSmsKimlik->id,
-                                                      'not_send_message' => $request->input('not_send_message', NumericalConstant::ZERO)
-                                                  ]);
+        $this->storeEmployeeSip($request, $newEmployee->id);
+        $this->storeEmployeeAuthorization($request, $newEmployee->id);
 
-        (new EmployeeSipService)->store($sipRequest);
-
-        return $newSmsKimlik;
+        return $newEmployee;
     }
 
     /**
@@ -130,24 +140,24 @@ class EmployeeService
      */
     public function update(UpdateEmployeeRequest $request, string $id): SmsKimlik
     {
-        $smsKimlik = SmsKimlik::find(Security::decrypt($id));
-        if (empty($smsKimlik)) {
+        $employee = SmsKimlik::find(Security::decrypt($id));
+        if (empty($employee)) {
             throw new EmployeeNotFoundException();
         }
 
-        $smsKimlik->update([
-                               'ad_soyad'                  => $request->input('full_name'),
-                               'loginpage'                 => $request->input('login_permission'),
-                               'birim_id'                  => $request->input('unit'),
-                               'para_limit'                => $request->input('currency_limit'),
-                               'ceptel'                    => $request->input('mobile_phone'),
-                               'sms_kimlik_email'          => $request->input('email'),
-                               'sms_kimlik_email_username' => $request->input('username'),
-                               'sms_kimlik_email_password' => $request->input('email_password'),
-                               'evtel'                     => $request->input('home_phone'),
-                           ]);
+        $employee->update([
+                              'ad_soyad'                  => $request->input('full_name'),
+                              'loginpage'                 => $request->input('login_permission'),
+                              'birim_id'                  => $request->input('unit'),
+                              'para_limit'                => $request->input('currency_limit'),
+                              'ceptel'                    => $request->input('mobile_phone'),
+                              'sms_kimlik_email'          => $request->input('email'),
+                              'sms_kimlik_email_username' => $request->input('username'),
+                              'sms_kimlik_email_password' => $request->input('email_password'),
+                              'evtel'                     => $request->input('home_phone'),
+                          ]);
 
-        return $smsKimlik;
+        return $employee;
     }
 
     /**
@@ -159,12 +169,12 @@ class EmployeeService
      */
     public function changePassword(ChangePasswordEmployeeRequest $request, string $id): void
     {
-        $smsKimlik = SmsKimlik::find(Security::decrypt($id));
-        if (empty($smsKimlik)) {
+        $employee = SmsKimlik::find(Security::decrypt($id));
+        if (empty($employee)) {
             throw new EmployeeNotFoundException();
         }
 
-        $smsKimlik->update(['sifre' => $request->input('new_password')]);
+        $employee->update(['sifre' => $request->input('new_password')]);
     }
 
     /**
@@ -175,12 +185,50 @@ class EmployeeService
      */
     public function destroy(string $id): void
     {
-        $smsKimlik = SmsKimlik::find(Security::decrypt($id));
-        if (empty($smsKimlik)) {
+        $employee = SmsKimlik::find(Security::decrypt($id));
+        if (empty($employee)) {
             throw new EmployeeNotFoundException();
         }
 
-        $smsKimlik->durum = Status::PASSIVE;
-        $smsKimlik->update();
+        $employee->durum = Status::PASSIVE;
+        $employee->update();
+    }
+
+    /**
+     * @param StoreEmployeeRequest  $request
+     * @param int                   $employeeId
+     *
+     * @return void
+     * @throws Exception
+     */
+    private function storeEmployeeSip(StoreEmployeeRequest $request, int $employeeId): void
+    {
+        $sipRequest = new StoreEmployeeSipRequest([
+                                                      'sip'              => $request->input('sip'),
+                                                      'employee_id'      => $employeeId,
+                                                      'not_send_message' => $request->input('not_send_message', NumericalConstant::ZERO),
+                                                      'url'              => $request->input('url')
+                                                  ]);
+
+        (new EmployeeSipService($sipRequest))->store($sipRequest);
+    }
+
+    /**
+     * @param StoreEmployeeRequest  $request
+     * @param int                   $employeeId
+     *
+     * @return void
+     * @throws ForbiddenException
+     */
+    private function storeEmployeeAuthorization(StoreEmployeeRequest $request, int $employeeId): void
+    {
+        $authorizationRequest = new StoreEmployeeAuthorizationRequest([
+                                                                          'url_id'          => DefaultConstant::AUTHORIZATION,
+                                                                          'employee_id'     => $employeeId,
+                                                                          'netgsmsessionid' => $request->input('netgsmsessionid'),
+                                                                          'url'              => $request->input('url')
+                                                                      ]);
+
+        (new EmployeeAuthorizationService($authorizationRequest))->store($authorizationRequest);
     }
 }

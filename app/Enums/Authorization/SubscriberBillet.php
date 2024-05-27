@@ -2,7 +2,9 @@
 
 namespace App\Enums\Authorization;
 
-class SubscriberBillet
+use App\Enums\AbstractEnum;
+
+class SubscriberBillet extends AbstractEnum
 {
     const SHOW_IDENTITY_NO = 1;
     const SHOW_PHONE_NO = 2;

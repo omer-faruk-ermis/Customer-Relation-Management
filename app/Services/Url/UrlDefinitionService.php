@@ -2,6 +2,8 @@
 
 namespace App\Services\Url;
 
+use App\Enums\Authorization\AuthorizationTypeName;
+use App\Enums\Authorization\SmsManagement;
 use App\Enums\NumericalConstant;
 use App\Enums\Status;
 use App\Exceptions\Url\HaveAlreadyUrlDefinitionException;
@@ -9,18 +11,28 @@ use App\Exceptions\Url\UrlDefinitionNotFoundException;
 use App\Http\Requests\Url\StoreUrlDefinitionRequest;
 use App\Http\Requests\Url\UpdateUrlDefinitionRequest;
 use App\Models\Url\UrlTanim;
+use App\Services\AbstractService;
 use App\Utils\Security;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class UrlDefinitionService
  *
  * @package App\Service\Url
  */
-class UrlDefinitionService
+class UrlDefinitionService extends AbstractService
 {
+    protected array $serviceAuthorizations = [
+        AuthorizationTypeName::SMS_MANAGEMENT => [
+            SmsManagement::AUTHORIZED_GROUPS,
+            SmsManagement::AUTHORIZED_GROUPS_GROUP,
+            SmsManagement::APP_MANAGEMENT,
+            SmsManagement::APP_EMPLOYEE
+        ]
+    ];
+
     /**
      * @param Request  $request
      *
@@ -28,7 +40,7 @@ class UrlDefinitionService
      */
     public function page(Request $request): Collection
     {
-        return UrlTanim::with(['recorder', 'menu'])
+        return UrlTanim::with(['recorder', 'menu','authorizations'])
                        ->where('durum', '=', Status::ACTIVE)
                        ->get();
     }
@@ -58,7 +70,7 @@ class UrlDefinitionService
                                     'durum'       => Status::ACTIVE,
                                     'arkaplan_id' => $request->input('background_id'),
                                     'tab_id'      => NumericalConstant::ZERO,
-                                    'kayit_id'    => Cache::get("sms_kimlik_$request->input('netgsmsessionid')"),
+                                    'kayit_id'    => Auth::id(),
                                     'kayit_ip'    => $request->ip(),
                                 ]);
     }

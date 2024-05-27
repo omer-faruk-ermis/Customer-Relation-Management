@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\API\Authorization;
 
 use App\Exceptions\Authorization\EmployeeAuthorizationNotFoundException;
+use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Authorization\StoreEmployeeAuthorizationRequest;
 use App\Http\Resources\SuccessResource;
 use App\Services\Authorization\EmployeeAuthorizationService;
+use Illuminate\Http\Request;
 
 /**
  * Class SmsKimlikYetkiController
@@ -20,10 +22,12 @@ class SmsKimlikYetkiController extends Controller
 
     /**
      * SmsKimlikYetkiController constructor
+     *
+     * @throws ForbiddenException
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->employeeAuthorizationService = new EmployeeAuthorizationService();
+        $this->employeeAuthorizationService = new EmployeeAuthorizationService($request);
     }
 
     /**

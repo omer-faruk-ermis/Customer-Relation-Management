@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\API\WebUser;
 
+use App\Exceptions\ForbiddenException;
 use App\Exceptions\WebUser\WebUserNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\WebUser\IndexWebUserRequest;
 use App\Http\Resources\WebUser\WebUserCollection;
 use App\Http\Resources\WebUser\WebUserResource;
 use App\Services\WebUser\WebUserService;
+use Illuminate\Http\Request;
 
 /**
  * Class WebUserController
@@ -21,10 +23,12 @@ class WebUserController extends Controller
 
     /**
      * WebUserController constructor
+     *
+     * @throws ForbiddenException
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->webUserService = new WebUserService();
+        $this->webUserService = new WebUserService($request);
     }
 
     /**

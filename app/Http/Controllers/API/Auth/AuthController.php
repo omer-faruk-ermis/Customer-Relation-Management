@@ -49,6 +49,7 @@ class AuthController extends Controller
      * @param LoginVerificationRequest  $request
      *
      * @return EmployeeResource
+     * @throws Exception
      */
     public function loginVerification(LoginVerificationRequest $request): EmployeeResource
     {

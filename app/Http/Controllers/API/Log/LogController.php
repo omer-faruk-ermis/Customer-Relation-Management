@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Log;
 
+use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Log\IndexLogRequest;
 use App\Http\Requests\Reason\UpdateReasonRequest;
@@ -9,6 +10,7 @@ use App\Http\Resources\Log\ReasonLogResource;
 use App\Http\Resources\PaginationResource;
 use App\Services\Log\LogService;
 use Exception;
+use Illuminate\Http\Request;
 
 /**
  * Class LogController
@@ -22,10 +24,12 @@ class LogController extends Controller
 
     /**
      * LogController constructor
-     */
-    public function __construct()
+     *
+     * @throws ForbiddenException
+*/
+    public function __construct(Request $request)
     {
-        $this->logService = new LogService();
+        $this->logService = new LogService($request);
     }
 
     /**

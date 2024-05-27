@@ -2,12 +2,10 @@
 
 namespace App\Services\Auth;
 
-use App\Builder\SmsKimlikBuilder;
-use App\Enums\DefaultConstant;
 use App\Enums\Status;
 use App\Exceptions\Auth\AuthInformationException;
 use App\Exceptions\Auth\OldPasswordException;
-use App\Helpers\CacheClear;
+use App\Helpers\CacheOperation;
 use App\Helpers\CodeValidate;
 use App\Helpers\PasswordValidate;
 use App\Helpers\TokenValidate;
@@ -17,9 +15,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\LoginVerificationRequest;
 use App\Http\Requests\Auth\NewPasswordRequest;
 use App\Http\Requests\Sms\SmsVerificationRequest;
-use App\Models\Menu\MenuTanim;
 use App\Models\SmsKimlik\SmsKimlik;
-use App\Services\Menu\MenuDefinitionService;
 use App\Services\Sms\SmsService;
 use Exception;
 use Illuminate\Http\Request;
@@ -46,17 +42,16 @@ class AuthService
     {
         CodeValidate::handle($request);
 
-        $sms_kimlik =
-            SmsKimlik::with(['sip', 'unit'])
-                ->whereNotNull('sms_kimlik_email')
-                ->whereNotNull('sifre')
-                ->whereNotNull('ceptel')
-                ->where('sms_kimlik_email', '=', $request->input('email'))
-                ->where('loginpage', '=', Status::ACTIVE)
-                ->where('durum', '=', Status::ACTIVE)
-                ->where('sifre', '=', $request->input('password'))
-                ->latest('id')
-                ->first();
+        $sms_kimlik = SmsKimlik::with(['sip', 'unit'])
+                               ->whereNotNull('sms_kimlik_email')
+                               ->whereNotNull('sifre')
+                               ->whereNotNull('ceptel')
+                               ->where('sms_kimlik_email', '=', $request->input('email'))
+                               ->where('loginpage', '=', Status::ACTIVE)
+                               ->where('durum', '=', Status::ACTIVE)
+                               ->where('sifre', '=', $request->input('password'))
+                               ->latest('id')
+                               ->first();
 
         if (empty($sms_kimlik)) {
             throw new AuthInformationException();
@@ -73,18 +68,12 @@ class AuthService
      * @param LoginVerificationRequest  $request
      *
      * @return SmsKimlik
+     * @throws Exception
      */
     public function loginVerification(LoginVerificationRequest $request): SmsKimlik
     {
-        $netgsmsessionid = $request->input('netgsmsessionid');
-        $sms_kimlik = SmsKimlikBuilder::handle(Cache::get("sms_kimlik_$netgsmsessionid"));
-
-        Redis::connection('prod')->set("yonetimsession:$netgsmsessionid", json_encode(Arr::except($sms_kimlik, ['unit','sip'])));
-        Redis::connection('prod')->command('EXPIRE', ["yonetimsession:$netgsmsessionid", DefaultConstant::CACHE_ONE_DAY]);
-
-        return $sms_kimlik->load('sip', 'unit');
+        return CacheOperation::setSession($request)->load('sip', 'unit');
     }
-
 
     /**
      * @param ForgotPasswordRequest  $request
@@ -96,13 +85,12 @@ class AuthService
     {
         CodeValidate::handle($request);
 
-        $sms_kimlik =
-            SmsKimlik::whereNotNull('sms_kimlik_email')
-                ->whereNotNull('ceptel')
-                ->whereNotNull('sifre')
-                ->where('sms_kimlik_email', '=', $request->input('email'))
-                ->where('durum', '=', Status::ACTIVE)
-                ->first();
+        $sms_kimlik = SmsKimlik::whereNotNull('sms_kimlik_email')
+                               ->whereNotNull('ceptel')
+                               ->whereNotNull('sifre')
+                               ->where('sms_kimlik_email', '=', $request->input('email'))
+                               ->where('durum', '=', Status::ACTIVE)
+                               ->first();
 
         if (empty($sms_kimlik)) {
             throw new AuthInformationException();
@@ -126,9 +114,9 @@ class AuthService
         PasswordValidate::handle($request);
 
         $smsRequest = new SmsVerificationRequest([
-            'netgsmsessionid' => $request->input('netgsmsessionid'),
-            'code'            => $request->input('code'),
-        ]);
+                                                     'netgsmsessionid' => $request->input('netgsmsessionid'),
+                                                     'code'            => $request->input('code'),
+                                                 ]);
         SmsService::smsVerification($smsRequest);
 
         $token = $request->input('netgsmsessionid');
@@ -151,14 +139,11 @@ class AuthService
     {
         PasswordValidate::handle($request);
 
-        $token = $request->input('netgsmsessionid');
-        $sms_kimlik = Cache::get("sms_kimlik_$token");
-        if (empty($sms_kimlik) && (Arr::get($sms_kimlik,'sifre') !== $request->input('old_password'))) {
+        if (empty(Auth::user()) && (Arr::get(Auth::user(), 'sifre') !== $request->input('old_password'))) {
             throw new OldPasswordException();
         }
-        Arr::except($sms_kimlik, 'netgsmsessionid');
-
-        $sms_kimlik->update(['sifre' => $request->input('new_password')]);
+        Arr::except(Auth::user(), 'netgsmsessionid');
+        Auth::user()->update(['sifre' => $request->input('new_password')]);
     }
 
     /**
@@ -175,8 +160,8 @@ class AuthService
 
         Session::flush();
         Cache::forget("sms_kimlik_$token");
-        CacheClear::verifierCodeClear($token);
+        CacheOperation::verifierCodeClear($token);
         Redis::connection('prod')->command('DEL', ["yonetimsession:$token"]);
-        Auth::logout();;
+        Auth::logout();
     }
 }

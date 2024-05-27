@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\API\Subscriber;
 
+use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Subscriber\IndexSubscriberBilletAuthorizationRequest;
 use App\Http\Resources\Subscriber\SubscriberBilletAuthorizationCollection;
 use App\Services\Authorization\SubscriberBilletAuthorizationService;
+use Illuminate\Http\Request;
 
 /**
  * Class AboneKutukYetkiController
@@ -19,10 +21,12 @@ class AboneKutukYetkiController extends Controller
 
     /**
      * AboneKutukYetkiController constructor
+     *
+     * @throws ForbiddenException
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->subscriberBilletAuthorizationService = new SubscriberBilletAuthorizationService();
+        $this->subscriberBilletAuthorizationService = new SubscriberBilletAuthorizationService($request);
     }
 
     /**

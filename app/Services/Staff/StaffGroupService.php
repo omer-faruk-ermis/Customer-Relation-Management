@@ -2,12 +2,15 @@
 
 namespace App\Services\Staff;
 
+use App\Enums\Authorization\AuthorizationTypeName;
+use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
 use App\Enums\Status;
 use App\Exceptions\Staff\StaffGroupNotFoundException;
 use App\Http\Requests\Staff\StoreStaffGroupRequest;
 use App\Http\Requests\Staff\UpdateStaffGroupRequest;
 use App\Models\Staff\PersonelGruplari;
+use App\Services\AbstractService;
 use App\Utils\Security;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -17,8 +20,17 @@ use Illuminate\Support\Collection;
  *
  * @package App\Service\Staff
  */
-class StaffGroupService
+class StaffGroupService extends AbstractService
 {
+    protected array $serviceAuthorizations = [
+        AuthorizationTypeName::SMS_MANAGEMENT => [
+            SmsManagement::AUTHORIZED_GROUPS,
+            SmsManagement::AUTHORIZED_GROUPS_GROUP,
+            SmsManagement::APP_MANAGEMENT,
+            SmsManagement::APP_EMPLOYEE
+        ]
+    ];
+
     /**
      * @param Request  $request
      *

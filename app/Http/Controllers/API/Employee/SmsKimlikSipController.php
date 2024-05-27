@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Employee;
 
 use App\Exceptions\Employee\EmployeeSipNotFoundException;
+use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Employee\IndexEmployeeSipRequest;
 use App\Http\Requests\Employee\StoreEmployeeSipRequest;
@@ -11,6 +12,7 @@ use App\Http\Resources\Employee\EmployeeSipResource;
 use App\Http\Resources\SuccessResource;
 use App\Services\Employee\EmployeeSipService;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 /**
@@ -25,10 +27,12 @@ class SmsKimlikSipController extends Controller
 
     /**
      * SmsKimlikSipController constructor
+     *
+     * @throws ForbiddenException
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->employeeSipService = new EmployeeSipService();
+        $this->employeeSipService = new EmployeeSipService($request);
     }
 
     /**

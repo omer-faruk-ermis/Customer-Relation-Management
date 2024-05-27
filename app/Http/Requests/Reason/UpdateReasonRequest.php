@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Reason;
 
 use App\Http\Requests\AbstractRequest;
-use App\Utils\Security;
 
 class UpdateReasonRequest extends AbstractRequest
 {

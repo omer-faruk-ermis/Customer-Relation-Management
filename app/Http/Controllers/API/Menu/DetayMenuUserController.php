@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\API\Menu;
 
 use App\Exceptions\DetailMenu\DetailMenuUserNotFoundException;
+use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DetailMenu\StoreDetailMenuUserRequest;
 use App\Http\Resources\SuccessResource;
 use App\Services\Menu\DetailMenuUserService;
+use Illuminate\Http\Request;
 
 /**
  * Class DetayMenuUserController
@@ -20,10 +22,12 @@ class DetayMenuUserController extends Controller
 
     /**
      * DetayMenuUserController constructor
+     *
+     * @throws ForbiddenException
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->detailMenuUserService = new DetailMenuUserService();
+        $this->detailMenuUserService = new DetailMenuUserService($request);
     }
 
     /**

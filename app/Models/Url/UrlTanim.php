@@ -9,7 +9,7 @@ use App\Models\Menu\MenuTanim;
 use App\Models\RecorderTrait;
 use App\Models\SmsKimlik\SmsKimlik;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
@@ -18,19 +18,20 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @package App\Models\Url
  * @version April 26, 2024, 0:05 pm UTC
  *
- * @property int                 $id
- * @property string              $adi
- * @property string              $url
- * @property string              $ust_id
- * @property bool                $durum
- * @property int                 $arkaplan_id
- * @property int                 $tab_id
- * @property int                 $kayit_id
- * @property string              $kayit_ip
+ * @property int            $id
+ * @property string         $adi
+ * @property string         $url
+ * @property string         $ust_id
+ * @property bool           $durum
+ * @property int            $arkaplan_id
+ * @property int            $tab_id
+ * @property int            $kayit_id
+ * @property string         $kayit_ip
  *
- * @property-read SmsKimlik      $recorder
- * @property-read SmsKimlik      $members
- * @property-read MenuTanim      $menu
+ * @property-read SmsKimlik $recorder
+ * @property-read SmsKimlik $members
+ * @property-read MenuTanim $menu
+ * @property-read SmsKimlikYetki $aa
  *
  * @method static Builder|UrlTanim filter(array $filters = [])
  */
@@ -43,26 +44,20 @@ class UrlTanim extends AbstractModel
     use RecorderTrait;
 
     /**
+     * @return hasMany
+     */
+   public function authorizations(): hasMany
+    {
+        return $this->hasMany(SmsKimlikYetki::class, 'url_id', 'id')
+            ->with('members');
+    }
+
+    /**
      * @return hasOne
      */
     public function menu(): hasOne
     {
         return $this->hasOne(MenuTanim::class, 'id', 'ust_id');
-    }
-
-    /**
-     * @return hasManyThrough
-     */
-    public function members(): hasManyThrough
-    {
-        return $this->hasManyThrough(
-            SmsKimlik::class,
-            SmsKimlikYetki::class,
-            'url_id',
-            'id',
-            'id',
-            'sms_kimlik'
-        );
     }
 
     /**

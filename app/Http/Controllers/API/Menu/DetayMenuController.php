@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\API\Menu;
 
+use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DetailMenu\IndexDetailMenuPageRequest;
 use App\Http\Requests\DetailMenu\IndexDetailMenuRequest;
 use App\Http\Resources\DetailMenu\DetailMenuCollection;
 use App\Services\Menu\DetailMenuService;
+use Illuminate\Http\Request;
 
 /**
  * Class DetayMenuController
@@ -20,10 +22,12 @@ class DetayMenuController extends Controller
 
     /**
      * DetayMenuController constructor
+     *
+     * @throws ForbiddenException
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->detailMenuService = new DetailMenuService();
+        $this->detailMenuService = new DetailMenuService($request);
     }
 
     /**

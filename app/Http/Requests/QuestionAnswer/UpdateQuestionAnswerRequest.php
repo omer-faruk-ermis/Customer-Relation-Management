@@ -3,7 +3,6 @@
 namespace App\Http\Requests\QuestionAnswer;
 
 use App\Http\Requests\AbstractRequest;
-use App\Utils\Security;
 
 class UpdateQuestionAnswerRequest extends AbstractRequest
 {

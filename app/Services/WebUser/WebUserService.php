@@ -3,7 +3,7 @@
 namespace App\Services\WebUser;
 
 use App\Enums\Authorization\AuthorizationTypeName;
-use App\Enums\Authorization\SmsManagement;
+use App\Enums\Authorization\BlueScreen;
 use App\Enums\DefaultConstant;
 use App\Exceptions\WebUser\WebUserNotFoundException;
 use App\Http\Requests\WebUser\IndexWebUserRequest;
@@ -18,7 +18,12 @@ use App\Utils\Security;
  */
 class WebUserService extends AbstractService
 {
-    protected array $serviceName = [AuthorizationTypeName::SMS_MANAGEMENT => SmsManagement::USER_OPERATIONS];
+    protected array $serviceAuthorizations = [
+        AuthorizationTypeName::BLUE_SCREEN => [
+            BlueScreen::USER_INFORMATION,
+            BlueScreen::USER_MOVEMENTS,
+        ],
+    ];
 
     /**
      * @param IndexWebUserRequest  $request
@@ -27,25 +32,13 @@ class WebUserService extends AbstractService
      */
     public function index(IndexWebUserRequest $request): mixed
     {
-        $webUser = WebUser::getModel();
-
-        return $webUser->filter($request->all())
-                       ->select([
-                                    $webUser->getQualifiedKeyName(),
-                                    $webUser->qualifyColumn('ad'),
-                                    $webUser->qualifyColumn('soyad'),
-                                    $webUser->qualifyColumn('ceptel'),
-                                    $webUser->qualifyColumn('kullanici_tipi'),
-                                    $webUser->qualifyColumn('tckimlik'),
-                                    $webUser->qualifyColumn('abone_no'),
-                                    $webUser->qualifyColumn('abonetip'),
-                                    $webUser->qualifyColumn('kurumadi'),
-                                ])
-                       ->orderByRaw('ad', 'COLLATE Turkish_CI_AS')
-                       ->orderByRaw('soyad', 'COLLATE Turkish_CI_AS')
-                       ->orderByRaw('kurumadi', 'COLLATE Turkish_CI_AS')
-                       ->limit(DefaultConstant::SEARCH_LIST_LIMIT)
-                       ->get();
+        return WebUser::select(DefaultConstant::ALL_COLUMN)
+                      ->filter($request->all())
+                      ->orderByRaw('ad', 'COLLATE Turkish_CI_AS')
+                      ->orderByRaw('soyad', 'COLLATE Turkish_CI_AS')
+                      ->orderByRaw('kurumadi', 'COLLATE Turkish_CI_AS')
+                      ->limit(DefaultConstant::SEARCH_LIST_LIMIT)
+                      ->get();
     }
 
     /**

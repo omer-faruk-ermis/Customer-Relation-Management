@@ -17,9 +17,9 @@ abstract class AbstractResource extends JsonResource
     /**
      * AbstractResource constructor.
      *
-     * @param mixed       $resource
-     * @param string|null $message
-     * @param int         $statusCode
+     * @param mixed        $resource
+     * @param string|null  $message
+     * @param int          $statusCode
      */
     public function __construct($resource, ?string $message = null, int $statusCode = Response::HTTP_OK)
     {

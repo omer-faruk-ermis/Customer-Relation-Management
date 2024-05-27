@@ -4,8 +4,6 @@ namespace App\Console\Commands;
 
 use App\Jobs\DeleteExpiredFilesJob;
 use Illuminate\Console\Command;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Storage;
 
 class DeleteExpiredFiles extends Command
 {

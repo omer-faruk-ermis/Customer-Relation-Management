@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Token;
 
+use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TokenResource;
 use App\Services\Token\DocSignatureService;
@@ -19,10 +20,12 @@ class DocSignature extends Controller
 
     /**
      * DocSignature constructor
-     */
-    public function __construct()
+     *
+     * @throws ForbiddenException
+*/
+    public function __construct(Request $request)
     {
-        $this->docSignatureService = new DocSignatureService();
+        $this->docSignatureService = new DocSignatureService($request);
     }
 
     /**

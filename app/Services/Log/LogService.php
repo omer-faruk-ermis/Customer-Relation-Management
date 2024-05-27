@@ -2,10 +2,13 @@
 
 namespace App\Services\Log;
 
+use App\Enums\Authorization\AuthorizationTypeName;
+use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
 use App\Exceptions\Log\LogReasonRecordNotFoundException;
 use App\Models\Log\SebepLog;
 use App\Models\Log\SmsKimlikLog;
+use App\Services\AbstractService;
 use App\Utils\Security;
 use Illuminate\Http\Request;
 
@@ -14,8 +17,14 @@ use Illuminate\Http\Request;
  *
  * @package App\Service\Log
  */
-class LogService
+class LogService extends AbstractService
 {
+    protected array $serviceAuthorizations = [
+        AuthorizationTypeName::SMS_MANAGEMENT => [
+            SmsManagement::DEFINE_REASON
+        ],
+    ];
+
     /**
      * @param Request  $request
      *
@@ -51,7 +60,7 @@ class LogService
      * @return SebepLog
      * @throws LogReasonRecordNotFoundException
      */
-    public function updateSebepLog(Request $request): SebepLog
+    public function updateReasonLog(Request $request): SebepLog
     {
         $sebepLog = SebepLog::where('logid', '=', Security::decrypt($request->input('log_id')))->first();
         if (empty($sebepLog)) {

@@ -2,20 +2,34 @@
 
 namespace App\Services\Staff;
 
+use App\Enums\Authorization\AuthorizationTypeName;
+use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
 use App\Enums\Status;
 use App\Exceptions\Staff\StaffGroupMatchNotFoundException;
 use App\Models\Staff\PersonelGrupEslestir;
+use App\Services\AbstractService;
 use App\Utils\Security;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class StaffGroupMatchService
  *
  * @package App\Service\Staff
  */
-class StaffGroupMatchService
+class StaffGroupMatchService extends AbstractService
 {
+    protected array $serviceAuthorizations = [
+        AuthorizationTypeName::SMS_MANAGEMENT => [
+            SmsManagement::AUTHORIZED_GROUPS,
+            SmsManagement::AUTHORIZED_GROUPS_GROUP,
+            SmsManagement::APP_MANAGEMENT,
+            SmsManagement::APP_EMPLOYEE
+        ]
+    ];
+
     /**
      * @param Request  $request
      *
@@ -28,7 +42,7 @@ class StaffGroupMatchService
                                                 'personel_id'      => $request->input('staff_id'),
                                                 'durum'            => Status::ACTIVE,
                                                 'kayit_tarihi'     => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT),
-                                                'sms_kimlik'       => $request->input('employee_id'),
+                                                'sms_kimlik'       => Auth::id(),
                                             ]);
     }
 

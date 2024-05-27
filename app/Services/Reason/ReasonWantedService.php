@@ -2,6 +2,8 @@
 
 namespace App\Services\Reason;
 
+use App\Enums\Authorization\AuthorizationTypeName;
+use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
 use App\Models\Sebep\SebepIstenecekler;
 use Illuminate\Http\Request;
@@ -14,6 +16,12 @@ use Illuminate\Support\Collection;
  */
 class ReasonWantedService
 {
+    protected array $serviceAuthorizations = [
+        AuthorizationTypeName::SMS_MANAGEMENT => [
+            SmsManagement::DEFINE_REASON
+        ],
+    ];
+
     /**
      * @param Request $request
      *

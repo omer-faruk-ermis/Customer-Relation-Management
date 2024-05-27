@@ -4,7 +4,7 @@ namespace App\Services\Sms;
 
 use App\Enums\Code;
 use App\Exceptions\Sms\OtpMessageNotSendException;
-use App\Helpers\CacheClear;
+use App\Helpers\CacheOperation;
 use App\Helpers\SmsVerificationValidate;
 use App\Helpers\TokenValidate;
 use App\Http\Proxies\SmsProxy;
@@ -48,8 +48,8 @@ class SmsService
                 return ['remaining_otp_time' => Code::DEFAULT_CODE_REMAINING_TIME];
             }
         }
-        CacheClear::verifierCodeClear($token);
-        CacheClear::imageClear($token);
+        CacheOperation::verifierCodeClear($token);
+        CacheOperation::imageClear($token);
 
         throw new OtpMessageNotSendException();
     }

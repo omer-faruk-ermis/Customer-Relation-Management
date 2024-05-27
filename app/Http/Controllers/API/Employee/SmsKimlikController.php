@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Employee;
 
 use App\Exceptions\Employee\EmployeeNotFoundException;
+use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Employee\BasicEmployeeRequest;
 use App\Http\Requests\Employee\ChangePasswordEmployeeRequest;
@@ -16,6 +17,7 @@ use App\Http\Resources\PaginationResource;
 use App\Http\Resources\SuccessResource;
 use App\Services\Employee\EmployeeService;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 /**
@@ -30,10 +32,12 @@ class SmsKimlikController extends Controller
 
     /**
      * SmsKimlikController constructor
+     *
+     * @throws ForbiddenException
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->employeeService = new EmployeeService();
+        $this->employeeService = new EmployeeService($request);
     }
 
     /**

@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Employee;
 
 use App\Http\Requests\AbstractRequest;
-use App\Utils\Security;
 
 class StoreEmployeeRequest extends AbstractRequest
 {
@@ -26,17 +25,5 @@ class StoreEmployeeRequest extends AbstractRequest
                                'home_phone'       => 'sometimes|integer',
                            ],
                            $storeEmployeeSipRules);
-    }
-
-    /**
-     * @return void
-     */
-    protected function prepareForValidation(): void
-    {
-        if ($this->has('unit_id')) {
-            $this->merge([
-                             'unit_id' => Security::decrypt($this->input('unit_id'))
-                         ]);
-        }
     }
 }

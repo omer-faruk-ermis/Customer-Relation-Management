@@ -2,7 +2,9 @@
 
 namespace App\Enums\Authorization;
 
-class BlueScreen
+use App\Enums\AbstractEnum;
+
+class BlueScreen extends AbstractEnum
 {
     // Main Menu
 

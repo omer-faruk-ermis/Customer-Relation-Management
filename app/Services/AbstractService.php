@@ -2,9 +2,8 @@
 
 namespace App\Services;
 
-use App\Enums\Authorization\AuthorizationType;
-use App\Models\Menu\DetayMenu;
-use App\Models\Url\UrlTanim;
+use App\Exceptions\ForbiddenException;
+use Illuminate\Http\Request;
 
 /**
  * Abstract class AbstractService
@@ -13,16 +12,20 @@ use App\Models\Url\UrlTanim;
  */
 abstract class AbstractService
 {
-    protected array $serviceName = [];
+    protected array $serviceAuthorizations = [];
+    protected array $privateMethods = [];
+    protected array $publicMethods = [];
 
-    protected function checkPermission()
+    /**
+     * @throws ForbiddenException
+     */
+    public function __construct(Request $request)
     {
-        if (AuthorizationType::SMS_MANAGEMENT === key($this->serviceName)) {
-            return UrlTanim::find($this->serviceName[AuthorizationType::SMS_MANAGEMENT])->exists();
-        }
-
-        if (AuthorizationType::BLUE_SCREEN === key($this->serviceName)) {
-            return DetayMenu::find($this->serviceName[AuthorizationType::BLUE_SCREEN])->exists();
-        }
+        new PermissionService(
+            $request,
+            $this->serviceAuthorizations,
+            $this->privateMethods,
+            $this->publicMethods
+        );
     }
 }
