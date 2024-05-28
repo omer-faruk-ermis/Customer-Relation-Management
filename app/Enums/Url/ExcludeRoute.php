@@ -11,5 +11,10 @@ class ExcludeRoute extends AbstractEnum
     public const LOGIN = 'api/login';
     public const SMS_VERIFICATION = 'api/sms_verification';
     public const LOGIN_VERIFICATION = 'api/login_verification';
+    public const TELESCOPE = 'telescope';
+    public const WELCOME = 'welcome';
+    public const BASE = '/';
+    public const DEBUGBAR_PREFIX = '_debugbar/';
+    public const TELESCOPE_PREFIX = 'telescope/';
 }
 

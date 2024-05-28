@@ -28,11 +28,25 @@ class AuthWithTokenMiddleware
             ExcludeRoute::SMS_CODE,
             ExcludeRoute::LOGIN,
             ExcludeRoute::SMS_VERIFICATION,
-            ExcludeRoute::LOGIN_VERIFICATION
+            ExcludeRoute::LOGIN_VERIFICATION,
+            ExcludeRoute::TELESCOPE,
+            ExcludeRoute::WELCOME,
+            ExcludeRoute::BASE
+        ];
+
+        $excludedPrefixes = [
+            ExcludeRoute::TELESCOPE_PREFIX,
+            ExcludeRoute::DEBUGBAR_PREFIX,
         ];
 
         if (in_array($request->path(), $excludedRoutes)) {
             return $next($request);
+        }
+
+        foreach ($excludedPrefixes as $prefix) {
+            if (str_starts_with($request->path(), $prefix)) {
+                return $next($request);
+            }
         }
 
         $token = $request->input('netgsmsessionid');

@@ -52,17 +52,19 @@ abstract class AbstractRequest extends FormRequest
     }
 
     /**
-     * @param Validator $validator
+     * @param Validator  $validator
+     *
      * @return mixed
      */
     protected function failedValidation(Validator $validator): mixed
     {
         throw new HttpResponseException(
-            response()->json([
-                'success' => false,
-                'message' => 'Validation error',
-                'errors' => $validator->errors(),
-            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY)
+            response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Validation error',
+                    'errors'  => $validator->errors(),
+                ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY)
         );
     }
 }

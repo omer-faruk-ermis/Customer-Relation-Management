@@ -20,9 +20,9 @@ use Illuminate\Http\Request;
 class LogService extends AbstractService
 {
     protected array $serviceAuthorizations = [
-        AuthorizationTypeName::SMS_MANAGEMENT => [
+        /*   AuthorizationTypeName::SMS_MANAGEMENT => [
             SmsManagement::DEFINE_REASON
-        ],
+        ],*/
     ];
 
     /**
