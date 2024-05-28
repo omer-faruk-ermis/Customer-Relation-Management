@@ -7,14 +7,15 @@
     "require": {
         "php": "^8.2",
         "ext-gd": "*",
-        "fruitcake/laravel-cors": "dev-develop",
         "ext-memcached": "*",
+        "fruitcake/laravel-cors": "dev-develop",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
         "laravel/passport": "^11.8",
         "laravel/sanctum": "^3.3",
         "laravel/telescope": "^5.0",
         "laravel/tinker": "^2.8",
+        "opcodesio/log-viewer": "^3.10",
         "predis/predis": "^2.2"
     },
     "require-dev": {

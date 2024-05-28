@@ -30,6 +30,7 @@ class AuthWithTokenMiddleware
             ExcludeRoute::SMS_VERIFICATION,
             ExcludeRoute::LOGIN_VERIFICATION,
             ExcludeRoute::TELESCOPE,
+            ExcludeRoute::LOG_VIEWER,
             ExcludeRoute::WELCOME,
             ExcludeRoute::BASE
         ];
@@ -37,6 +38,7 @@ class AuthWithTokenMiddleware
         $excludedPrefixes = [
             ExcludeRoute::TELESCOPE_PREFIX,
             ExcludeRoute::DEBUGBAR_PREFIX,
+            ExcludeRoute::LOG_VIEWER_PREFIX,
         ];
 
         if (in_array($request->path(), $excludedRoutes)) {
