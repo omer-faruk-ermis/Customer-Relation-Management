@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\Url\ExcludeRoute;
 use App\Exceptions\Auth\NotLoginException;
 use App\Helpers\CacheOperation;
 use App\Helpers\TokenValidate;
@@ -22,13 +23,25 @@ class AuthWithTokenMiddleware
      */
     public function handle(Request $request, Closure $next): mixed
     {
+        $excludedRoutes = [
+            ExcludeRoute::SECURITY_CODE,
+            ExcludeRoute::SMS_CODE,
+            ExcludeRoute::LOGIN,
+            ExcludeRoute::SMS_VERIFICATION,
+            ExcludeRoute::LOGIN_VERIFICATION
+        ];
+
+        if (in_array($request->path(), $excludedRoutes)) {
+            return $next($request);
+        }
+
         $token = $request->input('netgsmsessionid');
         TokenValidate::handle($token);
 
         if (!Cache::get("login_$token")) {
             throw new NotLoginException();
         }
-        self::AuthCheck($token);
+        self::authCheck($token);
 
         return $next($request);
     }
@@ -39,7 +52,7 @@ class AuthWithTokenMiddleware
      * @return void
      * @throws NotLoginException
      */
-    private function AuthCheck(string $token): void
+    private function authCheck(string $token): void
     {
         Auth::login(Cache::get("sms_kimlik_$token"));
         if (empty(Auth::user())) {

@@ -3,14 +3,14 @@
 namespace App\Http\Proxies;
 
 use App\Enums\ContentType;
-use App\Enums\Url;
+use App\Enums\Http as HttpMethod;
+use App\Enums\Url\ApiNetgsmUrl;
 use App\Helpers\XmlGenerator;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
-use App\Enums\Http as HttpMethod;
 
 class SmsProxy
 {
@@ -20,7 +20,7 @@ class SmsProxy
      */
     public static function sendHttpSms($fields): string
     {
-        return self::http(HttpMethod::POST, Url::getUrl(Url::SEND_GET_SMS), ContentType::JSON, [
+        return self::http(HttpMethod::POST, ApiNetgsmUrl::getUrl(ApiNetgsmUrl::SEND_GET_SMS), ContentType::JSON, [
             'usercode'  => config('git.user_code'),
             'password'  => config('git.password'),
             'gsmno'     => config('git.gsm'),
@@ -39,7 +39,7 @@ class SmsProxy
      */
     public function getSenderNames($fields): string
     {
-        return self::http(HttpMethod::POST, Url::getUrl(Url::SENDER_NAME), ContentType::JSON, $fields);
+        return self::http(HttpMethod::POST, ApiNetgsmUrl::getUrl(ApiNetgsmUrl::SENDER_NAME), ContentType::JSON, $fields);
     }
 
     /**
@@ -50,7 +50,7 @@ class SmsProxy
     public static function otpCodeSms(string $token): ?string
     {
         try {
-            return self::client(HttpMethod::POST, Url::getUrl(Url::SEND_OTP_SMS), ContentType::XML, XmlGenerator::otpSms($token));
+            return self::client(HttpMethod::POST, ApiNetgsmUrl::getUrl(ApiNetgsmUrl::SEND_OTP_SMS), ContentType::XML, XmlGenerator::otpSms($token));
         } catch (Exception $e) {
             Cache::forget("verification_code_info_$token");
             throw $e;
@@ -64,7 +64,7 @@ class SmsProxy
      */
     public static function sendXmlSms(string $token): string
     {
-        return self::client(HttpMethod::POST, Url::getUrl(Url::SEND_XML_SMS), ContentType::XML, XmlGenerator::sms($token));
+        return self::client(HttpMethod::POST, ApiNetgsmUrl::getUrl(ApiNetgsmUrl::SEND_XML_SMS), ContentType::XML, XmlGenerator::sms($token));
     }
 
     /**
@@ -75,7 +75,7 @@ class SmsProxy
      * @return string
      * @throws GuzzleException
      */
-    private static function client(string $method = HttpMethod::GET, string $url = Url::DEFAULT_SEND_GET_SMS, string $contentType = ContentType::XML, string $body = null): string
+    private static function client(string $method = HttpMethod::GET, string $url = ApiNetgsmUrl::DEFAULT_SEND_GET_SMS, string $contentType = ContentType::XML, string $body = null): string
     {
         return
             (new Client())
@@ -97,7 +97,7 @@ class SmsProxy
      * @param array $body
      * @return string
      */
-    private static function http(string $method = HttpMethod::GET, string $url = Url::DEFAULT_SEND_GET_SMS, string $contentType = ContentType::JSON, array $body = []): string
+    private static function http(string $method = HttpMethod::GET, string $url = ApiNetgsmUrl::DEFAULT_SEND_GET_SMS, string $contentType = ContentType::JSON, array $body = []): string
     {
         $request = Http::withHeaders(['Content-Type' => $contentType]);
 

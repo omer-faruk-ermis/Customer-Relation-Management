@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Enums;
+namespace App\Enums\Url;
 
-class Url extends AbstractEnum
+use App\Enums\AbstractEnum;
+
+class ApiNetgsmUrl extends AbstractEnum
 {
     private static string $base_url = 'https://api.netgsm.com.tr/';
     public const SEND_GET_SMS = 'sms/send/get';
