@@ -49,9 +49,9 @@ class LogController extends Controller
      * @return ReasonLogResource
      * @throws Exception
      */
-    public function updateSebepLog(UpdateReasonRequest $request): ReasonLogResource
+    public function updateReasonLog(UpdateReasonRequest $request): ReasonLogResource
     {
-        $reasonLogs = $this->logService->updateSebepLog($request);
+        $reasonLogs = $this->logService->updateReasonLog($request);
 
         return new ReasonLogResource($reasonLogs, 'LOG.REASON_LOG.UPDATE.SUCCESS');
     }
