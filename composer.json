@@ -16,7 +16,8 @@
         "laravel/telescope": "^5.0",
         "laravel/tinker": "^2.8",
         "opcodesio/log-viewer": "^3.10",
-        "predis/predis": "^2.2"
+        "predis/predis": "^2.2",
+        "rap2hpoutre/laravel-log-viewer": "^2.4"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",

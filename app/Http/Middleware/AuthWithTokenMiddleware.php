@@ -32,13 +32,15 @@ class AuthWithTokenMiddleware
             ExcludeRoute::TELESCOPE,
             ExcludeRoute::LOG_VIEWER,
             ExcludeRoute::WELCOME,
-            ExcludeRoute::BASE
+            ExcludeRoute::BASE,
+            ExcludeRoute::LARAVEL_LOGS
         ];
 
         $excludedPrefixes = [
             ExcludeRoute::TELESCOPE_PREFIX,
             ExcludeRoute::DEBUGBAR_PREFIX,
             ExcludeRoute::LOG_VIEWER_PREFIX,
+            ExcludeRoute::PUBLIC_PREFIX,
         ];
 
         if (in_array($request->path(), $excludedRoutes)) {

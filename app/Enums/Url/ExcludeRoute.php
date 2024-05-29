@@ -14,9 +14,11 @@ class ExcludeRoute extends AbstractEnum
     public const TELESCOPE = 'telescope';
     public const LOG_VIEWER = 'log-viewer';
     public const WELCOME = 'welcome';
+    public const LARAVEL_LOGS = 'api/laravel_logs';
     public const BASE = '/';
     public const DEBUGBAR_PREFIX = '_debugbar/';
     public const TELESCOPE_PREFIX = 'telescope/';
     public const LOG_VIEWER_PREFIX = 'log-viewer/';
+    public const PUBLIC_PREFIX = 'public/';
 }
 

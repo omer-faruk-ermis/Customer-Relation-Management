@@ -26,6 +26,7 @@ use App\Http\Controllers\API\WebPortal\WebPortalYetkiIzinController;
 use App\Http\Controllers\API\WebUser\WebUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Rap2hpoutre\LaravelLogViewer\LogViewerController;
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
@@ -165,3 +166,5 @@ Route::post('new_password', [AuthController::class, 'newPassword']);
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
+
+Route::get('laravel_logs', [LogViewerController::class, 'index']);
