@@ -6,7 +6,7 @@ use App\Models\AbstractModel;
 use App\Models\SmsKimlik\SmsKimlik;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Str;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Class DetayMenu
@@ -26,6 +26,7 @@ use Str;
  *
  * @property-read DetayMenu $pages
  * @property-read SmsKimlik $members
+ * @property-read DetayMenu $menu
  */
 class DetayMenu extends AbstractModel
 {
@@ -38,6 +39,14 @@ class DetayMenu extends AbstractModel
     {
         return $this->hasMany(DetayMenu::class, 'parentid', 'id')
                     ->with('members');
+    }
+
+    /**
+     * @return hasOne
+     */
+    public function menu(): hasOne
+    {
+        return $this->hasOne(DetayMenu::class, 'id', 'parentid');
     }
 
     /**

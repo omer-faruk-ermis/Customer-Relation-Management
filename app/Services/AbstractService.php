@@ -15,12 +15,15 @@ abstract class AbstractService
     protected array $serviceAuthorizations = [];
     protected array $privateMethods = [];
     protected array $publicMethods = [];
+    protected Request $request;
 
     /**
      * @throws ForbiddenException
      */
     public function __construct(Request $request)
     {
+        $this->request = $request;
+
         new PermissionService(
             $request,
             $this->serviceAuthorizations,

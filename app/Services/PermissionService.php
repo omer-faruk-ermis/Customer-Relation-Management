@@ -19,7 +19,7 @@ class PermissionService
     public function __construct(Request $request, array $serviceAuthorizations, array $privateMethods, array $publicMethods)
     {
         $method = explode('@', Route::current()->getAction()['controller'])[1];
-        if (in_array($method, $publicMethods, true) || empty($serviceAuthorizations)) {
+        if (in_array($method, $publicMethods) || empty($serviceAuthorizations)) {
             return;
         }
 

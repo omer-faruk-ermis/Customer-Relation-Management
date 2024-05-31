@@ -4,6 +4,7 @@ namespace App\Services\Authorization;
 
 use App\Enums\Authorization\AuthorizationType;
 use App\Enums\Authorization\AuthorizationTypeName;
+use App\Enums\Authorization\AuthorizationTypeTrName;
 use App\Enums\Authorization\AuthorizationUserType;
 use App\Enums\NumericalConstant;
 use App\Enums\Status;
@@ -27,7 +28,8 @@ use Illuminate\Support\Collection;
  */
 class AuthorizationService
 {
-    private array $authorizations;
+    private const AUTHORIZATION = 'authorization';
+    private const PROCESS_AUTHORIZATION = 'process_authorization';
     private int $id;
     private int $pluck;
 
@@ -39,11 +41,18 @@ class AuthorizationService
     {
         $this->id = $id;
         $this->pluck = $pluck;
-        $this->authorizations = [
-            AuthorizationTypeName::SMS_MANAGEMENT    => self::mergeAuthorization($this->smsManagement(), AuthorizationType::SMS_MANAGEMENT),
-            AuthorizationTypeName::BLUE_SCREEN       => self::mergeAuthorization($this->blueScreen(), AuthorizationType::BLUE_SCREEN),
-            AuthorizationTypeName::AUTHORIZATION     => self::mergeAuthorization($this->authorization(), AuthorizationType::AUTHORIZATION),
-            AuthorizationTypeName::SUBSCRIBER_BILLET => self::mergeAuthorization($this->subscriberBillet(), AuthorizationType::SUBSCRIBER_BILLET),
+    }
+
+    /**
+     * @return array
+     */
+    public function getAuthorizationsGrouped(): array
+    {
+        return [
+            AuthorizationTypeName::SMS_MANAGEMENT    => $this->mergeAuthorization($this->smsManagement(), AuthorizationType::SMS_MANAGEMENT),
+            AuthorizationTypeName::BLUE_SCREEN       => $this->mergeAuthorization($this->blueScreen(), AuthorizationType::BLUE_SCREEN),
+            AuthorizationTypeName::AUTHORIZATION     => $this->mergeAuthorization($this->authorization(), AuthorizationType::AUTHORIZATION),
+            AuthorizationTypeName::SUBSCRIBER_BILLET => $this->mergeAuthorization($this->subscriberBillet(), AuthorizationType::SUBSCRIBER_BILLET),
         ];
     }
 
@@ -52,7 +61,13 @@ class AuthorizationService
      */
     public function getAuthorizations(): array
     {
-        return $this->authorizations;
+        return array_merge(
+            $this->mergeAuthorization($this->smsManagement(), AuthorizationType::SMS_MANAGEMENT),
+            [
+                AuthorizationTypeName::BLUE_SCREEN       => $this->mergeAuthorization($this->blueScreen(), AuthorizationType::BLUE_SCREEN),
+                AuthorizationTypeName::SUBSCRIBER_BILLET => $this->mergeAuthorization($this->subscriberBillet(), AuthorizationType::SUBSCRIBER_BILLET),
+            ]
+        );
     }
 
     /**
@@ -60,14 +75,14 @@ class AuthorizationService
      */
     public function getAuthorizationString(): string
     {
-        $authorization = ((new AuthorizationService($this->id, true))->getAuthorizations());
+        $authorization = (new self($this->id, true))->getAuthorizationsGrouped();
 
-        $sms_management_ids = implode(',', $authorization['sms_management']->toArray());
-        $blue_screen_ids = implode(',', $authorization['blue_screen']->toArray());
-        $authorization_ids = implode(',', $authorization['authorization']->toArray());
-        $subscriber_billet_ids = implode(',', $authorization['subscriber_billet']->toArray());
+        $smsManagementIds = implode(',', $authorization[AuthorizationTypeName::SMS_MANAGEMENT]->toArray());
+        $blueScreenIds = implode(',', $authorization[AuthorizationTypeName::BLUE_SCREEN]->toArray());
+        $authorizationIds = implode(',', $authorization[AuthorizationTypeName::AUTHORIZATION]->toArray());
+        $subscriberBilletIds = implode(',', $authorization[AuthorizationTypeName::SUBSCRIBER_BILLET]->toArray());
 
-        return $sms_management_ids . '#' . $blue_screen_ids . '#' . $authorization_ids . '#' . $subscriber_billet_ids;
+        return $smsManagementIds . '#' . $blueScreenIds . '#' . $authorizationIds . '#' . $subscriberBilletIds;
     }
 
     /**
@@ -82,13 +97,61 @@ class AuthorizationService
         }
 
         $parts = explode('#', $authorizationString);
-
         return [
-            'sms_management'    => explode(',', $parts[0]),
-            'blue_screen'       => explode(',', $parts[1]),
-            'authorization'     => explode(',', $parts[2]),
-            'subscriber_billet' => explode(',', $parts[3]),
+            AuthorizationTypeName::SMS_MANAGEMENT    => explode(',', $parts[0]),
+            AuthorizationTypeName::BLUE_SCREEN       => explode(',', $parts[1]),
+            AuthorizationTypeName::AUTHORIZATION     => explode(',', $parts[2]),
+            AuthorizationTypeName::SUBSCRIBER_BILLET => explode(',', $parts[3]),
         ];
+    }
+
+    /**
+     * @param string|null  $type
+     *
+     * @return array
+     */
+    protected function getProcessAuthorizations(string $type = null): array
+    {
+        if (AuthorizationTypeTrName::SMS_MANAGEMENT === $type) {
+            return UrlTanim::select([
+                                        'id',
+                                        'adi as name',
+                                        'url',
+                                        'ust_id'
+                                    ])
+                           ->with(['menu' => function ($q) {
+                               $q->select([
+                                              'id',
+                                              'menu'
+                                          ]);
+                           }])
+                           ->where('durum', Status::ACTIVE)
+                           ->whereIn('id',
+                                     array_column($this->mergeAuthorization($this->authorization(), AuthorizationType::AUTHORIZATION)[$type], 'menu_id'))
+                           ->get()
+                           ->groupBy('menu.menu')
+                           ->toArray();
+        }
+        if (AuthorizationTypeTrName::BLUE_SCREEN === $type) {
+            return DetayMenu::select([
+                                         'id',
+                                         'menu_adi as name',
+                                         'menu_url as url',
+                                         'parentid'
+                                     ])
+                            ->with(['menu' => function ($q) {
+                                $q->select([
+                                               'id',
+                                               'menu_adi as menu'
+                                           ]);
+                            }])
+                            ->where('durum', Status::ACTIVE)
+                            ->whereIn('id',
+                                      array_column($this->mergeAuthorization($this->authorization(), AuthorizationType::AUTHORIZATION)[$type], 'menu_id'))
+                            ->get()
+                            ->groupBy('menu.menu')
+                            ->toArray();
+        }
     }
 
     /**
@@ -99,29 +162,31 @@ class AuthorizationService
      */
     protected function mergeAuthorization(array|Collection $authorizations, int $type): Collection|array
     {
-        $employeeGroups = self::authorizationGroup($type);
+        $employeeGroups = $this->authorizationGroup($type);
 
         if (AuthorizationType::SMS_MANAGEMENT == $type) {
-            $employeeGroup = self::authorizationMatch(self::smsManagement($employeeGroups), $authorizations);
+            $employeeGroup = $this->authorizationMatch($this->smsManagement($employeeGroups), $authorizations);
             if ($this->pluck) {
                 return $employeeGroup->pluck('id');
             }
 
-            return $employeeGroup->groupBy('menu')
-                                 ->toArray();
+            return $this->addProcessAuthorization($employeeGroup->groupBy('menu')->toArray(), $this->getProcessAuthorizations(AuthorizationTypeTrName::SMS_MANAGEMENT));
         } else if (AuthorizationType::BLUE_SCREEN == $type) {
-            $employeeGroup = self::authorizationMatch(self::blueScreen($employeeGroups), $authorizations);
+            $employeeGroup = $this->authorizationMatch($this->blueScreen($employeeGroups), $authorizations);
             if ($this->pluck) {
                 return $employeeGroup->pluck('id');
             }
 
-            return $employeeGroup->groupBy(fn($q) => $q->menu_id)
-                                 ->mapWithKeys(fn($group) => [
-                                     $group->first()->name => $group->first()->menu_id != NumericalConstant::ZERO ? $group : []
-                                 ])
-                                 ->toArray();
+            $employeeGroup = $employeeGroup->groupBy(fn($q) => $q->menu_id)
+                                           ->mapWithKeys(fn($group) => [
+                                               $group->first()->name => $group->first()->menu_id != NumericalConstant::ZERO ? $group : []
+                                           ])
+                                           ->toArray();
+
+            return $this->addProcessAuthorization($employeeGroup, $this->getProcessAuthorizations(AuthorizationTypeTrName::BLUE_SCREEN));
+
         } else if (AuthorizationType::AUTHORIZATION == $type) {
-            $employeeGroup = self::authorizationMatch(self::authorization($employeeGroups), $authorizations);
+            $employeeGroup = $this->authorizationMatch($this->authorization($employeeGroups), $authorizations);
             if ($this->pluck) {
                 return $employeeGroup->pluck('id');
             }
@@ -129,7 +194,7 @@ class AuthorizationService
             return $employeeGroup->groupBy('authorization')
                                  ->toArray();
         } else if (AuthorizationType::SUBSCRIBER_BILLET == $type) {
-            $employeeGroup = self::authorizationMatch(self::subscriberBillet($employeeGroups), $authorizations);
+            $employeeGroup = $this->authorizationMatch($this->subscriberBillet($employeeGroups), $authorizations);
             if ($this->pluck) {
                 return $employeeGroup->pluck('id');
             }
@@ -156,6 +221,40 @@ class AuthorizationService
         }
 
         return $employeeGroup;
+    }
+
+    /**
+     * @param array  $employeeGroups
+     * @param array  $authorizations
+     *
+     * @return array
+     */
+    protected function addProcessAuthorization(array $employeeGroups, array $authorizations): array
+    {
+        foreach ($authorizations as $key => $authorization) {
+            if (array_key_exists($key, $employeeGroups)) {
+                $employeeGroups[$key] = array_merge(
+                    [self::AUTHORIZATION => $employeeGroups[$key]],
+                    [self::PROCESS_AUTHORIZATION => $authorization]
+                );
+            } else {
+                $employeeGroups[$key] = array_merge(
+                    [self::AUTHORIZATION => []],
+                    [self::PROCESS_AUTHORIZATION => $authorization]
+                );
+            }
+        }
+
+        foreach ($employeeGroups as $key => $employeeGroup) {
+            if (!array_key_exists(self::PROCESS_AUTHORIZATION, $employeeGroup)) {
+                $employeeGroups[$key] = [
+                    self::AUTHORIZATION         => $employeeGroup,
+                    self::PROCESS_AUTHORIZATION => []
+                ];
+            }
+        }
+
+        return $employeeGroups;
     }
 
     /**
@@ -275,6 +374,7 @@ class AuthorizationService
                                           $webPortalYetki->qualifyColumn('menu_id') . ' as menu_id',
                                           $webPortalYetki->qualifyColumn('aciklama') . ' as name',
                                           $webPortalYetki->qualifyColumn('tanim') . ' as authorization',
+                                          $webPortalYetki->qualifyColumn('yetki_detay') . ' as menu',
                                       ])
                              ->when(empty($ids), function ($q) use ($webPortalYetkiIzin, $webPortalYetki) {
                                  $q->join($webPortalYetkiIzin->getTable(),

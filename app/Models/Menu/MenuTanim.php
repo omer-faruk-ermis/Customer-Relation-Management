@@ -3,11 +3,8 @@
 namespace App\Models\Menu;
 
 use App\Models\AbstractModel;
-use App\Models\Authorization\SmsKimlikYetki;
-use App\Models\SmsKimlik\SmsKimlik;
 use App\Models\Url\UrlTanim;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * Class MenuTanim

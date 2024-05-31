@@ -6,7 +6,6 @@ use App\Builder\SmsKimlikBuilder;
 use App\Enums\DefaultConstant;
 use App\Exceptions\Auth\NotLoginException;
 use App\Models\SmsKimlik\SmsKimlik;
-use Dflydev\DotAccessData\Data;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
