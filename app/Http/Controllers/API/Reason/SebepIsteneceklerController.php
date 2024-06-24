@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Reason;
 
+use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Reason\ReasonWantedCollection;
 use App\Services\Reason\ReasonWantedService;
@@ -19,10 +20,12 @@ class SebepIsteneceklerController extends Controller
 
     /**
      * SebepIsteneceklerController constructor
+     *
+     * @throws ForbiddenException
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->reasonWantedService = new ReasonWantedService();
+        $this->reasonWantedService = new ReasonWantedService($request);
     }
 
     /**

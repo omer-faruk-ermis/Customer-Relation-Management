@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Reason;
 
+use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Reason\ReasonCollection;
 use App\Services\Reason\ReasonService;
@@ -20,10 +21,12 @@ class SebeplerController extends Controller
 
     /**
      * SebeplerController constructor
+     *
+     * @throws ForbiddenException
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->reasonService = new ReasonService();
+        $this->reasonService = new ReasonService($request);
     }
 
     /**
