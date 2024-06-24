@@ -2,10 +2,10 @@
 
 namespace App\Filters\WebUser;
 
-class Location
+class TaxIdentificationNo
 {
     public function apply($query, $value): void
     {
-        $query->where('vergidairesi', 'LIKE', '%' . $value . '%');
+        $query->where('verginumarasi', 'LIKE', '%' . $value . '%');
     }
 }

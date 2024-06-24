@@ -112,6 +112,16 @@ class AuthorizationService
      */
     protected function getProcessAuthorizations(string $type = null): array
     {
+        // TODO: REFACTOR AND TEST THIS PART OF CODE
+
+        $checkAuthorization = !empty($this->mergeAuthorization($this->authorization(), AuthorizationType::AUTHORIZATION));
+
+        if (isset($this->mergeAuthorization($this->authorization(), AuthorizationType::AUTHORIZATION)[$type])) {
+            $typeArray = $this->mergeAuthorization($this->authorization(), AuthorizationType::AUTHORIZATION)[$type];
+        } else {
+            $typeArray = [];
+        }
+
         if (AuthorizationTypeTrName::SMS_MANAGEMENT === $type) {
             return UrlTanim::select([
                                         'id',
@@ -127,11 +137,12 @@ class AuthorizationService
                            }])
                            ->where('durum', Status::ACTIVE)
                            ->whereIn('id',
-                                     array_column($this->mergeAuthorization($this->authorization(), AuthorizationType::AUTHORIZATION)[$type], 'menu_id'))
+                                     array_column($checkAuthorization ? $typeArray : [], 'menu_id'))
                            ->get()
                            ->groupBy('menu.menu')
                            ->toArray();
         }
+
         if (AuthorizationTypeTrName::BLUE_SCREEN === $type) {
             return DetayMenu::select([
                                          'id',
@@ -147,7 +158,7 @@ class AuthorizationService
                             }])
                             ->where('durum', Status::ACTIVE)
                             ->whereIn('id',
-                                      array_column($this->mergeAuthorization($this->authorization(), AuthorizationType::AUTHORIZATION)[$type], 'menu_id'))
+                                      array_column($checkAuthorization ? $typeArray : [], 'menu_id'))
                             ->get()
                             ->groupBy('menu.menu')
                             ->toArray();

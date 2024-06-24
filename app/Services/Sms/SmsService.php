@@ -25,18 +25,18 @@ class SmsService
     /**
      * @param Request  $request
      *
-     * @return array
+     * @return object
      * @throws Exception|GuzzleException
      */
-    public function smsCode(Request $request): array
+    public function smsCode(Request $request): object
     {
-        $token = $request->input('netgsmsessionid');
+        $token = $request->bearerToken();
         TokenValidate::handle($token);
 
         if (Cache::has("verification_code_info_$token") &&
             ((Cache::get("verification_code_info_$token")['create_date'])->diffInSeconds(Carbon::now()) < Code::DEFAULT_CODE_REMAINING_TIME)) {
             $diff = (Cache::get("verification_code_info_$token")['create_date'])->diffInSeconds(Carbon::now());
-            return ['remaining_otp_time' => (Code::DEFAULT_CODE_REMAINING_TIME - $diff)];
+            return (object) ['remaining_otp_time' => (Code::DEFAULT_CODE_REMAINING_TIME - $diff)];
         }
 
         $xmlResult = SmsProxy::otpCodeSms($token);
@@ -45,7 +45,7 @@ class SmsService
             $xml = simplexml_load_string($xmlResult);
 
             if ($xml->main->jobID) {
-                return ['remaining_otp_time' => Code::DEFAULT_CODE_REMAINING_TIME];
+                return (object) ['remaining_otp_time' => Code::DEFAULT_CODE_REMAINING_TIME];
             }
         }
         CacheOperation::verifierCodeClear($token);
@@ -62,7 +62,7 @@ class SmsService
      */
     public static function smsVerification(SmsVerificationRequest $request): void
     {
-        TokenValidate::handle($request->input('netgsmsessionid'));
+        TokenValidate::handle($request->bearerToken());
         SmsVerificationValidate::handle($request);
     }
 }

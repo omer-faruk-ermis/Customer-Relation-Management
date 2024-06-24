@@ -68,6 +68,7 @@ class SmsKimlikController extends Controller
      * @param IndexEmployeeLogRequest  $request
      *
      * @return PaginationResource
+     * @throws ForbiddenException
      */
     public function log(IndexEmployeeLogRequest $request): PaginationResource
     {

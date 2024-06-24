@@ -9,11 +9,11 @@ use App\Services\Token\DocSignatureService;
 use Illuminate\Http\Request;
 
 /**
- * Class DocSignature
+ * Class DocSignatureController
  *
  * @package App\Http\Controllers\API\Token
  */
-class DocSignature extends Controller
+class DocSignatureController extends Controller
 {
     /** @var DocSignatureService $docSignatureService */
     private DocSignatureService $docSignatureService;
@@ -37,6 +37,6 @@ class DocSignature extends Controller
     {
         $docSignatureToken = $this->docSignatureService->getSignatureToken($request);
 
-        return new TokenResource((object) $docSignatureToken, 'DOC_SIGNATURE.SUCCESS');
+        return new TokenResource($docSignatureToken, 'DOC_SIGNATURE.SUCCESS');
     }
 }

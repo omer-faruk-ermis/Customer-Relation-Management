@@ -13,6 +13,11 @@ use App\Models\Staff\PersonelGrupYetkiEslestir;
 use App\Services\Authorization\AuthorizationService;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class DataMaskingService
+ *
+ * @package App\Service
+ */
 class DataMaskingService
 {
     protected array $fieldsMapping = [

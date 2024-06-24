@@ -52,7 +52,7 @@ class CacheOperation
      */
     public static function setSession($request): SmsKimlik
     {
-        $netgsmsessionid = $request->input('netgsmsessionid');
+        $netgsmsessionid = $request->bearerToken();
         $sms_kimlik = SmsKimlikBuilder::handle(Cache::get("sms_kimlik_$netgsmsessionid"));
 
         Cache::put("sms_kimlik_$netgsmsessionid",$sms_kimlik);

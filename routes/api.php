@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Authorization\SmsKimlikYetkiController;
+use App\Http\Controllers\API\Call\CagriController;
 use App\Http\Controllers\API\Code\CodeController;
 use App\Http\Controllers\API\Employee\SmsKimlikController;
 use App\Http\Controllers\API\Employee\SmsKimlikSipController;
 use App\Http\Controllers\API\Employee\SmsKimlikUnitController;
+use App\Http\Controllers\API\Enum\EnumController;
 use App\Http\Controllers\API\Log\LogController;
 use App\Http\Controllers\API\Menu\DetayMenuController;
 use App\Http\Controllers\API\Menu\DetayMenuUserController;
@@ -19,8 +21,9 @@ use App\Http\Controllers\API\Staff\PersonelGrupController;
 use App\Http\Controllers\API\Staff\PersonelGrupEslestirController;
 use App\Http\Controllers\API\Staff\PersonelGrupYetkiEslestirController;
 use App\Http\Controllers\API\Subscriber\AboneKutukYetkiController;
-use App\Http\Controllers\API\Token\DocSignature;
+use App\Http\Controllers\API\Token\DocSignatureController;
 use App\Http\Controllers\API\Url\UrlTanimController;
+use App\Http\Controllers\API\VoiceUser\VoiceUserController;
 use App\Http\Controllers\API\WebPortal\WebPortalYetkiController;
 use App\Http\Controllers\API\WebPortal\WebPortalYetkiIzinController;
 use App\Http\Controllers\API\WebUser\WebUserController;
@@ -34,12 +37,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => 'auth_with_token'], function () {
+
+    // Enums
+    Route::get('enum', [EnumController::class, 'index']);
+
     // Auth
     Route::post('login_verification', [AuthController::class, 'loginVerification']);
     Route::post('change_password', [AuthController::class, 'changePassword']);
 
     // Token
-    Route::get('get_signature_token', [DocSignature::class, 'getSignatureToken']);
+    Route::get('get_signature_token', [DocSignatureController::class, 'getSignatureToken']);
 
     // Log
     Route::get('log', [LogController::class, 'index']);
@@ -90,10 +97,23 @@ Route::group(['middleware' => 'auth_with_token'], function () {
         });
     });
 
-    // Customer
+    // Customer // Maybe Not Customer
     Route::prefix('web_user')->group(function () {
         Route::get('/', [WebUserController::class, 'index']);
         Route::get('/{id}', [WebUserController::class, 'show']);
+        Route::get('/type', [WebUserController::class, 'type']);
+    });
+
+    // Call
+    Route::prefix('call')->group(function () {
+        Route::get('/', [CagriController::class, 'index']);
+    });
+
+    // VoiceUser
+    Route::prefix('voice_user')->group(function () {
+        Route::post('/', [VoiceUserController::class, 'store']);
+        Route::get('/path', [VoiceUserController::class, 'path']);
+        Route::get('/last_pair', [VoiceUserController::class, 'lastPair']);
     });
 
     // Menu-Url Tanim // SmsManagement type=1
@@ -121,7 +141,7 @@ Route::group(['middleware' => 'auth_with_token'], function () {
     });
 
     // WebPortalAuthorization // Authorization type=3
-    Route::prefix('/web_portal_authorization')->group(function () {
+    Route::prefix('web_portal_authorization')->group(function () {
         Route::get('/', [WebPortalYetkiController::class, 'index']);
 
         // WebPortalAuthorizationPermission

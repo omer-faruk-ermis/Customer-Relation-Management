@@ -21,9 +21,9 @@ class DocSignatureService extends AbstractService
     /**
      * @param Request  $request
      *
-     * @return array
+     * @return object
      */
-    public static function getSignatureToken(Request $request): array
+    public static function getSignatureToken(Request $request): object
     {
         $value = array(
             'id'       => Auth::id(),
@@ -35,6 +35,6 @@ class DocSignatureService extends AbstractService
 
         // Cache::store('memcached')->put("pdfimzalasrv_bearertoken_:$token", $value, DefaultConstant::CACHE_ONE_DAY);
 
-        return ['token' => $token];
+        return (object) ['token' => $token];
     }
 }

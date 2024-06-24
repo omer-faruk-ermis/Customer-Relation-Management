@@ -30,6 +30,6 @@ class CodeController extends Controller
     {
         $image = $this->codeService->securityCode();
 
-        return new ImageResource((object) $image, 'IMAGE_CODE.CREATE.SUCCESS');
+        return new ImageResource($image, 'IMAGE_CODE.CREATE.SUCCESS');
     }
 }

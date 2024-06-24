@@ -5,6 +5,9 @@ namespace App\Models\WebUser;
 use App\Filters\WebUser\WebUserFilter;
 use App\Models\AbstractModel;
 use App\Models\MaskableTrait;
+use App\Models\SimCard\SimKart;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Query\Builder;
 
 /**
@@ -102,6 +105,29 @@ class WebUser extends AbstractModel
     public function getFullNameAttribute(): string
     {
         return $this->ad . ' ' . $this->soyad;
+    }
+
+    /**
+     * @return hasOne
+     */
+    public function userType(): hasOne
+    {
+        return $this->hasOne(WebUserKullaniciTipleri::class, 'ktip', 'kullanici_tipi');
+    }
+
+    /**
+     * @return hasManyThrough
+     */
+    public function simCard(): hasManyThrough
+    {
+        return $this->hasManyThrough(
+            SimKart::class,
+            UserSimKartEslestir::class,
+            'userid',
+            'id',
+            'id',
+            'sim_kart_id'
+        );
     }
 
     /**

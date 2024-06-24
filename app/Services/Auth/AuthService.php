@@ -35,10 +35,10 @@ class AuthService
     /**
      * @param LoginRequest  $request
      *
-     * @return array
+     * @return object
      * @throws Exception
      */
-    public function login(LoginRequest $request): array
+    public function login(LoginRequest $request): object
     {
         CodeValidate::handle($request);
 
@@ -61,7 +61,7 @@ class AuthService
         Cache::put("sms_kimlik_$token", Arr::add($sms_kimlik, 'netgsmsessionid', $token), now()->addHours(24));
         Cache::put("sms_kimlik_image_$token", $request->input('security_code_path'));
 
-        return ['token' => $token];
+        return (object) ['token' => $token];
     }
 
     /**
@@ -78,10 +78,10 @@ class AuthService
     /**
      * @param ForgotPasswordRequest  $request
      *
-     * @return array
+     * @return object
      * @throws Exception
      */
-    public function forgotPassword(ForgotPasswordRequest $request): array
+    public function forgotPassword(ForgotPasswordRequest $request): object
     {
         CodeValidate::handle($request);
 
@@ -100,7 +100,7 @@ class AuthService
         Cache::put("sms_kimlik_password_$token", Arr::add($sms_kimlik, 'netgsmsessionid', $token), now()->addHour());
         Cache::put("sms_kimlik_image_$token", $request->input('security_code_path'));
 
-        return ['token' => $token];
+        return (object) ['token' => $token];
     }
 
     /**
@@ -114,12 +114,12 @@ class AuthService
         PasswordValidate::handle($request);
 
         $smsRequest = new SmsVerificationRequest([
-                                                     'netgsmsessionid' => $request->input('netgsmsessionid'),
+                                                     'netgsmsessionid' => $request->bearerToken(),
                                                      'code'            => $request->input('code'),
                                                  ]);
         SmsService::smsVerification($smsRequest);
 
-        $token = $request->input('netgsmsessionid');
+        $token = $request->bearerToken();
         $sms_kimlik = Cache::get("sms_kimlik_password_$token");
         if (empty($sms_kimlik)) {
             throw new AuthInformationException();
@@ -154,7 +154,7 @@ class AuthService
      */
     public function logout(Request $request): void
     {
-        $token = $request->input('netgsmsessionid');
+        $token = $request->bearerToken();
 
         TokenValidate::handle($token);
 

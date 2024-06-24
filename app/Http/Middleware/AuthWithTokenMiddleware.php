@@ -53,7 +53,7 @@ class AuthWithTokenMiddleware
             }
         }
 
-        $token = $request->input('netgsmsessionid');
+        $token = $request->bearerToken();
         TokenValidate::handle($token);
 
         if (!Cache::get("login_$token")) {

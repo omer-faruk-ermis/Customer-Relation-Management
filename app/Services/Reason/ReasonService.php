@@ -6,6 +6,7 @@ use App\Enums\Authorization\AuthorizationTypeName;
 use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
 use App\Models\Sebep\Sebepler;
+use App\Services\AbstractService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -15,7 +16,7 @@ use Illuminate\Support\Collection;
  *
  * @package App\Service\Reason
  */
-class ReasonService
+class ReasonService extends AbstractService
 {
     protected array $serviceAuthorizations = [
         AuthorizationTypeName::SMS_MANAGEMENT => [

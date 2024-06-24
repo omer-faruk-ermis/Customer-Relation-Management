@@ -23,7 +23,7 @@ class SmsVerificationValidate
      */
     public static function handle(Request $request): void
     {
-        $token = $request->input('netgsmsessionid');
+        $token = $request->bearerToken();
         CacheOperation::imageClear($token);
 
         if (!Cache::has("verification_code_info_$token")) {

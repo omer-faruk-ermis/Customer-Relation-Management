@@ -77,8 +77,6 @@ return [
             ],
         ],
 
-
-
         'memcache' => [
             'driver'        => 'memcache',
             'default'       => env('CACHE_DRIVER', 'memcache'),
@@ -104,7 +102,6 @@ return [
             'options' => [
                 'prefix'  => null,
                 'ttl' => 86400,
-                'serializer' => 'php'
             ],
             'default' => [
                 'host'     => env('REDIS_LOCAL_HOST', '127.0.0.1'),
@@ -126,7 +123,6 @@ return [
             'client'     => env('REDIS_CLIENT', 'predis'),
             'options' => [
                 'prefix'  => null,
-                'serializer' => 'php',
                 'ttl' => 86400
             ],
             'default' => [

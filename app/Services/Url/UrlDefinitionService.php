@@ -40,7 +40,7 @@ class UrlDefinitionService extends AbstractService
      */
     public function page(Request $request): Collection
     {
-        return UrlTanim::with(['recorder', 'menu','authorizations'])
+        return UrlTanim::with(['recorder', 'menu', 'authorizations'])
                        ->where('durum', '=', Status::ACTIVE)
                        ->get();
     }

@@ -42,7 +42,7 @@ class AuthController extends Controller
     {
         $token = $this->authService->login($request);
 
-        return new TokenResource((object) $token, 'AUTH.LOGIN.SUCCESS');
+        return new TokenResource($token, 'AUTH.LOGIN.SUCCESS');
     }
 
     /**
@@ -68,7 +68,7 @@ class AuthController extends Controller
     {
         $token = $this->authService->forgotPassword($request);
 
-        return new TokenResource((object) $token, 'AUTH.FORGOT_PASSWORD.SUCCESS');
+        return new TokenResource($token, 'AUTH.FORGOT_PASSWORD.SUCCESS');
     }
 
     /**

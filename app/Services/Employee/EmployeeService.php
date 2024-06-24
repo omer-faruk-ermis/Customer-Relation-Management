@@ -219,14 +219,15 @@ class EmployeeService extends AbstractService
      *
      * @return void
      * @throws ForbiddenException
+     * @throws Exception
      */
     private function storeEmployeeAuthorization(StoreEmployeeRequest $request, int $employeeId): void
     {
         $authorizationRequest = new StoreEmployeeAuthorizationRequest([
                                                                           'url_id'          => DefaultConstant::AUTHORIZATION,
                                                                           'employee_id'     => $employeeId,
-                                                                          'netgsmsessionid' => $request->input('netgsmsessionid'),
-                                                                          'url'              => $request->input('url')
+                                                                          'netgsmsessionid' => $request->bearerToken(),
+                                                                          'url'             => $request->input('url')
                                                                       ]);
 
         (new EmployeeAuthorizationService($authorizationRequest))->store($authorizationRequest);

@@ -3,9 +3,6 @@
 namespace App\Http\Resources\Subscriber;
 
 use App\Http\Resources\AbstractResource;
-use App\Http\Resources\Employee\EmployeeResource;
-use App\Http\Resources\Log\ReasonLogResource;
-use App\Http\Resources\Reason\ReasonWantedResource;
 use App\Utils\Security;
 
 /**

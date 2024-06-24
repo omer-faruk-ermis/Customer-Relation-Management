@@ -19,7 +19,7 @@ class PaginationResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'data'         => PaginateData::apply($this),
+            'data'         => PaginateFactory::apply($this),
             'current_page' => $this->currentPage(),
             'last_page'    => $this->lastPage(),
             'per_page'     => $this->perPage(),

@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Str;
-
 return [
 
     /*
@@ -151,7 +149,6 @@ return [
 
         'options' => [
             'prefix'     => null,
-            'serializer' => 'php',
             'ttl'        => 86400
         ],
 
