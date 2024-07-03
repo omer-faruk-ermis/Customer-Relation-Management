@@ -2,6 +2,7 @@
 
 namespace App\Models\WebPortal;
 
+use App\Enums\Status;
 use App\Models\AbstractModel;
 use App\Models\SmsKimlik\SmsKimlik;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -29,6 +30,7 @@ class WebPortalYetkiIzin extends AbstractModel
      */
     public function members(): hasOne
     {
-        return $this->hasOne(SmsKimlik::class, 'id', 'userid');
+        return $this->hasOne(SmsKimlik::class, 'id', 'userid')
+                    ->where('durum', '=', Status::ACTIVE);
     }
 }

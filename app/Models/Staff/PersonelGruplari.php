@@ -2,6 +2,7 @@
 
 namespace App\Models\Staff;
 
+use App\Enums\Status;
 use App\Models\AbstractModel;
 use App\Models\RecorderTrait;
 use App\Models\SmsKimlik\SmsKimlik;
@@ -45,11 +46,13 @@ class PersonelGruplari extends AbstractModel
      */
     public function members(): hasMany
     {
-        return $this->hasMany(PersonelGrupEslestir::class, 'personel_grup_id', 'id');
+        return $this->hasMany(PersonelGrupEslestir::class, 'personel_grup_id', 'id')
+                    ->where('durum', '=', Status::ACTIVE);
     }
 
     public function authorizations(): hasMany
     {
-        return $this->hasMany(PersonelGrupYetkiEslestir::class, 'personel_grup_id', 'id');
+        return $this->hasMany(PersonelGrupYetkiEslestir::class, 'personel_grup_id', 'id')
+                    ->where('durum', '=', Status::ACTIVE);
     }
 }

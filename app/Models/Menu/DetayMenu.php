@@ -2,6 +2,7 @@
 
 namespace App\Models\Menu;
 
+use App\Enums\Status;
 use App\Models\AbstractModel;
 use App\Models\SmsKimlik\SmsKimlik;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -38,7 +39,8 @@ class DetayMenu extends AbstractModel
     public function pages(): hasMany
     {
         return $this->hasMany(DetayMenu::class, 'parentid', 'id')
-                    ->with('members');
+                    ->with('members')
+                    ->where('durum', '=', Status::ACTIVE);
     }
 
     /**
@@ -46,7 +48,8 @@ class DetayMenu extends AbstractModel
      */
     public function menu(): hasOne
     {
-        return $this->hasOne(DetayMenu::class, 'id', 'parentid');
+        return $this->hasOne(DetayMenu::class, 'id', 'parentid')
+                    ->where('durum', '=', Status::ACTIVE);
     }
 
     /**

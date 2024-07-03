@@ -2,6 +2,7 @@
 
 namespace App\Models\Call;
 
+use App\Enums\Status;
 use App\Filters\Call\CallFilter;
 use App\Models\AbstractModel;
 use App\Models\SmsKimlik\SmsKimlik;
@@ -52,7 +53,8 @@ class Cagri extends AbstractModel
      */
     public function detail(): hasMany
     {
-        return $this->hasMany(CagriDetay::class, 'ustid', 'id');
+        return $this->hasMany(CagriDetay::class, 'ustid', 'id')
+                    ->where('durum', '=', Status::ACTIVE);
     }
 
     /**
@@ -60,7 +62,8 @@ class Cagri extends AbstractModel
      */
     public function operator(): hasOne
     {
-        return $this->hasOne(SmsKimlik::class, 'id', 'opid');
+        return $this->hasOne(SmsKimlik::class, 'id', 'opid')
+                    ->where('durum', '=', Status::ACTIVE);
     }
 
     /**
@@ -68,7 +71,8 @@ class Cagri extends AbstractModel
      */
     public function voiceUser(): hasOne
     {
-        return $this->hasOne(SesUser::class, 'cagri_id', 'id');
+        return $this->hasOne(SesUser::class, 'cagri_id', 'id')
+                    ->where('durum', '=', Status::ACTIVE);
     }
 
     /**

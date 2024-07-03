@@ -45,6 +45,7 @@ class SesUser extends AbstractModel
      */
     public function pairedBy(): hasOne
     {
-        return $this->hasOne(SmsKimlik::class, 'id', 'eslestiren_id');
+        return $this->hasOne(SmsKimlik::class, 'id', 'eslestiren_id')
+                    ->where('durum', '=', Status::ACTIVE);
     }
 }

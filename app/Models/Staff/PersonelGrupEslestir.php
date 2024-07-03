@@ -2,6 +2,7 @@
 
 namespace App\Models\Staff;
 
+use App\Enums\Status;
 use App\Models\AbstractModel;
 use App\Models\RecorderTrait;
 use App\Models\SmsKimlik\SmsKimlik;
@@ -45,6 +46,7 @@ class PersonelGrupEslestir extends AbstractModel
      */
     public function staff(): hasOne
     {
-        return $this->hasOne(SmsKimlik::class, 'id', 'personel_id');
+        return $this->hasOne(SmsKimlik::class, 'id', 'personel_id')
+            ->where('durum', '=', Status::ACTIVE);
     }
 }
