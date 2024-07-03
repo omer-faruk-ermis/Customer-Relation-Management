@@ -2,7 +2,8 @@
 
 namespace App\Enums;
 
-class DefaultConstant {
+class DefaultConstant
+{
     const DEFAULT_DATETIME_FORMAT = 'd.m.Y H:i:s';
     const DEFAULT_DATE_FORMAT = 'd.m.Y';
     const DATE_YMD_LINK_FORMAT = 'Y/m/d';
@@ -20,4 +21,5 @@ class DefaultConstant {
     const LOCAL_PHONE_LENGTH = 10;
     const INTERNATIONAL_PHONE_LENGTH = 11;
     const NETGSM_PHONE_PREFIX = 510;
+    const PARENT = 0;
 }

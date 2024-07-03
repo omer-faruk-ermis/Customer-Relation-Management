@@ -13,8 +13,8 @@ class StoreUrlDefinitionRequest extends AbstractRequest
         return [
             'url'           => 'required|string',
             'name'          => 'required|string',
-            'menu_id'       => 'sometimes|string',
-            'background_id' => 'sometimes|string',
+            'menu_id'       => 'required|string',
+            'background_id' => 'required|string',
         ];
     }
 }

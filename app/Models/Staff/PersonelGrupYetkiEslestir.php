@@ -29,4 +29,13 @@ class PersonelGrupYetkiEslestir extends AbstractModel
     use AuthorizationTrait;
 
     protected $table = 'kaynaksms_diger.dbo.personel_grup_yetki_eslestir';
+
+    protected $fillable = [
+        'personel_grup_id',
+        'yetki_id',
+        'durum',
+        'tip',
+        'kayit_tarihi',
+        'sms_kimlik'
+    ];
 }

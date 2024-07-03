@@ -8,4 +8,6 @@ class Model extends AbstractEnum
     const QUESTION_ANSWER = 'SoruCevap';
     const EMPLOYEE = 'SmsKimlik';
     const CALL = 'Cagri';
+    const STAFF_GROUP = 'PersonelGruplari';
+    const URL_DEFINITION = 'UrlTanim';
 }

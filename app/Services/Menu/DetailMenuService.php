@@ -4,7 +4,7 @@ namespace App\Services\Menu;
 
 use App\Enums\Authorization\AuthorizationTypeName;
 use App\Enums\Authorization\SmsManagement;
-use App\Enums\NumericalConstant;
+use App\Enums\DefaultConstant;
 use App\Enums\Status;
 use App\Models\Menu\DetayMenu;
 use App\Services\AbstractService;
@@ -39,7 +39,7 @@ class DetailMenuService extends AbstractService
                                    'members'
                                ])
                         ->where('durum', '=', Status::ACTIVE)
-                        ->where('parentid', '=', NumericalConstant::ZERO)
+                        ->where('parentid', '=', DefaultConstant::PARENT)
                         ->orderBy('sira')
                         ->get();
     }
@@ -54,7 +54,7 @@ class DetailMenuService extends AbstractService
     {
         return DetayMenu::with(['members'])
                         ->where('durum', '=', Status::ACTIVE)
-                        ->where('parentid', '<>', NumericalConstant::ZERO)
+                        ->where('parentid', '<>', DefaultConstant::PARENT)
                         ->orderBy('sira')
                         ->get();
     }

@@ -2,10 +2,12 @@
 
 namespace App\Services\Staff;
 
+use App\Enums\Authorization\AuthorizationType;
 use App\Enums\Authorization\AuthorizationTypeName;
 use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
 use App\Enums\Status;
+use App\Exceptions\Authorization\AuthorizationTypeNotFoundException;
 use App\Exceptions\Staff\StaffGroupAuthorizationMatchNotFoundException;
 use App\Helpers\CacheOperation;
 use App\Models\Staff\PersonelGrupYetkiEslestir;
@@ -40,6 +42,10 @@ class StaffGroupAuthorizationMatchService extends AbstractService
      */
     public function store(Request $request): PersonelGrupYetkiEslestir
     {
+        if (!AuthorizationType::hasValue([$request->input('type')])) {
+            throw new AuthorizationTypeNotFoundException();
+        }
+
         $employeeGroupAuthorizationMatch = PersonelGrupYetkiEslestir::create([
                                                                                  'personel_grup_id' => $request->input('staff_group_id'),
                                                                                  'yetki_id'         => $request->input('authorization_id'),

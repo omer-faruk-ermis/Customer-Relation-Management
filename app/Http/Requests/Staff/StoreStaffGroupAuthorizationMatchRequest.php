@@ -13,7 +13,7 @@ class StoreStaffGroupAuthorizationMatchRequest extends AbstractRequest
         return [
             'staff_group_id'   => 'required|string',
             'authorization_id' => 'required|string',
-            'type'             => 'required|boolean'
+            'type'             => 'required|integer'
         ];
     }
 }

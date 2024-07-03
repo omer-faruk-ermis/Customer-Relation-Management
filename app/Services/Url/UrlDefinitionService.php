@@ -4,16 +4,16 @@ namespace App\Services\Url;
 
 use App\Enums\Authorization\AuthorizationTypeName;
 use App\Enums\Authorization\SmsManagement;
+use App\Enums\DefaultConstant;
 use App\Enums\NumericalConstant;
 use App\Enums\Status;
 use App\Exceptions\Url\HaveAlreadyUrlDefinitionException;
 use App\Exceptions\Url\UrlDefinitionNotFoundException;
-use App\Http\Requests\Url\StoreUrlDefinitionRequest;
-use App\Http\Requests\Url\UpdateUrlDefinitionRequest;
 use App\Models\Url\UrlTanim;
 use App\Services\AbstractService;
 use App\Utils\Security;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
@@ -36,26 +36,30 @@ class UrlDefinitionService extends AbstractService
     /**
      * @param Request  $request
      *
-     * @return Collection
+     * @return Collection|LengthAwarePaginator
      */
-    public function page(Request $request): Collection
+    public function page(Request $request): Collection|LengthAwarePaginator
     {
-        return UrlTanim::with(['recorder', 'menu', 'authorizations'])
-                       ->where('durum', '=', Status::ACTIVE)
-                       ->get();
+        $pages = UrlTanim::with(['recorder', 'menu', 'authorizations'])
+                         ->filter($request->all())
+                         ->where('durum', '=', Status::ACTIVE);
+
+        return $request->input('page')
+            ? $pages->paginate(DefaultConstant::PAGINATE)
+            : $pages->get();
     }
 
     /**
-     * @param StoreUrlDefinitionRequest  $request
+     * @param Request  $request
      *
      * @return UrlTanim
      * @throws HaveAlreadyUrlDefinitionException
      */
-    public function store(StoreUrlDefinitionRequest $request): UrlTanim
+    public function store(Request $request): UrlTanim
     {
         $urlDefinition =
             UrlTanim::with('menu')
-                    ->filter($request)
+                    ->filter($request->all())
                     ->where('durum', '=', Status::ACTIVE)
                     ->first();
 
@@ -72,17 +76,18 @@ class UrlDefinitionService extends AbstractService
                                     'tab_id'      => NumericalConstant::ZERO,
                                     'kayit_id'    => Auth::id(),
                                     'kayit_ip'    => $request->ip(),
+                                    'kayit_tarih' => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT),
                                 ]);
     }
 
     /**
-     * @param UpdateUrlDefinitionRequest  $request
-     * @param string                      $id
+     * @param Request  $request
+     * @param string   $id
      *
      * @return UrlTanim
      * @throws UrlDefinitionNotFoundException
      */
-    public function update(UpdateUrlDefinitionRequest $request, string $id): UrlTanim
+    public function update(Request $request, string $id): UrlTanim
     {
         $urlDefinition = UrlTanim::find(Security::decrypt($id));
         if (empty($urlDefinition)) {

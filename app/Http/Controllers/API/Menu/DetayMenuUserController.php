@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\DetailMenu\StoreDetailMenuUserRequest;
 use App\Http\Resources\SuccessResource;
 use App\Services\Menu\DetailMenuUserService;
+use Exception;
 use Illuminate\Http\Request;
 
 /**
@@ -34,6 +35,7 @@ class DetayMenuUserController extends Controller
      * @param StoreDetailMenuUserRequest  $request
      *
      * @return SuccessResource
+     * @throws Exception
      */
     public function store(StoreDetailMenuUserRequest $request): SuccessResource
     {

@@ -26,7 +26,7 @@ class LogController extends Controller
      * LogController constructor
      *
      * @throws ForbiddenException
-*/
+     */
     public function __construct(Request $request)
     {
         $this->logService = new LogService($request);
@@ -45,7 +45,8 @@ class LogController extends Controller
     }
 
     /**
-     * @param UpdateReasonRequest $request
+     * @param UpdateReasonRequest  $request
+     *
      * @return ReasonLogResource
      * @throws Exception
      */

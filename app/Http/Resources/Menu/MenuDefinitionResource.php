@@ -3,7 +3,6 @@
 namespace App\Http\Resources\Menu;
 
 use App\Http\Resources\AbstractResource;
-use App\Http\Resources\Employee\EmployeeResource;
 use App\Http\Resources\Url\UrlDefinitionResource;
 use App\Utils\Security;
 

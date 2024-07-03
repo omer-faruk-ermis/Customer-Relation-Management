@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Url\IndexUrlDefinitionRequest;
 use App\Http\Requests\Url\StoreUrlDefinitionRequest;
 use App\Http\Requests\Url\UpdateUrlDefinitionRequest;
+use App\Http\Resources\PaginationResource;
 use App\Http\Resources\SuccessResource;
 use App\Http\Resources\Url\UrlDefinitionCollection;
 use App\Http\Resources\Url\UrlDefinitionResource;
@@ -39,13 +40,15 @@ class UrlTanimController extends Controller
     /**
      * @param IndexUrlDefinitionRequest  $request
      *
-     * @return UrlDefinitionCollection
+     * @return UrlDefinitionCollection|PaginationResource
      */
-    public function page(IndexUrlDefinitionRequest $request): UrlDefinitionCollection
+    public function page(IndexUrlDefinitionRequest $request): UrlDefinitionCollection|PaginationResource
     {
         $urlDefinition = $this->urlDefinitionService->page($request);
 
-        return new UrlDefinitionCollection($urlDefinition, 'SMS_MANAGEMENT_PAGE.INDEX.SUCCESS');
+        return $request->input('page')
+            ? new PaginationResource($urlDefinition, 'SMS_MANAGEMENT_PAGE.INDEX.SUCCESS')
+            : new UrlDefinitionCollection($urlDefinition, 'SMS_MANAGEMENT_PAGE.INDEX.SUCCESS');
     }
 
     /**

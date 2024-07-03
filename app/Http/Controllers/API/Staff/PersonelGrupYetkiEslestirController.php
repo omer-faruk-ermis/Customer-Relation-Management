@@ -9,6 +9,7 @@ use App\Http\Requests\Staff\StoreStaffGroupAuthorizationMatchRequest;
 use App\Http\Resources\Staff\StaffGroupAuthorizationMatchResource;
 use App\Http\Resources\SuccessResource;
 use App\Services\Staff\StaffGroupAuthorizationMatchService;
+use Exception;
 use Illuminate\Http\Request;
 
 /**
@@ -35,6 +36,7 @@ class PersonelGrupYetkiEslestirController extends Controller
      * @param StoreStaffGroupAuthorizationMatchRequest  $request
      *
      * @return StaffGroupAuthorizationMatchResource
+     * @throws Exception
      */
     public function store(StoreStaffGroupAuthorizationMatchRequest $request): StaffGroupAuthorizationMatchResource
     {

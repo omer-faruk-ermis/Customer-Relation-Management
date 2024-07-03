@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Authorization\StoreEmployeeAuthorizationRequest;
 use App\Http\Resources\SuccessResource;
 use App\Services\Authorization\EmployeeAuthorizationService;
+use Exception;
 use Illuminate\Http\Request;
 
 /**
@@ -34,6 +35,7 @@ class SmsKimlikYetkiController extends Controller
      * @param StoreEmployeeAuthorizationRequest  $request
      *
      * @return SuccessResource
+     * @throws Exception
      */
     public function store(StoreEmployeeAuthorizationRequest $request): SuccessResource
     {

@@ -56,7 +56,7 @@ class CacheOperation
         $sms_kimlik = SmsKimlikBuilder::handle(Cache::get("sms_kimlik_$netgsmsessionid"));
 
         Cache::put("sms_kimlik_$netgsmsessionid",$sms_kimlik);
-        Redis::connection('prod')->set("yonetimsession:$netgsmsessionid", json_encode(Arr::except($sms_kimlik, ['unit','sip'])));
+        Redis::connection('prod')->set("yonetimsession:$netgsmsessionid", json_encode(Arr::except($sms_kimlik, ['unit','sip']),JSON_UNESCAPED_UNICODE));
         Redis::connection('prod')->command('EXPIRE', ["yonetimsession:$netgsmsessionid", DefaultConstant::CACHE_ONE_DAY]);
 
         return $sms_kimlik;

@@ -9,6 +9,7 @@ use App\Http\Requests\WebPortal\StoreWebPortalAuthorizationPermissionRequest;
 use App\Http\Resources\SuccessResource;
 use App\Http\Resources\WebPortal\WebPortalAuthorizationPermissionResource;
 use App\Services\WebPortal\WebPortalAuthorizationPermissionService;
+use Exception;
 use Illuminate\Http\Request;
 
 /**
@@ -35,6 +36,7 @@ class WebPortalYetkiIzinController extends Controller
      * @param StoreWebPortalAuthorizationPermissionRequest  $request
      *
      * @return WebPortalAuthorizationPermissionResource
+     * @throws Exception
      */
     public function store(StoreWebPortalAuthorizationPermissionRequest $request): WebPortalAuthorizationPermissionResource
     {

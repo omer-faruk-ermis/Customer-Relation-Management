@@ -18,20 +18,20 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @package App\Models\Url
  * @version April 26, 2024, 0:05 pm UTC
  *
- * @property int            $id
- * @property string         $adi
- * @property string         $url
- * @property string         $ust_id
- * @property bool           $durum
- * @property int            $arkaplan_id
- * @property int            $tab_id
- * @property int            $kayit_id
- * @property string         $kayit_ip
+ * @property int                 $id
+ * @property string              $adi
+ * @property string              $url
+ * @property string              $ust_id
+ * @property bool                $durum
+ * @property int                 $arkaplan_id
+ * @property int                 $tab_id
+ * @property int                 $kayit_id
+ * @property string              $kayit_ip
+ * @property string              $kayit_tarih
  *
- * @property-read SmsKimlik $recorder
- * @property-read SmsKimlik $members
- * @property-read MenuTanim $menu
- * @property-read SmsKimlikYetki $aa
+ * @property-read SmsKimlik      $recorder
+ * @property-read SmsKimlikYetki $authorizations
+ * @property-read MenuTanim      $menu
  *
  * @method static Builder|UrlTanim filter(array $filters = [])
  */
@@ -39,17 +39,27 @@ class UrlTanim extends AbstractModel
 {
     protected $table = 'kaynaksms.dbo.url_tanim';
 
-    public string $recordField = 'kayit_id';
-
     use RecorderTrait;
+
+    protected $fillable = [
+        'adi',
+        'url',
+        'ust_id',
+        'durum',
+        'arkaplan_id',
+        'tab_id',
+        'kayit_id',
+        'kayit_ip',
+        'kayit_tarih'
+    ];
 
     /**
      * @return hasMany
      */
-   public function authorizations(): hasMany
+    public function authorizations(): hasMany
     {
         return $this->hasMany(SmsKimlikYetki::class, 'url_id', 'id')
-            ->with('members');
+                    ->with('members');
     }
 
     /**

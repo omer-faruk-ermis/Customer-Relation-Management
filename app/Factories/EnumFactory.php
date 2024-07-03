@@ -2,10 +2,13 @@
 
 namespace App\Factories;
 
+use App\Enums\Authorization\AuthorizationType;
 use App\Enums\Brand;
 use App\Enums\Call\CallDirection;
 use App\Enums\Call\PairStatus;
 use App\Enums\EnumInterface;
+use App\Enums\MeetingTypeSpecies;
+use App\Enums\ReasonType;
 use App\Enums\Status;
 use App\Enums\UserType;
 use App\Exceptions\InvalidEnumException;
@@ -20,11 +23,14 @@ use App\Exceptions\InvalidEnumException;
 class EnumFactory
 {
     protected array $enumList = [
-        'status'         => Status::class,
-        'user_type'      => UserType::class,
-        'brand'          => Brand::class,
-        'call_direction' => CallDirection::class,
-        'pair_status'    => PairStatus::class,
+        'status'               => Status::class,
+        'user_type'            => UserType::class,
+        'brand'                => Brand::class,
+        'call_direction'       => CallDirection::class,
+        'pair_status'          => PairStatus::class,
+        'meeting_type_species' => MeetingTypeSpecies::class,
+        'reason_type'          => ReasonType::class,
+        'authorization_type'   => AuthorizationType::class,
     ];
 
     /**

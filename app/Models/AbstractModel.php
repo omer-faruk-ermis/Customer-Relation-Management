@@ -35,6 +35,13 @@ abstract class AbstractModel extends Eloquent
     public $timestamps = false;
 
     /**
+     * The default attributes that should be in RecorderTrait.
+     *
+     * @var string
+     */
+    public string $recordField = 'kayit_id';
+
+    /**
      * @param $filters
      *
      * @return null

@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Staff\IndexStaffGroupRequest;
 use App\Http\Requests\Staff\StoreStaffGroupRequest;
 use App\Http\Requests\Staff\UpdateStaffGroupRequest;
-use App\Http\Resources\Staff\StaffGroupCollection;
+use App\Http\Resources\PaginationResource;
 use App\Http\Resources\Staff\StaffGroupResource;
 use App\Http\Resources\SuccessResource;
 use App\Services\Staff\StaffGroupService;
@@ -37,13 +37,13 @@ class PersonelGrupController extends Controller
     /**
      * @param IndexStaffGroupRequest  $request
      *
-     * @return StaffGroupCollection
+     * @return PaginationResource
      */
-    public function index(IndexStaffGroupRequest $request): StaffGroupCollection
+    public function index(IndexStaffGroupRequest $request): PaginationResource
     {
         $staffGroup = $this->staffGroupService->index($request);
 
-        return new StaffGroupCollection($staffGroup, 'STAFF_GROUP.INDEX.SUCCESS');
+        return new PaginationResource($staffGroup, 'STAFF_GROUP.INDEX.SUCCESS');
     }
 
     /**

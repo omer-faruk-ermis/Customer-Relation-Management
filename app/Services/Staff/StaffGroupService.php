@@ -12,8 +12,10 @@ use App\Http\Requests\Staff\UpdateStaffGroupRequest;
 use App\Models\Staff\PersonelGruplari;
 use App\Services\AbstractService;
 use App\Utils\Security;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class StaffGroupService
@@ -34,9 +36,9 @@ class StaffGroupService extends AbstractService
     /**
      * @param Request  $request
      *
-     * @return Collection
+     * @return LengthAwarePaginator
      */
-    public function index(Request $request): Collection
+    public function index(Request $request): LengthAwarePaginator
     {
         return PersonelGruplari::with([
                                           'recorder',
@@ -47,8 +49,8 @@ class StaffGroupService extends AbstractService
                                           'authorizations.authorization.recorder',
                                           'authorizations.subscriberBillet.recorder'
                                       ])
-                               ->where('durum', '=', Status::ACTIVE)
-                               ->get();
+                               ->where('durum', '<>', Status::DESTROY)
+                               ->paginate(DefaultConstant::PAGINATE);
     }
 
     /**
@@ -62,7 +64,7 @@ class StaffGroupService extends AbstractService
                                             'grup_adi'     => $request->input('name'),
                                             'durum'        => $request->input('state'),
                                             'aciklama'     => $request->input('description'),
-                                            'sms_kimlik'   => $request->input('recorder_id'),
+                                            'sms_kimlik'   => Auth::id(),
                                             'kayit_tarihi' => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT)
                                         ]);
     }
@@ -103,7 +105,7 @@ class StaffGroupService extends AbstractService
             throw new StaffGroupNotFoundException();
         }
 
-        $staffGroup->durum = Status::PASSIVE;
+        $staffGroup->durum = Status::DESTROY;
         $staffGroup->update();
     }
 }

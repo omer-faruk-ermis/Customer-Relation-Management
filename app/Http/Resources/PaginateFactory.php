@@ -7,6 +7,8 @@ use App\Http\Resources\Call\CallResource;
 use App\Http\Resources\Employee\EmployeeResource;
 use App\Http\Resources\Log\LogResource;
 use App\Http\Resources\QuestionAnswer\QuestionAnswerResource;
+use App\Http\Resources\Staff\StaffGroupResource;
+use App\Http\Resources\Url\UrlDefinitionResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -27,6 +29,8 @@ class PaginateFactory
                 Model::QUESTION_ANSWER => QuestionAnswerResource::class,
                 Model::EMPLOYEE        => EmployeeResource::class,
                 Model::CALL            => CallResource::class,
+                Model::STAFF_GROUP     => StaffGroupResource::class,
+                Model::URL_DEFINITION  => UrlDefinitionResource::class,
             ];
 
             $resourceClass = $resourceList[class_basename($data->first())] ?? null;

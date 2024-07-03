@@ -20,6 +20,8 @@ use App\Http\Controllers\API\Sms\SmsController;
 use App\Http\Controllers\API\Staff\PersonelGrupController;
 use App\Http\Controllers\API\Staff\PersonelGrupEslestirController;
 use App\Http\Controllers\API\Staff\PersonelGrupYetkiEslestirController;
+use App\Http\Controllers\API\Subject\KonuBilgiController;
+use App\Http\Controllers\API\Subject\KonuBilgiKullanimYeriController;
 use App\Http\Controllers\API\Subscriber\AboneKutukYetkiController;
 use App\Http\Controllers\API\Token\DocSignatureController;
 use App\Http\Controllers\API\Url\UrlTanimController;
@@ -30,7 +32,6 @@ use App\Http\Controllers\API\WebUser\WebUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Rap2hpoutre\LaravelLogViewer\LogViewerController;
-
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -116,10 +117,23 @@ Route::group(['middleware' => 'auth_with_token'], function () {
         Route::get('/last_pair', [VoiceUserController::class, 'lastPair']);
     });
 
+    // Subject
+    Route::prefix('subject')->group(function () {
+        Route::get('/', [KonuBilgiController::class, 'index']);
+        Route::get('/use_place', [KonuBilgiKullanimYeriController::class, 'index']);
+    });
+
     // Menu-Url Tanim // SmsManagement type=1
     Route::prefix('sms_management')->group(function () {
         Route::get('/menu', [MenuTanimController::class, 'menu']);
-        Route::get('/page', [UrlTanimController::class, 'page']);
+
+        // Page
+        Route::prefix('/page')->group(function () {
+            Route::get('/', [UrlTanimController::class, 'page']);
+            Route::post('/', [UrlTanimController::class, 'store']);
+            Route::put('/{id}', [UrlTanimController::class, 'update']);
+            Route::delete('/{id}', [UrlTanimController::class, 'destroy']);
+        });
 
         // DetailMenuUser
         Route::prefix('/authorization')->group(function () {

@@ -32,6 +32,14 @@ class PersonelGrupEslestir extends AbstractModel
 
     use RecorderTrait;
 
+    protected $fillable = [
+        'personel_grup_id',
+        'personel_id',
+        'durum',
+        'kayit_tarihi',
+        'sms_kimlik'
+    ];
+
     /**
      * @return hasOne
      */

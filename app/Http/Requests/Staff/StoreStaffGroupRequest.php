@@ -13,8 +13,7 @@ class StoreStaffGroupRequest extends AbstractRequest
         return [
             'name'        => 'required|string',
             'description' => 'sometimes|string',
-            'state'       => 'required|boolean',
-            'recorder_id' => 'required|string',
+            'state'       => 'required|boolean'
         ];
     }
 }

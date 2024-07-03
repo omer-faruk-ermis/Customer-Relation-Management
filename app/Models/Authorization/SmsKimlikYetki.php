@@ -25,8 +25,6 @@ class SmsKimlikYetki extends AbstractModel
 {
     protected $table = 'kaynaksms.dbo.sms_kimlik_yetki';
 
-    public string $recordField = 'kayit_id';
-
     use RecorderTrait;
 
     protected $fillable = [
