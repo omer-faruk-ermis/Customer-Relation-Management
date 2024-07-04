@@ -65,7 +65,9 @@ class StaffGroupService extends AbstractService
      */
     public function show(Request $request, string $id): Model
     {
-        $staffGroup = PersonelGruplari::with(['recorder', 'members'])->find(Security::decrypt($id));
+        $staffGroup = PersonelGruplari::with(['recorder', 'members'])
+                                      ->where('durum', '<>', Status::DESTROY)
+                                      ->find(Security::decrypt($id));
         if (empty($staffGroup)) {
             throw new StaffGroupNotFoundException();
         }
@@ -103,7 +105,7 @@ class StaffGroupService extends AbstractService
             }
         }
 
-        $staffGroup['authorizationCollect'] = (object) $authorizations;
+        $staffGroup['authorizationCollect'] = (object)$authorizations;
 
         return $staffGroup;
     }
