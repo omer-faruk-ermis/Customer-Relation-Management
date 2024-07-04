@@ -3,6 +3,7 @@
 namespace App\Models\Staff;
 
 use App\Models\AbstractModel;
+use App\Models\RecorderTrait;
 use App\Models\Url\UrlTanim;
 
 /**
@@ -26,9 +27,11 @@ use App\Models\Url\UrlTanim;
  */
 class PersonelGrupYetkiEslestir extends AbstractModel
 {
-    use AuthorizationTrait;
-
     protected $table = 'kaynaksms_diger.dbo.personel_grup_yetki_eslestir';
+
+    public string $recordField = 'sms_kimlik';
+
+    use AuthorizationTrait, RecorderTrait;
 
     protected $fillable = [
         'personel_grup_id',

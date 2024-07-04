@@ -3,7 +3,6 @@
 namespace App\Models\SimCard;
 
 use App\Models\AbstractModel;
-use App\Models\MaskableTrait;
 
 /**
  * Class SimKart

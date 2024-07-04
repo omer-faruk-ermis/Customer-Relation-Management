@@ -14,13 +14,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @package App\Models\Staff
  * @version April 29, 2024, 2:10 pm UTC
  *
- * @property int    $id
- * @property int    $personel_grup_id
- * @property int    $personel_id
- * @property bool   $durum
- * @property string $kayit_tarihi
- * @property string $son_gecerlilik_tarihi
- * @property int    $sms_kimlik
+ * @property int            $id
+ * @property int            $personel_grup_id
+ * @property int            $personel_id
+ * @property bool           $durum
+ * @property string         $kayit_tarihi
+ * @property string         $son_gecerlilik_tarihi
+ * @property int            $sms_kimlik
  *
  * @property-read SmsKimlik $recorder
  * @property-read SmsKimlik $staff
@@ -47,6 +47,6 @@ class PersonelGrupEslestir extends AbstractModel
     public function staff(): hasOne
     {
         return $this->hasOne(SmsKimlik::class, 'id', 'personel_id')
-            ->where('durum', '=', Status::ACTIVE);
+                    ->where('durum', '=', Status::ACTIVE);
     }
 }

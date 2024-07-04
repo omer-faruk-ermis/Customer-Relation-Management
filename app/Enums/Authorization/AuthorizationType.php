@@ -15,9 +15,9 @@ class AuthorizationType extends AbstractEnum
     {
         return [
             'sms_management'    => self::SMS_MANAGEMENT,
-            'blue_screen'       => self::SMS_MANAGEMENT,
-            'authorization'     => self::SMS_MANAGEMENT,
-            'subscriber_billet' => self::SMS_MANAGEMENT,
+            'blue_screen'       => self::BLUE_SCREEN,
+            'authorization'     => self::AUTHORIZATION,
+            'subscriber_billet' => self::SUBSCRIBER_BILLET,
         ];
     }
 }

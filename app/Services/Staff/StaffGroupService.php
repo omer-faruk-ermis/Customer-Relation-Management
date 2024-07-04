@@ -2,6 +2,7 @@
 
 namespace App\Services\Staff;
 
+use App\Enums\Authorization\AuthorizationType;
 use App\Enums\Authorization\AuthorizationTypeName;
 use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
@@ -10,11 +11,13 @@ use App\Exceptions\Staff\StaffGroupNotFoundException;
 use App\Http\Requests\Staff\StoreStaffGroupRequest;
 use App\Http\Requests\Staff\UpdateStaffGroupRequest;
 use App\Models\Staff\PersonelGruplari;
+use App\Models\Staff\PersonelGrupYetkiEslestir;
 use App\Services\AbstractService;
+use App\Services\Authorization\AuthorizationService;
 use App\Utils\Security;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -51,6 +54,58 @@ class StaffGroupService extends AbstractService
                                       ])
                                ->where('durum', '<>', Status::DESTROY)
                                ->paginate(DefaultConstant::PAGINATE);
+    }
+
+    /**
+     * @param Request  $request
+     * @param string   $id
+     *
+     * @return Model
+     * @throws StaffGroupNotFoundException
+     */
+    public function show(Request $request, string $id): Model
+    {
+        $staffGroup = PersonelGruplari::with(['recorder', 'members'])->find(Security::decrypt($id));
+        if (empty($staffGroup)) {
+            throw new StaffGroupNotFoundException();
+        }
+
+        $authorizationService = new AuthorizationService(Auth::id());
+        $authorizationTypes = [
+            'smsManagement'    => AuthorizationType::SMS_MANAGEMENT,
+            'blueScreen'       => AuthorizationType::BLUE_SCREEN,
+            'authorization'    => AuthorizationType::AUTHORIZATION,
+            'subscriberBillet' => AuthorizationType::SUBSCRIBER_BILLET,
+        ];
+
+        $authorizations = [];
+        foreach ($authorizationTypes as $type => $value) {
+            $groupAuthorizations = $authorizationService->authorizationGroup($value, Security::decrypt($id));
+
+            $authorizations[$type] = !empty($groupAuthorizations)
+                ? $authorizationService->$type($groupAuthorizations)
+                : collect();
+
+            foreach ($authorizations[$type] as $key => $authorization) {
+                $matching = PersonelGrupYetkiEslestir::with('recorder')
+                                                     ->where('personel_grup_id', Security::decrypt($id))
+                                                     ->where('yetki_id', '=', $authorization['id'])
+                                                     ->where('tip', '=', $value)
+                                                     ->first();
+
+                if (!empty($matching)) {
+                    $authorizations[$type][$key]->match_id = $matching->id;
+                    $authorizations[$type][$key]->staff_group_id = $matching['personel_grup_id'];
+                    $authorizations[$type][$key]->match_state = $matching->durum;
+                    $authorizations[$type][$key]->match_type = $matching->tip;
+                    $authorizations[$type][$key]->recorder = $matching->recorder;
+                }
+            }
+        }
+
+        $staffGroup['authorizationCollect'] = (object) $authorizations;
+
+        return $staffGroup;
     }
 
     /**

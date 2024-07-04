@@ -2,10 +2,8 @@
 
 namespace App\Models\Customer;
 
-use App\Filters\SmsKimlik\SmsKimlikFilter;
 use App\Models\AbstractModel;
 use App\Models\MaskableTrait;
-use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class Musteri

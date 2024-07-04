@@ -210,7 +210,8 @@ class AuthorizationService
                 return $employeeGroup->pluck('id');
             }
 
-            return $employeeGroup->toArray() ? ['Abone Kütük Yetkileri' => $employeeGroup->toArray()] : [];
+            return $employeeGroup->groupBy('menu')
+                                 ->toArray();
         }
     }
 
@@ -270,10 +271,11 @@ class AuthorizationService
 
     /**
      * @param int  $type
+     * @param int  $groupId
      *
      * @return array
      */
-    protected function authorizationGroup(int $type): array
+    public function authorizationGroup(int $type, int $groupId = NumericalConstant::ZERO): array
     {
         $personelGruplari = PersonelGruplari::getModel();
         $personelGruplariEslestir = PersonelGrupEslestir::getModel();
@@ -290,11 +292,18 @@ class AuthorizationService
                                       $personelGruplariEslestir->qualifyColumn('personel_grup_id'),
                                       '=',
                                       $personelGrupYetkiEslestir->qualifyColumn('personel_grup_id'))
-                               ->where($personelGruplari->qualifyColumn('durum'), '=', Status::ACTIVE)
                                ->where($personelGruplariEslestir->qualifyColumn('personel_id'), '=', $this->id)
                                ->where($personelGruplariEslestir->qualifyColumn('durum'), '=', Status::ACTIVE)
                                ->where($personelGrupYetkiEslestir->qualifyColumn('durum'), '=', Status::ACTIVE)
                                ->where($personelGrupYetkiEslestir->qualifyColumn('tip'), '=', $type)
+                               ->when($groupId > NumericalConstant::ZERO,
+                                   function ($q) use ($personelGruplari, $personelGrupYetkiEslestir, $groupId) {
+                                       $q->where($personelGrupYetkiEslestir->qualifyColumn('personel_grup_id'), '=', $groupId)
+                                         ->where($personelGruplari->qualifyColumn('durum'), '<>', Status::DESTROY);
+                                   }, function ($q) use ($personelGruplari) {
+                                       $q->where($personelGruplari->qualifyColumn('durum'), '=', Status::ACTIVE);
+                                   })
+                               ->distinct()
                                ->get()
                                ->pluck('authorization_id')
                                ->toArray();
@@ -305,7 +314,7 @@ class AuthorizationService
      *
      * @return Collection
      */
-    protected function smsManagement(array $ids = []): Collection
+    public function smsManagement(array $ids = []): Collection
     {
         $urlTanim = UrlTanim::getModel();
         $menuTanim = MenuTanim::getModel();
@@ -344,7 +353,7 @@ class AuthorizationService
      *
      * @return Collection
      */
-    protected function blueScreen(array $ids = []): Collection
+    public function blueScreen(array $ids = []): Collection
     {
         $detailMenu = DetayMenu::getModel();
         $detailMenuUser = DetayMenuUser::getModel();
@@ -375,7 +384,7 @@ class AuthorizationService
      *
      * @return Collection
      */
-    protected function authorization(array $ids = []): Collection
+    public function authorization(array $ids = []): Collection
     {
         $webPortalYetki = WebPortalYetki::getModel();
         $webPortalYetkiIzin = WebPortalYetkiIzin::getModel();
@@ -408,7 +417,7 @@ class AuthorizationService
      *
      * @return Collection
      */
-    protected function subscriberBillet(array $ids = []): Collection
+    public function subscriberBillet(array $ids = []): Collection
     {
         return AboneKutukYetkileri::select([
                                                'id',

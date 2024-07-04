@@ -47,6 +47,7 @@ class PersonelGruplari extends AbstractModel
     public function members(): hasMany
     {
         return $this->hasMany(PersonelGrupEslestir::class, 'personel_grup_id', 'id')
+                    ->with('staff')
                     ->where('durum', '=', Status::ACTIVE);
     }
 

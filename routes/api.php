@@ -171,6 +171,7 @@ Route::group(['middleware' => 'auth_with_token'], function () {
     // StaffGroup
     Route::prefix('staff_group')->group(function () {
         Route::get('/', [PersonelGrupController::class, 'index']);
+        Route::get('/{id}', [PersonelGrupController::class, 'show']);
         Route::post('/', [PersonelGrupController::class, 'store']);
         Route::put('/{id}', [PersonelGrupController::class, 'update']);
         Route::delete('/{id}', [PersonelGrupController::class, 'destroy']);

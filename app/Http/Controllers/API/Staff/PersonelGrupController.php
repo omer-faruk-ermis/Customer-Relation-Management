@@ -6,6 +6,7 @@ use App\Exceptions\ForbiddenException;
 use App\Exceptions\Staff\StaffGroupNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Staff\IndexStaffGroupRequest;
+use App\Http\Requests\Staff\ShowStaffGroupRequest;
 use App\Http\Requests\Staff\StoreStaffGroupRequest;
 use App\Http\Requests\Staff\UpdateStaffGroupRequest;
 use App\Http\Resources\PaginationResource;
@@ -44,6 +45,20 @@ class PersonelGrupController extends Controller
         $staffGroup = $this->staffGroupService->index($request);
 
         return new PaginationResource($staffGroup, 'STAFF_GROUP.INDEX.SUCCESS');
+    }
+
+    /**
+     * @param ShowStaffGroupRequest  $request
+     * @param string                 $id
+     *
+     * @return StaffGroupResource
+     * @throws StaffGroupNotFoundException
+     */
+    public function show(ShowStaffGroupRequest $request, string $id): StaffGroupResource
+    {
+        $staffGroup = $this->staffGroupService->show($request, $id);
+
+        return new StaffGroupResource($staffGroup, 'STAFF_GROUP.SHOW.SUCCESS');
     }
 
     /**

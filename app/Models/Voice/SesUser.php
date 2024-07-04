@@ -3,15 +3,11 @@
 namespace App\Models\Voice;
 
 use App\Enums\Status;
-use App\Filters\SmsKimlik\SmsKimlikFilter;
 use App\Models\AbstractModel;
 use App\Models\Customer\Musteri;
-use App\Models\MaskableTrait;
 use App\Models\SmsKimlik\SmsKimlik;
 use App\Models\WebUser\WebUser;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use function PHPUnit\Framework\isNull;
 
 /**
  * Class SesUser
