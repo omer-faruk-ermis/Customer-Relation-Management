@@ -65,7 +65,10 @@ class StaffGroupService extends AbstractService
      */
     public function show(Request $request, string $id): Model
     {
-        $staffGroup = PersonelGruplari::with(['recorder', 'members'])
+        $staffGroup = PersonelGruplari::with([
+                                                 'recorder',
+                                                 'members.recorder'
+                                             ])
                                       ->where('durum', '<>', Status::DESTROY)
                                       ->find(Security::decrypt($id));
         if (empty($staffGroup)) {

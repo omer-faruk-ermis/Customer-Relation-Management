@@ -31,7 +31,7 @@ class StaffGroupMatchResource extends AbstractResource
             'state'          => $this->durum,
             'register_date'  => DateUtil::dateFormat($this->kayit_tarihi),
             'recorder'       => EmployeeBasicResource::make($this->whenLoaded('recorder')),
-            'staff'          => EmployeeResource::make($this->whenLoaded('staff')),
+            'staff'          => EmployeeBasicResource::make($this->whenLoaded('staff')),
         ];
     }
 }
