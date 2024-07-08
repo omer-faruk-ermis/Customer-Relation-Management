@@ -2,7 +2,10 @@
 
 namespace App\Models\Menu;
 
+use App\Enums\Status;
 use App\Models\AbstractModel;
+use App\Models\SmsKimlik\SmsKimlik;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Class DDetayMenuUser
@@ -21,4 +24,13 @@ use App\Models\AbstractModel;
 class DetayMenuUser extends AbstractModel
 {
     protected $table = 'kaynaksms_diger.dbo.detay_menu_user';
+
+    /**
+     * @return hasOne
+     */
+    public function members(): hasOne
+    {
+        return $this->hasOne(SmsKimlik::class, 'id', 'userid')
+                    ->where('durum', '=', Status::ACTIVE);
+    }
 }

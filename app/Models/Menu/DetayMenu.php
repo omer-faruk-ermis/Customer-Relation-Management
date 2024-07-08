@@ -6,7 +6,6 @@ use App\Enums\Status;
 use App\Models\AbstractModel;
 use App\Models\SmsKimlik\SmsKimlik;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
@@ -39,7 +38,6 @@ class DetayMenu extends AbstractModel
     public function pages(): hasMany
     {
         return $this->hasMany(DetayMenu::class, 'parentid', 'id')
-                    ->with('members')
                     ->where('durum', '=', Status::ACTIVE);
     }
 
@@ -53,17 +51,11 @@ class DetayMenu extends AbstractModel
     }
 
     /**
-     * @return hasManyThrough
+     * @return hasMany
      */
-    public function members(): hasManyThrough
+    public function detail(): hasMany
     {
-        return $this->hasManyThrough(
-            SmsKimlik::class,
-            DetayMenuUser::class,
-            'menu_id',
-            'id',
-            'id',
-            'userid'
-        );
+        return $this->hasMany(DetayMenuUser::class, 'menu_id', 'id')
+                    ->where('durum', '=', Status::ACTIVE);
     }
 }

@@ -35,8 +35,8 @@ class DetailMenuService extends AbstractService
     public function menu(Request $request): Collection
     {
         return DetayMenu::with([
-                                   'pages',
-                                   'members'
+                                   'pages.detail.members',
+                                   'detail.members'
                                ])
                         ->where('durum', '=', Status::ACTIVE)
                         ->where('parentid', '=', DefaultConstant::PARENT)
@@ -52,7 +52,7 @@ class DetailMenuService extends AbstractService
      */
     public function page(Request $request): Collection
     {
-        return DetayMenu::with(['members'])
+        return DetayMenu::with(['detail.members'])
                         ->where('durum', '=', Status::ACTIVE)
                         ->where('parentid', '<>', DefaultConstant::PARENT)
                         ->orderBy('sira')
