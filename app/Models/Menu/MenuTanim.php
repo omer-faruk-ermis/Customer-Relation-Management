@@ -29,6 +29,6 @@ class MenuTanim extends AbstractModel
     public function pages(): hasMany
     {
         return $this->hasMany(UrlTanim::class, 'ust_id', 'id')
-                    ->with(['recorder']);
+                    ->with(['authorizations', 'recorder']);
     }
 }

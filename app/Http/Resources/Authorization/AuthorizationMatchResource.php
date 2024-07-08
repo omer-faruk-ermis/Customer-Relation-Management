@@ -21,10 +21,10 @@ class AuthorizationMatchResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'smsManagement'    => AuthorizationResource::collection($this->smsManagement),
-            'blueScreen'       => AuthorizationResource::collection($this->blueScreen),
-            'authorization'    => AuthorizationResource::collection($this->authorization),
-            'subscriberBillet' => AuthorizationResource::collection($this->subscriberBillet)
+            'smsManagement'    => AuthorizationCollection::make($this->smsManagement),
+            'blueScreen'       => AuthorizationCollection::make($this->blueScreen),
+            'authorization'    => AuthorizationCollection::make($this->authorization),
+            'subscriberBillet' => AuthorizationCollection::make($this->subscriberBillet),
         ];
     }
 }

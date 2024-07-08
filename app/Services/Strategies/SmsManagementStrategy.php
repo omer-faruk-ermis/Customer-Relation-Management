@@ -21,7 +21,7 @@ class SmsManagementStrategy implements PermissionStrategy
     public function check(Request $request, array $authorizationIds, array $authorizations): bool
     {
         if (Arr::get($authorizations, AuthorizationTypeName::SMS_MANAGEMENT) && !empty($authorizationIds)) {
-            if (SmsManagement::hasValue(Arr::get($authorizations, AuthorizationTypeName::SMS_MANAGEMENT))
+            if (SmsManagement::hasValues(Arr::get($authorizations, AuthorizationTypeName::SMS_MANAGEMENT))
                 && !empty(array_intersect($authorizations[AuthorizationTypeName::SMS_MANAGEMENT], $authorizationIds[AuthorizationTypeName::SMS_MANAGEMENT]))) {
                 return true;
             }

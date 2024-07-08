@@ -31,7 +31,7 @@ class GeneralAuthorizationStrategy implements PermissionStrategy
     {
         if (in_array($this->method, $this->privateMethods)) {
             if (Arr::get($authorizations, AuthorizationTypeName::AUTHORIZATION) && !empty($authorizationIds)) {
-                if (Authorization::hasValue(Arr::get($authorizations, AuthorizationTypeName::AUTHORIZATION))
+                if (Authorization::hasValues(Arr::get($authorizations, AuthorizationTypeName::AUTHORIZATION))
                     && !empty(array_intersect($authorizations[AuthorizationTypeName::AUTHORIZATION], $authorizationIds[AuthorizationTypeName::AUTHORIZATION]))) {
                     return true;
                 }

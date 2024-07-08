@@ -31,8 +31,29 @@ class WebPortalAuthorizationService extends AbstractService
      *
      * @return Collection
      */
-    public function index(Request $request): Collection
+    public function menu(Request $request): Collection
     {
-        return WebPortalYetki::where('durum', '=', Status::ACTIVE)->get();
+        return WebPortalYetki::with('members')
+                             ->where('durum', '=', Status::ACTIVE)
+                             ->whereNotNull('yetki_detay')
+                             ->whereNotNull('menu_id')
+                             ->whereNotNull('tip')
+                             ->get()
+                             ->groupBy('tanim');
+    }
+
+    /**
+     * @param Request  $request
+     *
+     * @return Collection
+     */
+    public function page(Request $request): Collection
+    {
+        return WebPortalYetki::with('members')
+                             ->where('durum', '=', Status::ACTIVE)
+                             ->whereNotNull('yetki_detay')
+                             ->whereNotNull('menu_id')
+                             ->whereNotNull('tip')
+                             ->get();
     }
 }

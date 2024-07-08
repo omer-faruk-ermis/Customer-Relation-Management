@@ -21,7 +21,7 @@ class BlueScreenStrategy implements PermissionStrategy
     public function check(Request $request, array $authorizationIds, array $authorizations): bool
     {
         if (Arr::get($authorizations, AuthorizationTypeName::BLUE_SCREEN) && !empty($authorizationIds)) {
-            if (BlueScreen::hasValue(Arr::get($authorizations, AuthorizationTypeName::BLUE_SCREEN))
+            if (BlueScreen::hasValues(Arr::get($authorizations, AuthorizationTypeName::BLUE_SCREEN))
                 && !empty(array_intersect($authorizations[AuthorizationTypeName::BLUE_SCREEN], $authorizationIds[AuthorizationTypeName::BLUE_SCREEN]))) {
                 return true;
             }

@@ -42,10 +42,6 @@ class StaffGroupAuthorizationMatchService extends AbstractService
      */
     public function store(Request $request): PersonelGrupYetkiEslestir
     {
-        if (!AuthorizationType::hasValue([$request->input('type')])) {
-            throw new AuthorizationTypeNotFoundException();
-        }
-
         $employeeGroupAuthorizationMatch = PersonelGrupYetkiEslestir::create([
                                                                                  'personel_grup_id' => $request->input('staff_group_id'),
                                                                                  'yetki_id'         => $request->input('authorization_id'),

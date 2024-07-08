@@ -5,13 +5,13 @@ namespace App\Http\Resources\WebPortal;
 use App\Http\Resources\AbstractCollection;
 
 /**
- * Class WebPortalAuthorizationCollection
+ * Class WebPortalAuthorizationPageCollection
  *
  * @package App\Http\Resources\WebPortal
  *
  * @mixin mixed
  */
-class WebPortalAuthorizationCollection extends AbstractCollection
+class WebPortalAuthorizationPageCollection extends AbstractCollection
 {
     public $collects = WebPortalAuthorizationResource::class;
 
@@ -20,11 +20,6 @@ class WebPortalAuthorizationCollection extends AbstractCollection
      */
     public function toArray($request): object
     {
-        return
-            $this
-                ->collection
-                ->map(function ($item) {
-                    return new WebPortalAuthorizationMenuCollection($item);
-                });
+        return $this->collection;
     }
 }

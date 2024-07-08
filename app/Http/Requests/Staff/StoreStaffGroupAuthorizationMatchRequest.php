@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Staff;
 
+use App\Enums\Authorization\AuthorizationType;
 use App\Http\Requests\AbstractRequest;
+use App\Models\Staff\PersonelGrupYetkiEslestir;
+use Illuminate\Validation\Rule;
 
 class StoreStaffGroupAuthorizationMatchRequest extends AbstractRequest
 {
@@ -10,10 +13,12 @@ class StoreStaffGroupAuthorizationMatchRequest extends AbstractRequest
 
     public function rules(): array
     {
-        return [
-            'staff_group_id'   => 'required|string',
-            'authorization_id' => 'required|string',
-            'type'             => 'required|integer'
+        $extraRules = [
+            'staff_group_id'   => ['string', 'required'],
+            'authorization_id' => ['string', 'required'],
+            'type'             => ['integer', 'required', Rule::in(AuthorizationType::getValues())],
         ];
+
+        return array_merge_recursive(PersonelGrupYetkiEslestir::$ensRules, PersonelGrupYetkiEslestir::$rules, $extraRules);
     }
 }

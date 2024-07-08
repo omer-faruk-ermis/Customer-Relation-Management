@@ -3,6 +3,7 @@
 namespace App\Http\Resources\WebPortal;
 
 use App\Http\Resources\AbstractResource;
+use App\Http\Resources\Employee\EmployeeBasicResource;
 use App\Utils\DateUtil;
 use App\Utils\Security;
 
@@ -31,6 +32,7 @@ class WebPortalAuthorizationResource extends AbstractResource
             'authorization_detail' => $this->yetki_detay,
             'menu_id'              => Security::encrypt($this->menu_id),
             'type'                 => $this->tip,
+            'members'              => EmployeeBasicResource::collection($this->whenLoaded('members')),
         ];
     }
 }

@@ -6,6 +6,7 @@ use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\WebPortal\IndexWebPortalAuthorizationRequest;
 use App\Http\Resources\WebPortal\WebPortalAuthorizationCollection;
+use App\Http\Resources\WebPortal\WebPortalAuthorizationPageCollection;
 use App\Services\WebPortal\WebPortalAuthorizationService;
 use Illuminate\Http\Request;
 
@@ -34,10 +35,22 @@ class WebPortalYetkiController extends Controller
      *
      * @return WebPortalAuthorizationCollection
      */
-    public function index(IndexWebPortalAuthorizationRequest $request): WebPortalAuthorizationCollection
+    public function menu(IndexWebPortalAuthorizationRequest $request): WebPortalAuthorizationCollection
     {
-        $webPortalAuthorization = $this->webPortalAuthorizationService->index($request);
+        $webPortalAuthorization = $this->webPortalAuthorizationService->menu($request);
 
-        return new WebPortalAuthorizationCollection($webPortalAuthorization, 'WEB_PORTAL_AUTHORIZATION.INDEX.SUCCESS');
+        return new WebPortalAuthorizationCollection($webPortalAuthorization, 'WEB_PORTAL_AUTHORIZATION.MENU.SUCCESS');
+    }
+
+    /**
+     * @param IndexWebPortalAuthorizationRequest  $request
+     *
+     * @return WebPortalAuthorizationPageCollection
+     */
+    public function page(IndexWebPortalAuthorizationRequest $request): WebPortalAuthorizationPageCollection
+    {
+        $webPortalAuthorization = $this->webPortalAuthorizationService->page($request);
+
+        return new WebPortalAuthorizationPageCollection($webPortalAuthorization, 'WEB_PORTAL_AUTHORIZATION.PAGE.SUCCESS');
     }
 }

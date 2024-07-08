@@ -41,6 +41,9 @@ abstract class AbstractModel extends Eloquent
      */
     public string $recordField = 'kayit_id';
 
+    public static array $rules = [];
+    public static array $ensRules = [];
+
     /**
      * @param $filters
      *

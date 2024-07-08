@@ -3,7 +3,7 @@
 namespace App\Http\Resources\DetailMenu;
 
 use App\Http\Resources\AbstractResource;
-use App\Http\Resources\Employee\EmployeeResource;
+use App\Http\Resources\Employee\EmployeeBasicResource;
 use App\Utils\DateUtil;
 use App\Utils\Security;
 
@@ -34,7 +34,7 @@ class DetailMenuResource extends AbstractResource
             'order'         => $this->sira,
             'parent_id'     => Security::encrypt($this->parentid),
             'pages'         => DetailMenuResource::collection($this->whenLoaded('pages')),
-            'members'       => EmployeeResource::collection($this->whenLoaded('members')),
+            'members'       => EmployeeBasicResource::collection($this->whenLoaded('members')),
         ];
     }
 }
