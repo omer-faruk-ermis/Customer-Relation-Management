@@ -167,7 +167,10 @@ Route::group(['middleware' => 'auth_with_token'], function () {
     });
 
     // SubscriberBilletAuthorization // SubscriberBillet type=4
-    Route::get('subscriber_billet_authorization', [AboneKutukYetkiController::class, 'index']);
+    Route::prefix('subscriber_billet_authorization')->group(function () {
+        Route::get('/menu', [AboneKutukYetkiController::class, 'menu']);
+        Route::get('/page', [AboneKutukYetkiController::class, 'page']);
+    });
 
     // StaffGroup
     Route::prefix('staff_group')->group(function () {

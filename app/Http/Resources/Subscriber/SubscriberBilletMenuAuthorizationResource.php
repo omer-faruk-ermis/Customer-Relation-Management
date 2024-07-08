@@ -6,13 +6,13 @@ use App\Http\Resources\AbstractResource;
 use App\Utils\Security;
 
 /**
- * Class SubscriberBilletAuthorizationResource
+ * Class SubscriberBilletMenuAuthorizationResource
  *
  * @package App\Http\Resources\Subscriber
  *
  * @mixin mixed
  */
-class SubscriberBilletAuthorizationResource extends AbstractResource
+class SubscriberBilletMenuAuthorizationResource extends AbstractResource
 {
     /**
      * @param $request
@@ -22,10 +22,8 @@ class SubscriberBilletAuthorizationResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'          => Security::encrypt($this->getKey()),
-            'description' => $this->aciklama,
-            'state'       => $this->durum,
-            'menu'        => $this->menu,
+            'name'  => $this->name,
+            'pages' => SubscriberBilletAuthorizationResource::collection($this->pages),
         ];
     }
 }

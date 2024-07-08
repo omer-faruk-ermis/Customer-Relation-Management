@@ -6,6 +6,7 @@ use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Subscriber\IndexSubscriberBilletAuthorizationRequest;
 use App\Http\Resources\Subscriber\SubscriberBilletAuthorizationCollection;
+use App\Http\Resources\Subscriber\SubscriberBilletMenuAuthorizationResource;
 use App\Services\Authorization\SubscriberBilletAuthorizationService;
 use Illuminate\Http\Request;
 
@@ -32,12 +33,24 @@ class AboneKutukYetkiController extends Controller
     /**
      * @param IndexSubscriberBilletAuthorizationRequest  $request
      *
+     * @return SubscriberBilletMenuAuthorizationResource
+     */
+    public function menu(IndexSubscriberBilletAuthorizationRequest $request): SubscriberBilletMenuAuthorizationResource
+    {
+        $subscriberBilletAuthorization = $this->subscriberBilletAuthorizationService->menu($request);
+
+        return new SubscriberBilletMenuAuthorizationResource($subscriberBilletAuthorization, 'SUBSCRIBER_BILLET_AUTHORIZATION.MENU.SUCCESS');
+    }
+
+    /**
+     * @param IndexSubscriberBilletAuthorizationRequest  $request
+     *
      * @return SubscriberBilletAuthorizationCollection
      */
-    public function index(IndexSubscriberBilletAuthorizationRequest $request): SubscriberBilletAuthorizationCollection
+    public function page(IndexSubscriberBilletAuthorizationRequest $request): SubscriberBilletAuthorizationCollection
     {
-        $subscriberBilletAuthorization = $this->subscriberBilletAuthorizationService->index($request);
+        $subscriberBilletAuthorization = $this->subscriberBilletAuthorizationService->page($request);
 
-        return new SubscriberBilletAuthorizationCollection($subscriberBilletAuthorization, 'SUBSCRIBER_BILLET_AUTHORIZATION.INDEX.SUCCESS');
+        return new SubscriberBilletAuthorizationCollection($subscriberBilletAuthorization, 'SUBSCRIBER_BILLET_AUTHORIZATION.PAGE.SUCCESS');
     }
 }

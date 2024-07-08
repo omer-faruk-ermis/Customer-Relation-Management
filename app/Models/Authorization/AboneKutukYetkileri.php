@@ -4,6 +4,8 @@ namespace App\Models\Authorization;
 
 use App\Enums\Authorization\AuthorizationTypeTrName;
 use App\Models\AbstractModel;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Class AboneKutukYetkileri
@@ -29,5 +31,21 @@ class AboneKutukYetkileri extends AbstractModel
     public function getMenuAttribute(): string
     {
         return AuthorizationTypeTrName::SUBSCRIBER_BILLET;
+    }
+
+    /**
+     * @return hasOne
+     */
+    public function menu(): hasOne
+    {
+        return $this->hasOne(AboneKutukYetkileri::class, 'id', 'id');
+    }
+
+    /**
+     * @return hasMany
+     */
+    public function page(): hasMany
+    {
+        return $this->hasMany(AboneKutukYetkileri::class);
     }
 }
