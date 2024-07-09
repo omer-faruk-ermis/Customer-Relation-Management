@@ -25,6 +25,15 @@ class WebPortalYetkiIzin extends AbstractModel
 {
     protected $table = 'kaynaksms_diger.dbo.webportal_yetki_izin';
 
+    protected $fillable = [
+        'yetki_id',
+        'userid',
+        'usermi',
+        'durum',
+        'tarih',
+        'ekuserid'
+    ];
+
     /**
      * @return hasOne
      */

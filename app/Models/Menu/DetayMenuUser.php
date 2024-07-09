@@ -25,6 +25,15 @@ class DetayMenuUser extends AbstractModel
 {
     protected $table = 'kaynaksms_diger.dbo.detay_menu_user';
 
+    protected $fillable = [
+        'menu_id',
+        'userid',
+        'kayit_tar',
+        'kayit_id',
+        'kayit_ip',
+        'durum'
+    ];
+
     /**
      * @return hasOne
      */

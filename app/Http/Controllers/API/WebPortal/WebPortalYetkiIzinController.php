@@ -35,14 +35,14 @@ class WebPortalYetkiIzinController extends Controller
     /**
      * @param StoreWebPortalAuthorizationPermissionRequest  $request
      *
-     * @return WebPortalAuthorizationPermissionResource
+     * @return SuccessResource
      * @throws Exception
      */
-    public function store(StoreWebPortalAuthorizationPermissionRequest $request): WebPortalAuthorizationPermissionResource
+    public function store(StoreWebPortalAuthorizationPermissionRequest $request): SuccessResource
     {
-        $webPortalAuthorizationPermission = $this->webPortalAuthorizationPermissionService->store($request);
+        $this->webPortalAuthorizationPermissionService->store($request);
 
-        return new WebPortalAuthorizationPermissionResource($webPortalAuthorizationPermission, 'WEB_PORTAL_AUTHORIZATION_PERMISSION.CREATE.SUCCESS');
+        return new SuccessResource('WEB_PORTAL_AUTHORIZATION_PERMISSION.CREATE.SUCCESS');
     }
 
     /**

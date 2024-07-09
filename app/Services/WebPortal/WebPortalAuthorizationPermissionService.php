@@ -34,21 +34,20 @@ class WebPortalAuthorizationPermissionService extends AbstractService
     /**
      * @param Request  $request
      *
-     * @return WebPortalYetkiIzin
+     * @return void
      * @throws Exception
      */
-    public function store(Request $request): WebPortalYetkiIzin
+    public function store(Request $request): void
     {
-        $webPortalAuthorizationPermission = WebPortalYetkiIzin::create([
-                                                                           'userid'   => $request->input('employee_id'),
-                                                                           'yetki_id' => $request->input('authorization_id'),
-                                                                           'durum'    => Status::ACTIVE,
-                                                                           'usermi'   => AuthorizationUserType::AGENT,
-                                                                           'tarih'    => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT),
-                                                                       ]);
-        CacheOperation::setSession($request);
+        WebPortalYetkiIzin::create([
+                                       'userid'   => $request->input('employee_id'),
+                                       'yetki_id' => $request->input('authorization_id'),
+                                       'durum'    => Status::ACTIVE,
+                                       'usermi'   => AuthorizationUserType::AGENT,
+                                       'tarih'    => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT),
+                                   ]);
 
-        return $webPortalAuthorizationPermission;
+        CacheOperation::setSession($request);
     }
 
     /**
