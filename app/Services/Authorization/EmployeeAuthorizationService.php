@@ -13,7 +13,6 @@ use App\Services\AbstractService;
 use App\Utils\Security;
 use Exception;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 
 /**
  * Class EmployeePermissionService
@@ -41,7 +40,7 @@ class EmployeeAuthorizationService extends AbstractService
     {
         SmsKimlikYetki::create([
                                    'sms_kimlik' => $request->input('employee_id'),
-                                   'url_id'     => $request->input('url_id'),
+                                   'url_id'     => $request->input('authorization_id'),
                                    'durum'      => Status::ACTIVE,
                                    'kayit_id'   => Auth::id(),
                                    'kayit_ip'   => $request->ip(),

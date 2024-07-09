@@ -206,8 +206,7 @@ class EmployeeService extends AbstractService
         $sipRequest = new StoreEmployeeSipRequest([
                                                       'sip'              => $request->input('sip'),
                                                       'employee_id'      => $employeeId,
-                                                      'not_send_message' => $request->input('not_send_message', NumericalConstant::ZERO),
-                                                      'url'              => $request->input('url')
+                                                      'not_send_message' => $request->input('not_send_message', NumericalConstant::ZERO)
                                                   ]);
 
         (new EmployeeSipService($sipRequest))->store($sipRequest);
@@ -224,11 +223,10 @@ class EmployeeService extends AbstractService
     private function storeEmployeeAuthorization(StoreEmployeeRequest $request, int $employeeId): void
     {
         $authorizationRequest = new StoreEmployeeAuthorizationRequest([
-                                                                          'url_id'          => DefaultConstant::AUTHORIZATION,
-                                                                          'employee_id'     => $employeeId,
-                                                                          'netgsmsessionid' => $request->bearerToken(),
-                                                                          'url'             => $request->input('url')
+                                                                          'authorization_id' => DefaultConstant::AUTHORIZATION,
+                                                                          'employee_id'      => $employeeId,
                                                                       ]);
+        $authorizationRequest->headers->set('Authorization', 'Bearer ' . $request->bearerToken());
 
         (new EmployeeAuthorizationService($authorizationRequest))->store($authorizationRequest);
     }

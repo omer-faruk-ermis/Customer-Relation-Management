@@ -6,13 +6,13 @@ use App\Http\Requests\AbstractRequest;
 
 class StoreEmployeeAuthorizationRequest extends AbstractRequest
 {
-    protected $fieldsToDecrypt = ['employee_id', 'url_id'];
+    protected $fieldsToDecrypt = ['employee_id', 'authorization_id'];
 
     public function rules(): array
     {
         return [
-            'employee_id' => 'sometimes|string',
-            'url_id'      => 'required|string',
+            'employee_id'      => 'sometimes|string',
+            'authorization_id' => 'required|string',
         ];
     }
 }
