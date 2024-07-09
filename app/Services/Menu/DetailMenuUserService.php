@@ -40,7 +40,7 @@ class DetailMenuUserService extends AbstractService
     public function store(Request $request): void
     {
         DetayMenuUser::create([
-                                  'menu_id'   => $request->input('menu_id'),
+                                  'menu_id'   => $request->input('authorization_id'),
                                   'userid'    => $request->input('employee_id'),
                                   'kayit_tar' => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT),
                                   'kayit_id'  => Auth::id(),
