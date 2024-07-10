@@ -3,7 +3,7 @@
 namespace App\Http\Resources\Menu;
 
 use App\Http\Resources\AbstractResource;
-use App\Http\Resources\Url\UrlDefinitionResource;
+use App\Http\Resources\Url\UrlDefinitionCollection;
 use App\Utils\Security;
 
 /**
@@ -23,11 +23,11 @@ class MenuDefinitionResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'       => Security::encrypt($this->getKey()),
-            'name'     => $this->menu,
-            'order'    => $this->sira,
-            'state'    => $this->durum,
-            'pages'    => UrlDefinitionResource::collection($this->whenLoaded('pages'))
+            'id'    => Security::encrypt($this->getKey()),
+            'name'  => $this->menu,
+            'order' => $this->sira,
+            'state' => $this->durum,
+            'pages' => UrlDefinitionCollection::make($this->whenLoaded('pages'))
         ];
     }
 }

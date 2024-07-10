@@ -28,6 +28,7 @@ class StaffGroupResource extends AbstractResource
             'id'                    => Security::encrypt($this->getKey()),
             'name'                  => $this->grup_adi,
             'state'                 => $this->durum,
+            'is_authorized'         => $this->is_authorized,
             'description'           => $this->aciklama,
             'register_date'         => DateUtil::dateFormat($this->kayit_tarihi),
             'recorder'              => EmployeeBasicResource::make($this->whenLoaded('recorder')),

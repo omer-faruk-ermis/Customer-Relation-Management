@@ -15,9 +15,10 @@ use App\Models\Staff\PersonelGrupYetkiEslestir;
 use App\Services\AbstractService;
 use App\Services\Authorization\AuthorizationService;
 use App\Utils\Security;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -39,11 +40,11 @@ class StaffGroupService extends AbstractService
     /**
      * @param Request  $request
      *
-     * @return LengthAwarePaginator
+     * @return Collection|LengthAwarePaginator
      */
-    public function index(Request $request): LengthAwarePaginator
+    public function index(Request $request): Collection|LengthAwarePaginator
     {
-        return PersonelGruplari::with([
+        $groups = PersonelGruplari::with([
                                           'recorder',
                                           'members.recorder',
                                           'members.staff',
@@ -52,8 +53,11 @@ class StaffGroupService extends AbstractService
                                           'authorizations.authorization.recorder',
                                           'authorizations.subscriberBillet.recorder'
                                       ])
-                               ->where('durum', '<>', Status::DESTROY)
-                               ->paginate(DefaultConstant::PAGINATE);
+                               ->where('durum', '<>', Status::DESTROY);
+
+        return $request->input('page')
+            ? $groups->paginate(DefaultConstant::PAGINATE)
+            : $groups->get();
     }
 
     /**

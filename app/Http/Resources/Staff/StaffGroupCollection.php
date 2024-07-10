@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Staff;
 
 use App\Http\Resources\AbstractCollection;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class StaffGroupCollection
@@ -20,6 +21,12 @@ class StaffGroupCollection extends AbstractCollection
      */
     public function toArray($request): object
     {
+        $this->collection = $this->collection->map(function ($menu){
+            $menu->is_authorized = in_array(Auth::id(), $menu->members->pluck('personel_id')->toArray());
+
+            return $menu;
+        });
+
         return $this->collection;
     }
 }

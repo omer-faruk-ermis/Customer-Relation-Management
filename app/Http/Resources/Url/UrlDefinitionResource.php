@@ -29,6 +29,7 @@ class UrlDefinitionResource extends AbstractResource
             'url'           => $this->url,
             'menu_id'       => Security::encrypt($this->ust_id),
             'state'         => $this->durum,
+            'is_authorized' => $this->is_authorized,
             'background_id' => Security::encrypt($this->arkaplan_id),
             'tab_id'        => Security::encrypt($this->tab_id),
             'recorder'      => EmployeeBasicResource::make($this->whenLoaded('recorder')),

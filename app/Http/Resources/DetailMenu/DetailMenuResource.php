@@ -31,9 +31,10 @@ class DetailMenuResource extends AbstractResource
             'register_ip'   => $this->kayit_ip,
             'register_id'   => Security::encrypt($this->kayit_id),
             'state'         => $this->durum,
+            'is_authorized' => $this->is_authorized,
             'order'         => $this->sira,
             'parent_id'     => Security::encrypt($this->parentid),
-            'pages'         => DetailMenuResource::collection($this->whenLoaded('pages')),
+            'pages'         => DetailMenuCollection::make($this->whenLoaded('pages')),
             'members'       => $this->whenLoaded('detail', function ($data) {
                 return EmployeeBasicCollection::make($data);
             }),
