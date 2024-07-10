@@ -30,6 +30,7 @@ class WebPortalAuthorizationResource extends AbstractResource
             'date'                 => DateUtil::dateFormat($this->tarih),
             'definition'           => $this->tanim,
             'authorization_detail' => $this->yetki_detay,
+            'is_authorized'        => $this->is_authorized,
             'menu_id'              => Security::encrypt($this->menu_id),
             'type'                 => $this->tip,
             'members'              => EmployeeBasicResource::collection($this->whenLoaded('members')),
