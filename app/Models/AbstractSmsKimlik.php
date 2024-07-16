@@ -11,7 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
 /**
- * Abstract class AbstractModel
+ * Abstract class AbstractSmsKimlik
  *
  * @package App\Models
  *
@@ -19,7 +19,7 @@ use Laravel\Passport\HasApiTokens;
  */
 abstract class AbstractSmsKimlik extends Authenticatable
 {
-    use HasFactory, Notifiable, QualifiableTrait, HasApiTokens;
+    use HasFactory, Notifiable, QualifiableTrait, HasApiTokens, StatusTrait;
 
     /**
      * set fillable fields

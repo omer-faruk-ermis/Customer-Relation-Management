@@ -4,7 +4,6 @@ namespace App\Services\WebPortal;
 
 use App\Enums\Authorization\AuthorizationTypeName;
 use App\Enums\Authorization\SmsManagement;
-use App\Enums\Status;
 use App\Models\WebPortal\WebPortalYetki;
 use App\Services\AbstractService;
 use Illuminate\Http\Request;
@@ -34,7 +33,7 @@ class WebPortalAuthorizationService extends AbstractService
     public function menu(Request $request): Collection
     {
         return WebPortalYetki::with('members')
-                             ->where('durum', '=', Status::ACTIVE)
+                             ->active()
                              ->whereNotNull('yetki_detay')
                              ->whereNotNull('menu_id')
                              ->whereNotNull('tip')
@@ -50,7 +49,7 @@ class WebPortalAuthorizationService extends AbstractService
     public function page(Request $request): Collection
     {
         return WebPortalYetki::with('members')
-                             ->where('durum', '=', Status::ACTIVE)
+                             ->active()
                              ->whereNotNull('yetki_detay')
                              ->whereNotNull('menu_id')
                              ->whereNotNull('tip')

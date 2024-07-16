@@ -46,7 +46,7 @@ class DetailMenuUserService extends AbstractService
     {
         $detailMenuUser = DetayMenuUser::where('menu_id', '=', $request->input('authorization_id'))
                                        ->where('userid', '=', $request->input('employee_id'))
-                                       ->where('durum', Status::ACTIVE)
+                                       ->active()
                                        ->first();
 
         if ($detailMenuUser) {
@@ -78,7 +78,7 @@ class DetailMenuUserService extends AbstractService
         $detailMenuUser = DetayMenuUser::where('menu_id', '=', $request->input('authorization_id'))
                                        ->where('userid', '=', $request->input('employee_id'))
                                        ->when(Method::DESTROY === RouteUtil::currentRoute(), function ($q) {
-                                           $q->where('durum', Status::ACTIVE);
+                                           $q->active();
                                        })
                                        ->first();
 

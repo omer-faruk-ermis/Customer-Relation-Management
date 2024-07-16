@@ -105,7 +105,7 @@ class EmployeeService extends AbstractService
     {
         $employee = SmsKimlik::whereNotNull('sms_kimlik_email')
                              ->where('sms_kimlik_email', '=', $request->input('email'))
-                             ->where('durum', '=', Status::ACTIVE)
+                             ->active()
                              ->first();
 
         if (!empty($employee)) {

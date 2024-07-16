@@ -3,6 +3,7 @@
 namespace App\Models\Staff;
 
 use App\Enums\Authorization\AuthorizationType;
+use App\Enums\Status;
 use App\Models\Url\UrlTanim;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -29,7 +30,9 @@ trait AuthorizationTrait
                         $urlTanim->getQualifiedKeyName(),
                         '=',
                         $pgyEslestir->qualifyColumn('yetki_id'))
-                    ->where($pgyEslestir->qualifyColumn('tip'), '=', $authorizationType);
+                    ->where($pgyEslestir->qualifyColumn('tip'), '=', $authorizationType)
+                    ->where($urlTanim->qualifyColumn('durum'), '=', Status::ACTIVE)
+                    ->where($pgyEslestir->qualifyColumn('durum'), '=', Status::ACTIVE);
     }
 
     /**

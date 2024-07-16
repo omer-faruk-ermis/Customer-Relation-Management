@@ -38,7 +38,8 @@ class AboneKutukYetkileri extends AbstractModel
      */
     public function menu(): hasOne
     {
-        return $this->hasOne(AboneKutukYetkileri::class, 'id', 'id');
+        return $this->hasOne(AboneKutukYetkileri::class, 'id', 'id')
+                    ->active();
     }
 
     /**
@@ -46,6 +47,7 @@ class AboneKutukYetkileri extends AbstractModel
      */
     public function page(): hasMany
     {
-        return $this->hasMany(AboneKutukYetkileri::class);
+        return $this->hasMany(AboneKutukYetkileri::class)
+                    ->active();
     }
 }

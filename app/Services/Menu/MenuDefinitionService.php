@@ -4,7 +4,6 @@ namespace App\Services\Menu;
 
 use App\Enums\Authorization\AuthorizationTypeName;
 use App\Enums\Authorization\SmsManagement;
-use App\Enums\Status;
 use App\Models\Menu\MenuTanim;
 use App\Services\AbstractService;
 use Illuminate\Http\Request;
@@ -34,7 +33,7 @@ class MenuDefinitionService extends AbstractService
     public function menu(Request $request): Collection
     {
         return MenuTanim::with(['pages'])
-                        ->where('durum', '=', Status::ACTIVE)
+                        ->active()
                         ->orderBy('sira')
                         ->get();
     }

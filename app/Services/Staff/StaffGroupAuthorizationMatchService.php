@@ -48,7 +48,7 @@ class StaffGroupAuthorizationMatchService extends AbstractService
             PersonelGrupYetkiEslestir::where('personel_grup_id', '=', $request->input('staff_group_id'))
                                      ->where('yetki_id', '=', $request->input('authorization_id'))
                                      ->where('tip', '=', $request->input('type'))
-                                     ->where('durum', Status::ACTIVE)
+                                     ->active()
                                      ->first();
 
         if ($staffGroupAuthorizationMatch) {
@@ -83,7 +83,7 @@ class StaffGroupAuthorizationMatchService extends AbstractService
                                      ->where('yetki_id', '=', $request->input('authorization_id'))
                                      ->where('tip', '=', $request->input('type'))
                                      ->when(Method::DESTROY === RouteUtil::currentRoute(), function ($q) {
-                                         $q->where('durum', Status::ACTIVE);
+                                         $q->active();
                                      })
                                      ->first();
 

@@ -13,7 +13,7 @@ use Eloquent;
  */
 abstract class AbstractModel extends Eloquent
 {
-    use QualifiableTrait;
+    use QualifiableTrait, StatusTrait;
 
     /**
      * set fillable fields

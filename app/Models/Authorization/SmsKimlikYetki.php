@@ -46,6 +46,7 @@ class SmsKimlikYetki extends AbstractModel
      */
     public function members(): hasOne
     {
-        return $this->hasOne(SmsKimlik::class, 'id', 'sms_kimlik');
+        return $this->hasOne(SmsKimlik::class, 'id', 'sms_kimlik')
+                    ->active();
     }
 }

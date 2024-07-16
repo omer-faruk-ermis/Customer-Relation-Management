@@ -48,7 +48,7 @@ class AuthService
                                ->whereNotNull('ceptel')
                                ->where('sms_kimlik_email', '=', $request->input('email'))
                                ->where('loginpage', '=', Status::ACTIVE)
-                               ->where('durum', '=', Status::ACTIVE)
+                               ->active()
                                ->where('sifre', '=', $request->input('password'))
                                ->latest('id')
                                ->first();
@@ -89,7 +89,7 @@ class AuthService
                                ->whereNotNull('ceptel')
                                ->whereNotNull('sifre')
                                ->where('sms_kimlik_email', '=', $request->input('email'))
-                               ->where('durum', '=', Status::ACTIVE)
+                               ->active()
                                ->first();
 
         if (empty($sms_kimlik)) {

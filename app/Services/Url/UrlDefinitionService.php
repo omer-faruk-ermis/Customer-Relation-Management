@@ -42,7 +42,7 @@ class UrlDefinitionService extends AbstractService
     {
         $pages = UrlTanim::with(['recorder', 'menu', 'authorizations'])
                          ->filter($request->all())
-                         ->where('durum', '=', Status::ACTIVE);
+                         ->active();
 
         return $request->input('page')
             ? $pages->paginate(DefaultConstant::PAGINATE)
@@ -60,7 +60,7 @@ class UrlDefinitionService extends AbstractService
         $urlDefinition =
             UrlTanim::with('menu')
                     ->filter($request->all())
-                    ->where('durum', '=', Status::ACTIVE)
+                    ->active()
                     ->first();
 
         if (!empty($urlDefinition)) {

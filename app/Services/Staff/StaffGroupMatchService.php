@@ -49,7 +49,7 @@ class StaffGroupMatchService extends AbstractService
     {
         $staffGroupMatch = PersonelGrupEslestir::where('personel_grup_id', '=', $request->input('staff_group_id'))
                                                ->where('personel_id', '=', $request->input('staff_id'))
-                                               ->where('durum', Status::ACTIVE)
+                                               ->active()
                                                ->first();
 
         if ($staffGroupMatch) {

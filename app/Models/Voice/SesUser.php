@@ -2,7 +2,6 @@
 
 namespace App\Models\Voice;
 
-use App\Enums\Status;
 use App\Models\AbstractModel;
 use App\Models\Customer\Musteri;
 use App\Models\SmsKimlik\SmsKimlik;
@@ -42,6 +41,6 @@ class SesUser extends AbstractModel
     public function pairedBy(): hasOne
     {
         return $this->hasOne(SmsKimlik::class, 'id', 'eslestiren_id')
-                    ->where('durum', '=', Status::ACTIVE);
+                    ->active();
     }
 }

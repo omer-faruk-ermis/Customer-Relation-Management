@@ -5,7 +5,6 @@ namespace App\Services\Authorization;
 use App\Enums\Authorization\AuthorizationTypeName;
 use App\Enums\Authorization\AuthorizationTypeTrName;
 use App\Enums\Authorization\SmsManagement;
-use App\Enums\Status;
 use App\Models\Authorization\AboneKutukYetkileri;
 use App\Services\AbstractService;
 use Illuminate\Http\Request;
@@ -36,7 +35,7 @@ class SubscriberBilletAuthorizationService extends AbstractService
     {
         return (object)[
             'name'  => AuthorizationTypeTrName::SUBSCRIBER_BILLET,
-            'pages' => AboneKutukYetkileri::where('durum', '=', Status::ACTIVE)->get()];
+            'pages' => AboneKutukYetkileri::active()->get()];
     }
 
     /**
@@ -46,6 +45,6 @@ class SubscriberBilletAuthorizationService extends AbstractService
      */
     public function page(Request $request): Collection
     {
-        return AboneKutukYetkileri::with('menu')->where('durum', '=', Status::ACTIVE)->get();
+        return AboneKutukYetkileri::with('menu')->active()->get();
     }
 }

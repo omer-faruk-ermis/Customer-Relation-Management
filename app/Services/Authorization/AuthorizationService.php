@@ -135,7 +135,7 @@ class AuthorizationService
                                               'menu'
                                           ]);
                            }])
-                           ->where('durum', Status::ACTIVE)
+                           ->active()
                            ->whereIn('id',
                                      array_column($checkAuthorization ? $typeArray : [], 'menu_id'))
                            ->get()
@@ -156,7 +156,7 @@ class AuthorizationService
                                                'menu_adi as menu'
                                            ]);
                             }])
-                            ->where('durum', Status::ACTIVE)
+                            ->active()
                             ->whereIn('id',
                                       array_column($checkAuthorization ? $typeArray : [], 'menu_id'))
                             ->get()
@@ -424,7 +424,7 @@ class AuthorizationService
                                                'aciklama as name',
                                            ])
                                   ->whereIn('id', $ids)
-                                  ->where('durum', '=', Status::ACTIVE)
+                                  ->active()
                                   ->get();
     }
 }

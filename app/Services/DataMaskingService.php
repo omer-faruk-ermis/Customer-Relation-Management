@@ -6,7 +6,6 @@ use App\Enums\Authorization\AuthorizationType;
 use App\Enums\Authorization\AuthorizationTypeName;
 use App\Enums\Authorization\SubscriberBillet;
 use App\Enums\DefaultConstant;
-use App\Enums\Status;
 use App\Models\Authorization\AboneKutukYetkileri;
 use App\Models\Staff\PersonelGrupEslestir;
 use App\Models\Staff\PersonelGrupYetkiEslestir;
@@ -150,18 +149,18 @@ class DataMaskingService
             return [];
         }
 
-        $staffGroupAuthorizationMatchIds = PersonelGrupYetkiEslestir::where('durum', Status::ACTIVE)
+        $staffGroupAuthorizationMatchIds = PersonelGrupYetkiEslestir::active()
                                                                     ->where('tip', AuthorizationType::SUBSCRIBER_BILLET)
                                                                     ->whereIn('personel_grup_id',
                                                                               PersonelGrupEslestir::select('personel_grup_id')
-                                                                                                  ->where('durum', Status::ACTIVE)
+                                                                                                  ->active()
                                                                                                   ->where('personel_id', Auth::id())
                                                                     )
                                                                     ->get()
                                                                     ->pluck('yetki_id')
                                                                     ->toArray();
 
-        return AboneKutukYetkileri::where('durum', Status::ACTIVE)
+        return AboneKutukYetkileri::active()
                                   ->when(!empty(array_intersect($staffGroupAuthorizationMatchIds,
                                                                 $authorizationIds[AuthorizationTypeName::SUBSCRIBER_BILLET])),
                                       function ($q) use ($staffGroupAuthorizationMatchIds) {

@@ -2,7 +2,6 @@
 
 namespace App\Models\Url;
 
-use App\Enums\Status;
 use App\Filters\Url\UrlDefinitionFilter;
 use App\Models\AbstractModel;
 use App\Models\Authorization\SmsKimlikYetki;
@@ -60,6 +59,7 @@ class UrlTanim extends AbstractModel
     public function authorizations(): hasMany
     {
         return $this->hasMany(SmsKimlikYetki::class, 'url_id', 'id')
+                    ->active()
                     ->with('members');
     }
 
@@ -69,7 +69,7 @@ class UrlTanim extends AbstractModel
     public function menu(): hasOne
     {
         return $this->hasOne(MenuTanim::class, 'id', 'ust_id')
-                    ->where('durum', '=', Status::ACTIVE);
+                    ->active();
     }
 
     /**

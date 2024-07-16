@@ -45,7 +45,7 @@ class EmployeeAuthorizationService extends AbstractService
     {
         $webPortalAuthorizationPermission = SmsKimlikYetki::where('url_id', '=', $request->input('authorization_id'))
                                                           ->where('sms_kimlik', '=', $request->input('employee_id'))
-                                                          ->where('durum', Status::ACTIVE)
+                                                          ->active()
                                                           ->first();
 
         if ($webPortalAuthorizationPermission) {
@@ -76,7 +76,7 @@ class EmployeeAuthorizationService extends AbstractService
         $employeeAuthorization = SmsKimlikYetki::where('url_id', '=', $request->input('authorization_id'))
                                                ->where('sms_kimlik', '=', $request->input('employee_id'))
                                                ->when(Method::DESTROY === RouteUtil::currentRoute(), function ($q) {
-                                                   $q->where('durum', Status::ACTIVE);
+                                                   $q->active();
                                                })
                                                ->first();
 

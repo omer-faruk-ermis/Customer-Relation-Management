@@ -56,7 +56,8 @@ class SmsKimlikLog extends AbstractModel
      */
     public function employee(): hasOne
     {
-        return $this->hasOne(SmsKimlik::class, 'id', 'smskimlik');
+        return $this->hasOne(SmsKimlik::class, 'id', 'smskimlik')
+                    ->active();
     }
 
     /**
