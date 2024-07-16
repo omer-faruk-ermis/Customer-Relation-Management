@@ -4,14 +4,17 @@ namespace App\Services\Authorization;
 
 use App\Enums\Authorization\AuthorizationTypeName;
 use App\Enums\Authorization\SmsManagement;
+use App\Enums\Method;
 use App\Enums\Status;
 use App\Exceptions\Authorization\EmployeeAuthorizationNotFoundException;
+use App\Exceptions\Employee\EmployeeAuthorizationAlreadyHaveException;
 use App\Helpers\CacheOperation;
-use App\Http\Requests\Authorization\StoreEmployeeAuthorizationRequest;
 use App\Models\Authorization\SmsKimlikYetki;
 use App\Services\AbstractService;
-use App\Utils\Security;
+use App\Services\BulkAuthorizationTrait;
+use App\Utils\RouteUtil;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -21,6 +24,8 @@ use Illuminate\Support\Facades\Auth;
  */
 class EmployeeAuthorizationService extends AbstractService
 {
+    use BulkAuthorizationTrait;
+
     protected array $serviceAuthorizations = [
         AuthorizationTypeName::SMS_MANAGEMENT => [
             SmsManagement::AUTHORIZED_GROUPS,
@@ -31,13 +36,22 @@ class EmployeeAuthorizationService extends AbstractService
     ];
 
     /**
-     * @param StoreEmployeeAuthorizationRequest  $request
+     * @param Request  $request
      *
      * @return void
      * @throws Exception
      */
-    public function store(StoreEmployeeAuthorizationRequest $request): void
+    public function store(Request $request): void
     {
+        $webPortalAuthorizationPermission = SmsKimlikYetki::where('url_id', '=', $request->input('authorization_id'))
+                                                          ->where('sms_kimlik', '=', $request->input('employee_id'))
+                                                          ->where('durum', Status::ACTIVE)
+                                                          ->first();
+
+        if ($webPortalAuthorizationPermission) {
+            throw new EmployeeAuthorizationAlreadyHaveException();
+        }
+
         SmsKimlikYetki::create([
                                    'sms_kimlik' => $request->input('employee_id'),
                                    'url_id'     => $request->input('authorization_id'),
@@ -46,26 +60,33 @@ class EmployeeAuthorizationService extends AbstractService
                                    'kayit_ip'   => $request->ip(),
                                ]);
 
-        CacheOperation::setSession($request);
+        if (Method::STORE === RouteUtil::currentRoute())
+            CacheOperation::setSession($request);
     }
 
     /**
-     * @param string  $id
+     * @param Request  $request
      *
      * @return void
      * @throws EmployeeAuthorizationNotFoundException
      * @throws Exception
      */
-    public function destroy(string $id): void
+    public function destroy(Request $request): void
     {
-        $employeeAuthorization = SmsKimlikYetki::find(Security::decrypt($id));
+        $employeeAuthorization = SmsKimlikYetki::where('url_id', '=', $request->input('authorization_id'))
+                                               ->where('sms_kimlik', '=', $request->input('employee_id'))
+                                               ->when(Method::DESTROY === RouteUtil::currentRoute(), function ($q) {
+                                                   $q->where('durum', Status::ACTIVE);
+                                               })
+                                               ->first();
+
         if (empty($employeeAuthorization)) {
             throw new EmployeeAuthorizationNotFoundException();
         }
 
         $employeeAuthorization->durum = Status::PASSIVE;
         $employeeAuthorization->update();
-
-        CacheOperation::setSession($this->request);
+        if (Method::DESTROY === RouteUtil::currentRoute())
+            CacheOperation::setSession($this->request);
     }
 }

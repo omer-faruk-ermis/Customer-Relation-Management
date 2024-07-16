@@ -5,8 +5,9 @@ namespace App\Http\Controllers\API\Staff;
 use App\Exceptions\ForbiddenException;
 use App\Exceptions\Staff\StaffGroupAuthorizationMatchNotFoundException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Staff\BulkStaffGroupAuthorizationMatchRequest;
+use App\Http\Requests\Staff\DestroyStaffGroupAuthorizationMatchRequest;
 use App\Http\Requests\Staff\StoreStaffGroupAuthorizationMatchRequest;
-use App\Http\Resources\Staff\StaffGroupAuthorizationMatchResource;
 use App\Http\Resources\SuccessResource;
 use App\Services\Staff\StaffGroupAuthorizationMatchService;
 use Exception;
@@ -35,26 +36,39 @@ class PersonelGrupYetkiEslestirController extends Controller
     /**
      * @param StoreStaffGroupAuthorizationMatchRequest  $request
      *
-     * @return StaffGroupAuthorizationMatchResource
+     * @return SuccessResource
      * @throws Exception
      */
-    public function store(StoreStaffGroupAuthorizationMatchRequest $request): StaffGroupAuthorizationMatchResource
+    public function store(StoreStaffGroupAuthorizationMatchRequest $request): SuccessResource
     {
-        $staffGroupAuthorizationMatch = $this->staffGroupAuthorizationMatchService->store($request);
+        $this->staffGroupAuthorizationMatchService->store($request);
 
-        return new StaffGroupAuthorizationMatchResource($staffGroupAuthorizationMatch, 'STAFF_GROUP_AUTHORIZATION_MATCH.CREATE.SUCCESS');
+        return new SuccessResource('STAFF_GROUP_AUTHORIZATION_MATCH.CREATE.SUCCESS');
     }
 
     /**
-     * @param string  $id
+     * @param DestroyStaffGroupAuthorizationMatchRequest  $request
      *
      * @return SuccessResource
      * @throws StaffGroupAuthorizationMatchNotFoundException
      */
-    public function destroy(string $id): SuccessResource
+    public function destroy(DestroyStaffGroupAuthorizationMatchRequest $request): SuccessResource
     {
-        $this->staffGroupAuthorizationMatchService->destroy($id);
+        $this->staffGroupAuthorizationMatchService->destroy($request);
 
         return new SuccessResource('STAFF_GROUP_AUTHORIZATION_MATCH.DESTROY.SUCCESS');
+    }
+
+    /**
+     * @param BulkStaffGroupAuthorizationMatchRequest  $request
+     *
+     * @return SuccessResource
+     * @throws Exception
+     */
+    public function bulk(BulkStaffGroupAuthorizationMatchRequest $request): SuccessResource
+    {
+        $this->staffGroupAuthorizationMatchService->bulk($request);
+
+        return new SuccessResource('STAFF_GROUP_AUTHORIZATION_MATCH.BULK.SUCCESS');
     }
 }

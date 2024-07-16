@@ -5,11 +5,18 @@ namespace App\Services\Staff;
 use App\Enums\Authorization\AuthorizationTypeName;
 use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
+use App\Enums\Method;
 use App\Enums\Status;
+use App\Exceptions\Staff\StaffGroupMatchAlreadyHaveException;
 use App\Exceptions\Staff\StaffGroupMatchNotFoundException;
+use App\Helpers\CacheOperation;
+use App\Http\Requests\Authorization\BulkEmployeeAuthorizationRequest;
 use App\Models\Staff\PersonelGrupEslestir;
 use App\Services\AbstractService;
+use App\Services\BulkAuthorizationTrait;
+use App\Utils\RouteUtil;
 use App\Utils\Security;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,6 +27,8 @@ use Illuminate\Support\Facades\Auth;
  */
 class StaffGroupMatchService extends AbstractService
 {
+    use BulkAuthorizationTrait;
+
     protected array $serviceAuthorizations = [
         AuthorizationTypeName::SMS_MANAGEMENT => [
             SmsManagement::AUTHORIZED_GROUPS,
@@ -32,17 +41,30 @@ class StaffGroupMatchService extends AbstractService
     /**
      * @param Request  $request
      *
-     * @return PersonelGrupEslestir
+     * @return void
+     * @throws StaffGroupMatchAlreadyHaveException
+     * @throws Exception
      */
-    public function store(Request $request): PersonelGrupEslestir
+    public function store(Request $request): void
     {
-        return PersonelGrupEslestir::create([
-                                                'personel_grup_id' => $request->input('staff_group_id'),
-                                                'personel_id'      => $request->input('staff_id'),
-                                                'durum'            => Status::ACTIVE,
-                                                'kayit_tarihi'     => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT),
-                                                'sms_kimlik'       => Auth::id(),
-                                            ]);
+        $staffGroupMatch = PersonelGrupEslestir::where('personel_grup_id', '=', $request->input('staff_group_id'))
+                                               ->where('personel_id', '=', $request->input('staff_id'))
+                                               ->where('durum', Status::ACTIVE)
+                                               ->first();
+
+        if ($staffGroupMatch) {
+            throw new StaffGroupMatchAlreadyHaveException();
+        }
+
+        PersonelGrupEslestir::create([
+                                         'personel_grup_id' => $request->input('staff_group_id'),
+                                         'personel_id'      => $request->input('staff_id'),
+                                         'durum'            => Status::ACTIVE,
+                                         'kayit_tarihi'     => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT),
+                                         'sms_kimlik'       => Auth::id(),
+                                     ]);
+        if (Method::STORE === RouteUtil::currentRoute())
+        CacheOperation::setSession($request);
     }
 
     /**
@@ -50,10 +72,34 @@ class StaffGroupMatchService extends AbstractService
      *
      * @return void
      * @throws StaffGroupMatchNotFoundException
+     * @throws Exception
      */
-    public function destroy(string $id): void
+    public function destroyStaff(string $id): void
     {
         $staffGroupMatch = PersonelGrupEslestir::find(Security::decrypt($id));
+        if (empty($staffGroupMatch)) {
+            throw new StaffGroupMatchNotFoundException();
+        }
+
+        $staffGroupMatch->durum = Status::PASSIVE;
+        $staffGroupMatch->update();
+
+        CacheOperation::setSession($this->request);
+    }
+
+    /**
+     * @param BulkEmployeeAuthorizationRequest  $request
+     *
+     * @return void
+     * @throws Exception
+     * @throws StaffGroupMatchNotFoundException
+     */
+    public function destroy(Request $request): void
+    {
+        $staffGroupMatch = PersonelGrupEslestir::where('personel_grup_id', '=', $request->input('staff_group_id'))
+                                               ->where('personel_id', '=', $request->input('staff_id'))
+                                               ->first();
+
         if (empty($staffGroupMatch)) {
             throw new StaffGroupMatchNotFoundException();
         }

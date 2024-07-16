@@ -11,7 +11,7 @@ class StoreEmployeeAuthorizationRequest extends AbstractRequest
     public function rules(): array
     {
         return [
-            'employee_id'      => 'sometimes|string',
+            'employee_id'      => 'required|string',
             'authorization_id' => 'required|string',
         ];
     }

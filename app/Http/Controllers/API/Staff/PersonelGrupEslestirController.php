@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\API\Staff;
 
 use App\Exceptions\ForbiddenException;
+use App\Exceptions\Staff\StaffGroupMatchAlreadyHaveException;
 use App\Exceptions\Staff\StaffGroupMatchNotFoundException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Staff\BulkStaffGroupMatchRequest;
+use App\Http\Requests\Staff\DestroyStaffGroupMatchRequest;
 use App\Http\Requests\Staff\StoreStaffGroupMatchRequest;
-use App\Http\Resources\Staff\StaffGroupMatchResource;
 use App\Http\Resources\SuccessResource;
 use App\Services\Staff\StaffGroupMatchService;
+use Exception;
 use Illuminate\Http\Request;
 
 /**
@@ -34,13 +37,14 @@ class PersonelGrupEslestirController extends Controller
     /**
      * @param StoreStaffGroupMatchRequest  $request
      *
-     * @return StaffGroupMatchResource
+     * @return SuccessResource
+     * @throws StaffGroupMatchAlreadyHaveException
      */
-    public function store(StoreStaffGroupMatchRequest $request): StaffGroupMatchResource
+    public function store(StoreStaffGroupMatchRequest $request): SuccessResource
     {
-        $staffGroupMatch = $this->staffGroupMatchService->store($request);
+        $this->staffGroupMatchService->store($request);
 
-        return new StaffGroupMatchResource($staffGroupMatch, 'STAFF_GROUP_MATCH.CREATE.SUCCESS');
+        return new SuccessResource('STAFF_GROUP_MATCH.CREATE.SUCCESS');
     }
 
     /**
@@ -49,10 +53,36 @@ class PersonelGrupEslestirController extends Controller
      * @return SuccessResource
      * @throws StaffGroupMatchNotFoundException
      */
-    public function destroy(string $id): SuccessResource
+    public function destroyStaff(string $id): SuccessResource
     {
-        $this->staffGroupMatchService->destroy($id);
+        $this->staffGroupMatchService->destroyStaff($id);
 
         return new SuccessResource('STAFF_GROUP_MATCH.DESTROY.SUCCESS');
+    }
+
+    /**
+     * @param DestroyStaffGroupMatchRequest  $request
+     *
+     * @return SuccessResource
+     * @throws StaffGroupMatchNotFoundException
+     */
+    public function destroy(DestroyStaffGroupMatchRequest $request): SuccessResource
+    {
+        $this->staffGroupMatchService->destroy($request);
+
+        return new SuccessResource('STAFF_GROUP_MATCH.DESTROY.SUCCESS');
+    }
+
+    /**
+     * @param BulkStaffGroupMatchRequest  $request
+     *
+     * @return SuccessResource
+     * @throws Exception
+     */
+    public function bulk(BulkStaffGroupMatchRequest $request): SuccessResource
+    {
+        $this->staffGroupMatchService->bulk($request);
+
+        return new SuccessResource('STAFF_GROUP_MATCH.BULK.SUCCESS');
     }
 }

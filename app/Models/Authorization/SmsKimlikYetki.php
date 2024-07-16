@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string         $url_id
  * @property int            $kayit_id
  * @property string         $kayit_ip
+ * @property int            $durum
  *
  * @property-read SmsKimlik $recorder
  */
@@ -31,7 +32,8 @@ class SmsKimlikYetki extends AbstractModel
         'sms_kimlik',
         'url_id',
         'kayit_id',
-        'kayit_ip'
+        'kayit_ip',
+        'durum'
     ];
 
     protected $casts = [

@@ -42,11 +42,27 @@ abstract class AbstractRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
-        foreach ($this->fieldsToDecrypt as $field) {
-            if ($this->has($field)) {
-                $this->merge([
-                                 $field => Security::decrypt($this->input($field))
-                             ]);
+        foreach ($this->fieldsToDecrypt as $fieldName => $fields) {
+            if ($this->has($fieldName)) {
+                $data =
+                    collect($this->input($fieldName))
+                        ->map(function ($item) use ($fields) {
+                            foreach ($fields as $field) {
+                                if (isset($item[$field])) {
+                                    $item[$field] = Security::decrypt($item[$field]);
+                                }
+                            }
+                            return $item;
+                        })
+                        ->toArray();
+
+                $this->merge([$fieldName => $data]);
+            } else {
+                if ($this->has($fields)) {
+                    $this->merge([
+                                     $fields => Security::decrypt($this->input($fields))
+                                 ]);
+                }
             }
         }
     }

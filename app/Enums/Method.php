@@ -10,4 +10,5 @@ class Method extends AbstractEnum
     const STORE = 'store';
     const UPDATE = 'update';
     const DESTROY = 'destroy';
+    const BULK = 'bulk';
 }

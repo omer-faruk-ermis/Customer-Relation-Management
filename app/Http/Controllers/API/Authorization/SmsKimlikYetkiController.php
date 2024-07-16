@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API\Authorization;
 use App\Exceptions\Authorization\EmployeeAuthorizationNotFoundException;
 use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Authorization\BulkEmployeeAuthorizationRequest;
+use App\Http\Requests\Authorization\DestroyEmployeeAuthorizationRequest;
 use App\Http\Requests\Authorization\StoreEmployeeAuthorizationRequest;
 use App\Http\Resources\SuccessResource;
 use App\Services\Authorization\EmployeeAuthorizationService;
@@ -45,15 +47,28 @@ class SmsKimlikYetkiController extends Controller
     }
 
     /**
-     * @param string  $id
+     * @param DestroyEmployeeAuthorizationRequest  $request
      *
      * @return SuccessResource
      * @throws EmployeeAuthorizationNotFoundException
      */
-    public function destroy(string $id): SuccessResource
+    public function destroy(DestroyEmployeeAuthorizationRequest $request): SuccessResource
     {
-        $this->employeeAuthorizationService->destroy($id);
+        $this->employeeAuthorizationService->destroy($request);
 
         return new SuccessResource('SMS_MANAGEMENT_AUTHORIZATION.DESTROY.SUCCESS');
+    }
+
+    /**
+     * @param BulkEmployeeAuthorizationRequest  $request
+     *
+     * @return SuccessResource
+     * @throws Exception
+     */
+    public function bulk(BulkEmployeeAuthorizationRequest $request): SuccessResource
+    {
+        $this->employeeAuthorizationService->bulk($request);
+
+        return new SuccessResource('SMS_MANAGEMENT_AUTHORIZATION.BULK.SUCCESS');
     }
 }

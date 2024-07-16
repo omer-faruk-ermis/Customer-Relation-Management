@@ -5,12 +5,15 @@ namespace App\Services\Menu;
 use App\Enums\Authorization\AuthorizationTypeName;
 use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
+use App\Enums\Method;
 use App\Enums\Status;
+use App\Exceptions\DetailMenu\DetailMenuUserAlreadyHaveException;
 use App\Exceptions\DetailMenu\DetailMenuUserNotFoundException;
 use App\Helpers\CacheOperation;
 use App\Models\Menu\DetayMenuUser;
 use App\Services\AbstractService;
-use App\Utils\Security;
+use App\Services\BulkAuthorizationTrait;
+use App\Utils\RouteUtil;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +25,8 @@ use Illuminate\Support\Facades\Auth;
  */
 class DetailMenuUserService extends AbstractService
 {
+    use BulkAuthorizationTrait;
+
     protected array $serviceAuthorizations = [
         AuthorizationTypeName::SMS_MANAGEMENT => [
             SmsManagement::AUTHORIZED_GROUPS,
@@ -39,6 +44,15 @@ class DetailMenuUserService extends AbstractService
      */
     public function store(Request $request): void
     {
+        $detailMenuUser = DetayMenuUser::where('menu_id', '=', $request->input('authorization_id'))
+                                       ->where('userid', '=', $request->input('employee_id'))
+                                       ->where('durum', Status::ACTIVE)
+                                       ->first();
+
+        if ($detailMenuUser) {
+            throw new DetailMenuUserAlreadyHaveException();
+        }
+
         DetayMenuUser::create([
                                   'menu_id'   => $request->input('authorization_id'),
                                   'userid'    => $request->input('employee_id'),
@@ -48,19 +62,26 @@ class DetailMenuUserService extends AbstractService
                                   'durum'     => Status::ACTIVE,
                               ]);
 
-        CacheOperation::setSession($request);
+        if (Method::STORE === RouteUtil::currentRoute())
+            CacheOperation::setSession($request);
     }
 
     /**
-     * @param string  $id
+     * @param Request  $request
      *
      * @return void
      * @throws DetailMenuUserNotFoundException
      * @throws Exception
      */
-    public function destroy(string $id): void
+    public function destroy(Request $request): void
     {
-        $detailMenuUser = DetayMenuUser::find(Security::decrypt($id));
+        $detailMenuUser = DetayMenuUser::where('menu_id', '=', $request->input('authorization_id'))
+                                       ->where('userid', '=', $request->input('employee_id'))
+                                       ->when(Method::DESTROY === RouteUtil::currentRoute(), function ($q) {
+                                           $q->where('durum', Status::ACTIVE);
+                                       })
+                                       ->first();
+
         if (empty($detailMenuUser)) {
             throw new DetailMenuUserNotFoundException();
         }
@@ -68,6 +89,7 @@ class DetailMenuUserService extends AbstractService
         $detailMenuUser->durum = Status::PASSIVE;
         $detailMenuUser->update();
 
-        CacheOperation::setSession($this->request);
+        if (Method::DESTROY === RouteUtil::currentRoute())
+            CacheOperation::setSession($this->request);
     }
 }

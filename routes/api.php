@@ -135,10 +135,11 @@ Route::group(['middleware' => 'auth_with_token'], function () {
             Route::delete('/{id}', [UrlTanimController::class, 'destroy']);
         });
 
-        // DetailMenuUser
+        // SmsKimlikYetki
         Route::prefix('/authorization')->group(function () {
             Route::post('/', [SmsKimlikYetkiController::class, 'store']);
-            Route::delete('/{id}', [SmsKimlikYetkiController::class, 'destroy']);
+            Route::delete('/', [SmsKimlikYetkiController::class, 'destroy']);
+            Route::post('/bulk', [SmsKimlikYetkiController::class, 'bulk']);
         });
     });
 
@@ -150,7 +151,8 @@ Route::group(['middleware' => 'auth_with_token'], function () {
         // DetailMenuUser
         Route::prefix('/authorization')->group(function () {
             Route::post('/', [DetayMenuUserController::class, 'store']);
-            Route::delete('/{id}', [DetayMenuUserController::class, 'destroy']);
+            Route::delete('/', [DetayMenuUserController::class, 'destroy']);
+            Route::post('/bulk', [DetayMenuUserController::class, 'bulk']);
         });
     });
 
@@ -162,7 +164,8 @@ Route::group(['middleware' => 'auth_with_token'], function () {
         // WebPortalAuthorizationPermission
         Route::prefix('/authorization')->group(function () {
             Route::post('/', [WebPortalYetkiIzinController::class, 'store']);
-            Route::delete('/{id}', [WebPortalYetkiIzinController::class, 'destroy']);
+            Route::delete('/', [WebPortalYetkiIzinController::class, 'destroy']);
+            Route::post('/bulk', [WebPortalYetkiIzinController::class, 'bulk']);
         });
     });
 
@@ -180,16 +183,19 @@ Route::group(['middleware' => 'auth_with_token'], function () {
         Route::put('/{id}', [PersonelGrupController::class, 'update']);
         Route::delete('/{id}', [PersonelGrupController::class, 'destroy']);
 
-        // StaffGroupMatch
+        // StaffGroup + Staff Match
         Route::prefix('/match')->group(function () {
-            Route::post('/', [PersonelGrupEslestirController::class, 'store']);
-            Route::delete('/{id}', [PersonelGrupEslestirController::class, 'destroy']);
-
-            // StaffGroupAuthorizationMatch
+            // StaffGroup + Authorization Match
             Route::prefix('/authorization')->group(function () {
                 Route::post('/', [PersonelGrupYetkiEslestirController::class, 'store']);
-                Route::delete('/{id}', [PersonelGrupYetkiEslestirController::class, 'destroy']);
+                Route::delete('/', [PersonelGrupYetkiEslestirController::class, 'destroy']);
+                Route::post('/bulk', [PersonelGrupYetkiEslestirController::class, 'bulk']);
             });
+
+            Route::post('/', [PersonelGrupEslestirController::class, 'store']);
+            Route::delete('/', [PersonelGrupEslestirController::class, 'destroy']);
+            Route::delete('/{id}', [PersonelGrupEslestirController::class, 'destroyStaff']);
+            Route::post('/bulk', [PersonelGrupEslestirController::class, 'bulk']);
         });
     });
 });

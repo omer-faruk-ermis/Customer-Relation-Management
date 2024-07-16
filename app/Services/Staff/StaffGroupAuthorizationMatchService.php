@@ -5,12 +5,14 @@ namespace App\Services\Staff;
 use App\Enums\Authorization\AuthorizationTypeName;
 use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
+use App\Enums\Method;
 use App\Enums\Status;
 use App\Exceptions\Staff\StaffGroupAuthorizationMatchNotFoundException;
 use App\Helpers\CacheOperation;
 use App\Models\Staff\PersonelGrupYetkiEslestir;
 use App\Services\AbstractService;
-use App\Utils\Security;
+use App\Services\BulkAuthorizationTrait;
+use App\Utils\RouteUtil;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +24,8 @@ use Illuminate\Support\Facades\Auth;
  */
 class StaffGroupAuthorizationMatchService extends AbstractService
 {
+    use BulkAuthorizationTrait;
+
     protected array $serviceAuthorizations = [
         AuthorizationTypeName::SMS_MANAGEMENT => [
             SmsManagement::AUTHORIZED_GROUPS,
@@ -34,37 +38,55 @@ class StaffGroupAuthorizationMatchService extends AbstractService
     /**
      * @param Request  $request
      *
-     * @return PersonelGrupYetkiEslestir
+     * @return void
      *
      * @throws Exception
      */
-    public function store(Request $request): PersonelGrupYetkiEslestir
+    public function store(Request $request): void
     {
-        $employeeGroupAuthorizationMatch = PersonelGrupYetkiEslestir::create([
-                                                                                 'personel_grup_id' => $request->input('staff_group_id'),
-                                                                                 'yetki_id'         => $request->input('authorization_id'),
-                                                                                 'durum'            => Status::ACTIVE,
-                                                                                 'tip'              => $request->input('type'),
-                                                                                 'kayit_tarihi'     => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT),
-                                                                                 'sms_kimlik'       => Auth::id(),
-                                                                             ]);
+        $staffGroupAuthorizationMatch =
+            PersonelGrupYetkiEslestir::where('personel_grup_id', '=', $request->input('staff_group_id'))
+                                     ->where('yetki_id', '=', $request->input('authorization_id'))
+                                     ->where('tip', '=', $request->input('type'))
+                                     ->where('durum', Status::ACTIVE)
+                                     ->first();
 
-        CacheOperation::setSession($request);
+        if ($staffGroupAuthorizationMatch) {
+            throw new StaffGroupAuthorizationMatchNotFoundException();
+        }
 
-        return $employeeGroupAuthorizationMatch;
+        PersonelGrupYetkiEslestir::create([
+                                              'personel_grup_id' => $request->input('staff_group_id'),
+                                              'yetki_id'         => $request->input('authorization_id'),
+                                              'durum'            => Status::ACTIVE,
+                                              'tip'              => $request->input('type'),
+                                              'kayit_tarihi'     => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT),
+                                              'sms_kimlik'       => Auth::id(),
+                                          ]);
+
+
+        if (Method::STORE === RouteUtil::currentRoute())
+            CacheOperation::setSession($request);
     }
 
     /**
-     * @param string  $id
+     * @param Request  $request
      *
      * @return void
      * @throws StaffGroupAuthorizationMatchNotFoundException
-     *
      * @throws Exception
      */
-    public function destroy(string $id): void
+    public function destroy(Request $request): void
     {
-        $staffGroupAuthorizationMatch = PersonelGrupYetkiEslestir::find(Security::decrypt($id));
+        $staffGroupAuthorizationMatch =
+            PersonelGrupYetkiEslestir::where('personel_grup_id', '=', $request->input('staff_group_id'))
+                                     ->where('yetki_id', '=', $request->input('authorization_id'))
+                                     ->where('tip', '=', $request->input('type'))
+                                     ->when(Method::DESTROY === RouteUtil::currentRoute(), function ($q) {
+                                         $q->where('durum', Status::ACTIVE);
+                                     })
+                                     ->first();
+
         if (empty($staffGroupAuthorizationMatch)) {
             throw new StaffGroupAuthorizationMatchNotFoundException();
         }
@@ -72,6 +94,7 @@ class StaffGroupAuthorizationMatchService extends AbstractService
         $staffGroupAuthorizationMatch->durum = Status::PASSIVE;
         $staffGroupAuthorizationMatch->update();
 
-        CacheOperation::setSession($this->request);
+        if (Method::DESTROY === RouteUtil::currentRoute())
+            CacheOperation::setSession($this->request);
     }
 }

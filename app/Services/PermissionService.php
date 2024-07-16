@@ -7,9 +7,9 @@ use App\Services\Authorization\AuthorizationService;
 use App\Services\Strategies\BlueScreenStrategy;
 use App\Services\Strategies\GeneralAuthorizationStrategy;
 use App\Services\Strategies\SmsManagementStrategy;
+use App\Utils\RouteUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 
 /**
  * Class PermissionService
@@ -23,7 +23,7 @@ class PermissionService
      */
     public function __construct(Request $request, array $serviceAuthorizations, array $privateMethods, array $publicMethods)
     {
-        $method = explode('@', Route::current()->getAction()['controller'])[1];
+        $method = RouteUtil::currentRoute();
         if (in_array($method, $publicMethods) || empty($serviceAuthorizations)) {
             return;
         }

@@ -5,9 +5,10 @@ namespace App\Http\Controllers\API\WebPortal;
 use App\Exceptions\ForbiddenException;
 use App\Exceptions\WebPortal\WebPortalAuthorizationPermissionNotFoundException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\WebPortal\BulkWebPortalAuthorizationPermissionRequest;
+use App\Http\Requests\WebPortal\DestroyWebPortalAuthorizationPermissionRequest;
 use App\Http\Requests\WebPortal\StoreWebPortalAuthorizationPermissionRequest;
 use App\Http\Resources\SuccessResource;
-use App\Http\Resources\WebPortal\WebPortalAuthorizationPermissionResource;
 use App\Services\WebPortal\WebPortalAuthorizationPermissionService;
 use Exception;
 use Illuminate\Http\Request;
@@ -46,15 +47,28 @@ class WebPortalYetkiIzinController extends Controller
     }
 
     /**
-     * @param string  $id
+     * @param DestroyWebPortalAuthorizationPermissionRequest  $request
      *
      * @return SuccessResource
      * @throws WebPortalAuthorizationPermissionNotFoundException
      */
-    public function destroy(string $id): SuccessResource
+    public function destroy(DestroyWebPortalAuthorizationPermissionRequest $request): SuccessResource
     {
-        $this->webPortalAuthorizationPermissionService->destroy($id);
+        $this->webPortalAuthorizationPermissionService->destroy($request);
 
         return new SuccessResource('WEB_PORTAL_AUTHORIZATION_PERMISSION.DESTROY.SUCCESS');
+    }
+
+    /**
+     * @param BulkWebPortalAuthorizationPermissionRequest  $request
+     *
+     * @return SuccessResource
+     * @throws Exception
+     */
+    public function bulk(BulkWebPortalAuthorizationPermissionRequest $request): SuccessResource
+    {
+        $this->webPortalAuthorizationPermissionService->bulk($request);
+
+        return new SuccessResource('WEB_PORTAL_AUTHORIZATION_PERMISSION.BULK.SUCCESS');
     }
 }
