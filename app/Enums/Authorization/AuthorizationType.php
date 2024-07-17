@@ -3,8 +3,9 @@
 namespace App\Enums\Authorization;
 
 use App\Enums\AbstractEnum;
+use App\Enums\EnumInterface;
 
-class AuthorizationType extends AbstractEnum
+class AuthorizationType extends AbstractEnum implements EnumInterface
 {
     public const SMS_MANAGEMENT = 1;
     public const BLUE_SCREEN = 2;

@@ -32,6 +32,7 @@ class AuthorizationResource extends AbstractResource
             'menu'             => $this->menu,
             'state'            => $this->match_state,
             'type'             => $this->match_type,
+            'is_authorized'    => $this->is_authorized,
             'recorder'         => EmployeeBasicResource::make($this->recorder),
         ];
     }

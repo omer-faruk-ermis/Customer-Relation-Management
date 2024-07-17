@@ -2,7 +2,8 @@
 
 namespace App\Enums;
 
-class ContentType {
+class ContentType extends AbstractEnum
+{
     const XML = 'application/xml';
     const JSON = 'application/json';
 }

@@ -37,6 +37,13 @@ class StaffGroupService extends AbstractService
         ]
     ];
 
+    private const AUTHORIZATION_TYPES = [
+        'smsManagement'    => AuthorizationType::SMS_MANAGEMENT,
+        'blueScreen'       => AuthorizationType::BLUE_SCREEN,
+        'authorization'    => AuthorizationType::AUTHORIZATION,
+        'subscriberBillet' => AuthorizationType::SUBSCRIBER_BILLET,
+    ];
+
     /**
      * @param Request  $request
      *
@@ -45,15 +52,15 @@ class StaffGroupService extends AbstractService
     public function index(Request $request): Collection|LengthAwarePaginator
     {
         $groups = PersonelGruplari::with([
-                                          'recorder',
-                                          'members.recorder',
-                                          'members.staff',
-                                          'authorizations.smsManagement.recorder',
-                                          'authorizations.blueScreen.recorder',
-                                          'authorizations.authorization.recorder',
-                                          'authorizations.subscriberBillet.recorder'
-                                      ])
-                               ->where('durum', '<>', Status::DESTROY);
+                                             'recorder',
+                                             'members.recorder',
+                                             'members.staff',
+                                             'authorizations.smsManagement.recorder',
+                                             'authorizations.blueScreen.recorder',
+                                             'authorizations.authorization.recorder',
+                                             'authorizations.subscriberBillet.recorder'
+                                         ])
+                                  ->where('durum', '<>', Status::DESTROY);
 
         return $request->input('page')
             ? $groups->paginate(DefaultConstant::PAGINATE)
@@ -80,20 +87,17 @@ class StaffGroupService extends AbstractService
         }
 
         $authorizationService = new AuthorizationService(Auth::id());
-        $authorizationTypes = [
-            'smsManagement'    => AuthorizationType::SMS_MANAGEMENT,
-            'blueScreen'       => AuthorizationType::BLUE_SCREEN,
-            'authorization'    => AuthorizationType::AUTHORIZATION,
-            'subscriberBillet' => AuthorizationType::SUBSCRIBER_BILLET,
-        ];
-
         $authorizations = [];
-        foreach ($authorizationTypes as $type => $value) {
+        $authorizationIds = [];
+
+        foreach (self::AUTHORIZATION_TYPES as $type => $value) {
             $groupAuthorizations = $authorizationService->authorizationGroup($value, Security::decrypt($id));
 
-            $authorizations[$type] = !empty($groupAuthorizations)
-                ? $authorizationService->$type($groupAuthorizations)
-                : collect();
+            $authorizationIds[$type] = !empty($groupAuthorizations)
+                ? $authorizationService->$type($groupAuthorizations)->pluck('id')->toArray()
+                : [];
+
+            $authorizations[$type] = $authorizationService->$type([], true);
 
             foreach ($authorizations[$type] as $key => $authorization) {
                 $matching = PersonelGrupYetkiEslestir::with('recorder')
@@ -108,6 +112,7 @@ class StaffGroupService extends AbstractService
                     $authorizations[$type][$key]->match_state = $matching->durum;
                     $authorizations[$type][$key]->match_type = $matching->tip;
                     $authorizations[$type][$key]->recorder = $matching->recorder;
+                    $authorizations[$type][$key]->is_authorized = true;
                 }
             }
         }

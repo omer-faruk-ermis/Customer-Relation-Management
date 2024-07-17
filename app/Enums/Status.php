@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-class Status implements EnumInterface
+class Status extends AbstractEnum implements EnumInterface
 {
     const ACTIVE = 1;
     const PASSIVE = 0;

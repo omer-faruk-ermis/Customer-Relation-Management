@@ -2,7 +2,8 @@
 
 namespace App\Enums;
 
-class Code {
+class Code extends AbstractEnum
+{
     const CODE_MAX_USE = 3;
     const CODE_USED_DEFAULT_COUNTER = 1;
     const REF_CODE = 10;

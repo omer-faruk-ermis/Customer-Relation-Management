@@ -2,7 +2,8 @@
 
 namespace App\Enums;
 
-class Http {
+class Http extends AbstractEnum
+{
     const POST = 'POST';
     const GET = 'GET';
     const PUT = 'PUT';

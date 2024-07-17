@@ -2,7 +2,6 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
 use ReflectionClass;
 
 /**
@@ -10,7 +9,7 @@ use ReflectionClass;
  *
  * @package App\Enums
  */
-abstract class AbstractEnum extends Enum
+abstract class AbstractEnum
 {
     /**
      * @param $value

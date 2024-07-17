@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-class UserType extends AbstractEnum
+class UserType extends AbstractEnum implements EnumInterface
 {
     public const ALL = '*';
     public const CUSTOMER = 0;

@@ -311,10 +311,11 @@ class AuthorizationService
 
     /**
      * @param array  $ids
+     * @param bool   $fullList
      *
      * @return Collection
      */
-    public function smsManagement(array $ids = []): Collection
+    public function smsManagement(array $ids = [], bool $fullList = false): Collection
     {
         $urlTanim = UrlTanim::getModel();
         $menuTanim = MenuTanim::getModel();
@@ -331,16 +332,17 @@ class AuthorizationService
                               $urlTanim->qualifyColumn('ust_id'),
                               '=',
                               $menuTanim->getQualifiedKeyName())
-                       ->when(empty($ids), function ($q) use ($smsKimlikYetki, $urlTanim) {
-                           $q->join($smsKimlikYetki->getTable(),
-                                    $urlTanim->getQualifiedKeyName(),
-                                    '=',
-                                    $smsKimlikYetki->qualifyColumn('url_id'))
-                             ->where($smsKimlikYetki->qualifyColumn('sms_kimlik'), '=', $this->id)
-                             ->where($smsKimlikYetki->qualifyColumn('durum'), '=', Status::ACTIVE);
-                       })
-                       ->when(!empty($ids), function ($q) use ($ids, $urlTanim) {
-                           $q->whereIn($urlTanim->getQualifiedKeyName(), $ids);
+                       ->when(!$fullList, function ($q) use ($smsKimlikYetki, $urlTanim, $ids) {
+                           $q->when(empty($ids), function ($qq) use ($smsKimlikYetki, $urlTanim) {
+                               $qq->join($smsKimlikYetki->getTable(),
+                                         $urlTanim->getQualifiedKeyName(),
+                                         '=',
+                                         $smsKimlikYetki->qualifyColumn('url_id'))
+                                  ->where($smsKimlikYetki->qualifyColumn('sms_kimlik'), '=', $this->id)
+                                  ->where($smsKimlikYetki->qualifyColumn('durum'), '=', Status::ACTIVE);
+                           }, function ($qq) use ($ids, $urlTanim) {
+                               $qq->whereIn($urlTanim->getQualifiedKeyName(), $ids);
+                           });
                        })
                        ->where($urlTanim->qualifyColumn('durum'), '=', Status::ACTIVE)
                        ->where($menuTanim->qualifyColumn('durum'), '=', Status::ACTIVE)
@@ -350,10 +352,11 @@ class AuthorizationService
 
     /**
      * @param array  $ids
+     * @param bool   $fullList
      *
      * @return Collection
      */
-    public function blueScreen(array $ids = []): Collection
+    public function blueScreen(array $ids = [], bool $fullList = false): Collection
     {
         $detailMenu = DetayMenu::getModel();
         $detailMenuUser = DetayMenuUser::getModel();
@@ -364,16 +367,17 @@ class AuthorizationService
                                      $detailMenu->qualifyColumn('menu_adi') . ' as name',
                                      $detailMenu->qualifyColumn('menu_url') . ' as url',
                                  ])
-                        ->when(empty($ids), function ($q) use ($detailMenuUser, $detailMenu) {
-                            $q->join($detailMenuUser->getTable(),
-                                     $detailMenu->getQualifiedKeyName(),
-                                     '=',
-                                     $detailMenuUser->qualifyColumn('menu_id'))
-                              ->where($detailMenuUser->qualifyColumn('userid'), '=', $this->id)
-                              ->where($detailMenuUser->qualifyColumn('durum'), '=', Status::ACTIVE);
-                        })
-                        ->when(!empty($ids), function ($q) use ($ids, $detailMenu) {
-                            $q->whereIn($detailMenu->getQualifiedKeyName(), $ids);
+                        ->when(!$fullList, function ($q) use ($detailMenuUser, $detailMenu, $ids) {
+                            $q->when(empty($ids), function ($qq) use ($detailMenuUser, $detailMenu) {
+                                $qq->join($detailMenuUser->getTable(),
+                                          $detailMenu->getQualifiedKeyName(),
+                                          '=',
+                                          $detailMenuUser->qualifyColumn('menu_id'))
+                                   ->where($detailMenuUser->qualifyColumn('userid'), '=', $this->id)
+                                   ->where($detailMenuUser->qualifyColumn('durum'), '=', Status::ACTIVE);
+                            }, function ($qq) use ($ids, $detailMenu) {
+                                $qq->whereIn($detailMenu->getQualifiedKeyName(), $ids);
+                            });
                         })
                         ->where($detailMenu->qualifyColumn('durum'), '=', Status::ACTIVE)
                         ->get();
@@ -381,10 +385,11 @@ class AuthorizationService
 
     /**
      * @param array  $ids
+     * @param bool   $fullList
      *
      * @return Collection
      */
-    public function authorization(array $ids = []): Collection
+    public function authorization(array $ids = [], bool $fullList = false): Collection
     {
         $webPortalYetki = WebPortalYetki::getModel();
         $webPortalYetkiIzin = WebPortalYetkiIzin::getModel();
@@ -396,17 +401,18 @@ class AuthorizationService
                                           $webPortalYetki->qualifyColumn('tanim') . ' as authorization',
                                           $webPortalYetki->qualifyColumn('yetki_detay') . ' as menu',
                                       ])
-                             ->when(empty($ids), function ($q) use ($webPortalYetkiIzin, $webPortalYetki) {
-                                 $q->join($webPortalYetkiIzin->getTable(),
-                                          $webPortalYetki->getQualifiedKeyName(),
-                                          '=',
-                                          $webPortalYetkiIzin->qualifyColumn('yetki_id'))
-                                   ->where($webPortalYetkiIzin->qualifyColumn('userid'), '=', $this->id)
-                                   ->where($webPortalYetkiIzin->qualifyColumn('usermi'), '=', AuthorizationUserType::AGENT)
-                                   ->where($webPortalYetkiIzin->qualifyColumn('durum'), '=', Status::ACTIVE);
-                             })
-                             ->when(!empty($ids), function ($q) use ($ids, $webPortalYetki) {
-                                 $q->whereIn($webPortalYetki->getQualifiedKeyName(), $ids);
+                             ->when(!$fullList, function ($q) use ($webPortalYetkiIzin, $webPortalYetki, $ids) {
+                                 $q->when(empty($ids), function ($qq) use ($webPortalYetkiIzin, $webPortalYetki) {
+                                     $qq->join($webPortalYetkiIzin->getTable(),
+                                               $webPortalYetki->getQualifiedKeyName(),
+                                               '=',
+                                               $webPortalYetkiIzin->qualifyColumn('yetki_id'))
+                                        ->where($webPortalYetkiIzin->qualifyColumn('userid'), '=', $this->id)
+                                        ->where($webPortalYetkiIzin->qualifyColumn('usermi'), '=', AuthorizationUserType::AGENT)
+                                        ->where($webPortalYetkiIzin->qualifyColumn('durum'), '=', Status::ACTIVE);
+                                 }, function ($qq) use ($ids, $webPortalYetki) {
+                                     $qq->whereIn($webPortalYetki->getQualifiedKeyName(), $ids);
+                                 });
                              })
                              ->where($webPortalYetki->qualifyColumn('durum'), '=', Status::ACTIVE)
                              ->get();
@@ -414,16 +420,19 @@ class AuthorizationService
 
     /**
      * @param array  $ids
+     * @param bool   $fullList
      *
      * @return Collection
      */
-    public function subscriberBillet(array $ids = []): Collection
+    public function subscriberBillet(array $ids = [], bool $fullList = false): Collection
     {
         return AboneKutukYetkileri::select([
                                                'id',
                                                'aciklama as name',
                                            ])
-                                  ->whereIn('id', $ids)
+                                  ->when(!$fullList, function ($q) use ($ids) {
+                                      $q->whereIn('id', $ids);
+                                  })
                                   ->active()
                                   ->get();
     }

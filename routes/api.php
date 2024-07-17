@@ -100,9 +100,9 @@ Route::group(['middleware' => 'auth_with_token'], function () {
 
     // Customer // Maybe Not Customer
     Route::prefix('web_user')->group(function () {
+        Route::get('/type', [WebUserController::class, 'type']);
         Route::get('/', [WebUserController::class, 'index']);
         Route::get('/{id}', [WebUserController::class, 'show']);
-        Route::get('/type', [WebUserController::class, 'type']);
     });
 
     // Call

@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-class DefaultConstant
+class DefaultConstant extends AbstractEnum
 {
     const DEFAULT_DATETIME_FORMAT = 'd.m.Y H:i:s';
     const DEFAULT_DATE_FORMAT = 'd.m.Y';

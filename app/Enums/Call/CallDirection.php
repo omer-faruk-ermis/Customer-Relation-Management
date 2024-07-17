@@ -3,8 +3,9 @@
 namespace App\Enums\Call;
 
 use App\Enums\AbstractEnum;
+use App\Enums\EnumInterface;
 
-class CallDirection extends AbstractEnum
+class CallDirection extends AbstractEnum implements EnumInterface
 {
     public const ALL = '*';
     public const INCOMING_CALL = 1;

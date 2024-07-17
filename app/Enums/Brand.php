@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-class Brand extends AbstractEnum
+class Brand extends AbstractEnum implements EnumInterface
 {
     public const ALL = '*';
     public const ATB = [1, 4];

@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-class ReasonType extends AbstractEnum
+class ReasonType extends AbstractEnum implements EnumInterface
 {
     public const MEETING_DETAIL = 67;
 
