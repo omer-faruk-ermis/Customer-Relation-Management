@@ -106,13 +106,14 @@ class StaffGroupService extends AbstractService
                                                      ->where('tip', '=', $value)
                                                      ->first();
 
+                $authorizations[$type][$key]->is_authorized = !empty($matching);
+
                 if (!empty($matching)) {
                     $authorizations[$type][$key]->match_id = $matching->id;
                     $authorizations[$type][$key]->staff_group_id = $matching['personel_grup_id'];
                     $authorizations[$type][$key]->match_state = $matching->durum;
                     $authorizations[$type][$key]->match_type = $matching->tip;
                     $authorizations[$type][$key]->recorder = $matching->recorder;
-                    $authorizations[$type][$key]->is_authorized = true;
                 }
             }
         }
