@@ -65,10 +65,6 @@ Route::group(['middleware' => 'auth_with_token'], function () {
         Route::get('/log', [SmsKimlikController::class, 'log']);
         Route::put('/change_password/{id}', [SmsKimlikController::class, 'changePassword']);
 
-        Route::get('/{id}', [SmsKimlikController::class, 'show']);
-        Route::put('/{id}', [SmsKimlikController::class, 'update']);
-        Route::delete('/{id}', [SmsKimlikController::class, 'destroy']);
-
         // Employee Sip
         Route::prefix('/sip')->group(function () {
             Route::get('/', [SmsKimlikSipController::class, 'index']);
@@ -80,6 +76,11 @@ Route::group(['middleware' => 'auth_with_token'], function () {
         Route::prefix('/unit')->group(function () {
             Route::get('/', [SmsKimlikUnitController::class, 'index']);
         });
+
+        Route::get('/{id}', [SmsKimlikController::class, 'show']);
+        Route::put('/{id}', [SmsKimlikController::class, 'update']);
+        Route::delete('/{id}', [SmsKimlikController::class, 'destroy']);
+
     });
 
     // Question-Answer
