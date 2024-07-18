@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\VoiceUser;
 
 use App\Exceptions\Call\CallNotFoundException;
 use App\Exceptions\ForbiddenException;
+use App\Exceptions\Voice\VoiceUserNotFoundException;
 use App\Exceptions\WebUser\WebUserNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\VoiceUser\LastPairVoiceUserRequest;
@@ -11,7 +12,6 @@ use App\Http\Requests\VoiceUser\PathVoiceUserRequest;
 use App\Http\Requests\VoiceUser\StoreVoiceUserRequest;
 use App\Http\Resources\SuccessResource;
 use App\Http\Resources\VoiceUser\LastPairCollection;
-use App\Http\Resources\VoiceUser\LastPairResource;
 use App\Http\Resources\VoiceUser\PathResource;
 use App\Services\VoiceUser\VoiceUserService;
 use Illuminate\Http\Request;
@@ -72,5 +72,18 @@ class VoiceUserController extends Controller
         $lastPairs = $this->voiceUserService->lastPair($request);
 
         return new LastPairCollection($lastPairs, 'VOICE_USER.LAST_PAIR.SUCCESS');
+    }
+
+    /**
+     * @param $id
+     *
+     * @return SuccessResource
+     * @throws VoiceUserNotFoundException
+     */
+    public function destroy($id): SuccessResource
+    {
+        $this->voiceUserService->destroy($id);
+
+        return new SuccessResource('VOICE_USER.DESTROY.SUCCESS');
     }
 }

@@ -5,7 +5,6 @@ namespace App\Services\WebPortal;
 use App\Enums\Authorization\AuthorizationTypeName;
 use App\Enums\Authorization\AuthorizationUserType;
 use App\Enums\Authorization\SmsManagement;
-use App\Enums\DefaultConstant;
 use App\Enums\Method;
 use App\Enums\Status;
 use App\Exceptions\WebPortal\WebPortalAuthorizationPermissionAlreadyHaveException;
@@ -14,6 +13,7 @@ use App\Helpers\CacheOperation;
 use App\Models\WebPortal\WebPortalYetkiIzin;
 use App\Services\AbstractService;
 use App\Services\BulkAuthorizationTrait;
+use App\Utils\DateUtil;
 use App\Utils\RouteUtil;
 use Exception;
 use Illuminate\Http\Request;
@@ -58,7 +58,7 @@ class WebPortalAuthorizationPermissionService extends AbstractService
                                        'yetki_id' => $request->input('authorization_id'),
                                        'durum'    => Status::ACTIVE,
                                        'usermi'   => AuthorizationUserType::AGENT,
-                                       'tarih'    => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT),
+                                       'tarih'    => DateUtil::now(),
                                    ]);
 
         if (Method::STORE === RouteUtil::currentRoute())

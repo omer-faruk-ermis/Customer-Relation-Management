@@ -12,7 +12,8 @@ class CodeGenerator
     /**
      * Generates a random security code [0-9][A-F].
      *
-     * @param int $length
+     * @param int  $length
+     *
      * @return string
      */
     public static function generateCode(int $length = 6): string
@@ -23,7 +24,8 @@ class CodeGenerator
     /**
      * Generates a random code [0-9][A-Z][a-z].
      *
-     * @param int $length
+     * @param int  $length
+     *
      * @return string
      */
     public static function generateRandomAlphanumericCode(int $length = 15): string
@@ -34,8 +36,9 @@ class CodeGenerator
     /**
      * Generates an image containing the security code.
      *
-     * @param int $width
-     * @param int $height
+     * @param int  $width
+     * @param int  $height
+     *
      * @return string
      */
     public static function generateSecurityCodeImage(int $width = 120, int $height = 40): string
@@ -60,7 +63,8 @@ class CodeGenerator
     }
 
     /**
-     * @param string $token
+     * @param string  $token
+     *
      * @return array
      */
     public static function getVerifierData(string $token): array

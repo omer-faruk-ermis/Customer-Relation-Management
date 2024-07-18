@@ -7,9 +7,9 @@ use App\Exceptions\WebUser\WebUserNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\WebUser\IndexWebUserRequest;
 use App\Http\Requests\WebUser\IndexWebUserTypeRequest;
-use App\Http\Resources\SuccessDataResource;
 use App\Http\Resources\WebUser\WebUserCollection;
 use App\Http\Resources\WebUser\WebUserResource;
+use App\Http\Resources\WebUser\WebUserTypeCollection;
 use App\Services\WebUser\WebUserService;
 use Illuminate\Http\Request;
 
@@ -48,13 +48,13 @@ class WebUserController extends Controller
     /**
      * @param IndexWebUserTypeRequest  $request
      *
-     * @return SuccessDataResource
+     * @return WebUserTypeCollection
      */
-    public function type(IndexWebUserTypeRequest $request): SuccessDataResource
+    public function type(IndexWebUserTypeRequest $request): WebUserTypeCollection
     {
         $webUserTypes = $this->webUserService->type($request);
 
-        return new SuccessDataResource($webUserTypes, 'WEB_USER.TYPE.SUCCESS');
+        return new WebUserTypeCollection($webUserTypes, 'WEB_USER.TYPE.SUCCESS');
     }
 
     /**

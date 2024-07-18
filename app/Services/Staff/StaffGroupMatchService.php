@@ -4,7 +4,6 @@ namespace App\Services\Staff;
 
 use App\Enums\Authorization\AuthorizationTypeName;
 use App\Enums\Authorization\SmsManagement;
-use App\Enums\DefaultConstant;
 use App\Enums\Method;
 use App\Enums\Status;
 use App\Exceptions\Staff\StaffGroupMatchAlreadyHaveException;
@@ -14,6 +13,7 @@ use App\Http\Requests\Authorization\BulkEmployeeAuthorizationRequest;
 use App\Models\Staff\PersonelGrupEslestir;
 use App\Services\AbstractService;
 use App\Services\BulkAuthorizationTrait;
+use App\Utils\DateUtil;
 use App\Utils\RouteUtil;
 use App\Utils\Security;
 use Exception;
@@ -60,7 +60,8 @@ class StaffGroupMatchService extends AbstractService
                                          'personel_grup_id' => $request->input('staff_group_id'),
                                          'personel_id'      => $request->input('staff_id'),
                                          'durum'            => Status::ACTIVE,
-                                         'kayit_tarihi'     => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT),
+
+                                         'kayit_tarihi'     => DateUtil::now(),
                                          'sms_kimlik'       => Auth::id(),
                                      ]);
         if (Method::STORE === RouteUtil::currentRoute())

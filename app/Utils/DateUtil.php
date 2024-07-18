@@ -21,4 +21,12 @@ final class DateUtil
     {
         return !empty($date) ? Carbon::parse($date)->format(DefaultConstant::DEFAULT_DATETIME_FORMAT) : null;
     }
+
+    /**
+     * @return string
+     */
+    public static function now(): string
+    {
+        return now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT);
+    }
 }

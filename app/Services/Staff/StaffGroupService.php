@@ -14,6 +14,7 @@ use App\Models\Staff\PersonelGruplari;
 use App\Models\Staff\PersonelGrupYetkiEslestir;
 use App\Services\AbstractService;
 use App\Services\Authorization\AuthorizationService;
+use App\Utils\DateUtil;
 use App\Utils\Security;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -134,8 +135,9 @@ class StaffGroupService extends AbstractService
                                             'grup_adi'     => $request->input('name'),
                                             'durum'        => $request->input('state'),
                                             'aciklama'     => $request->input('description'),
+
                                             'sms_kimlik'   => Auth::id(),
-                                            'kayit_tarihi' => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT)
+                                            'kayit_tarihi' => DateUtil::now(),
                                         ]);
     }
 

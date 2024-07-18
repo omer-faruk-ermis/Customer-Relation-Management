@@ -4,7 +4,6 @@ namespace App\Services\Staff;
 
 use App\Enums\Authorization\AuthorizationTypeName;
 use App\Enums\Authorization\SmsManagement;
-use App\Enums\DefaultConstant;
 use App\Enums\Method;
 use App\Enums\Status;
 use App\Exceptions\Staff\StaffGroupAuthorizationMatchNotFoundException;
@@ -12,6 +11,7 @@ use App\Helpers\CacheOperation;
 use App\Models\Staff\PersonelGrupYetkiEslestir;
 use App\Services\AbstractService;
 use App\Services\BulkAuthorizationTrait;
+use App\Utils\DateUtil;
 use App\Utils\RouteUtil;
 use Exception;
 use Illuminate\Http\Request;
@@ -60,7 +60,8 @@ class StaffGroupAuthorizationMatchService extends AbstractService
                                               'yetki_id'         => $request->input('authorization_id'),
                                               'durum'            => Status::ACTIVE,
                                               'tip'              => $request->input('type'),
-                                              'kayit_tarihi'     => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT),
+
+                                              'kayit_tarihi'     => DateUtil::now(),
                                               'sms_kimlik'       => Auth::id(),
                                           ]);
 

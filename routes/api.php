@@ -116,6 +116,7 @@ Route::group(['middleware' => 'auth_with_token'], function () {
         Route::post('/', [VoiceUserController::class, 'store']);
         Route::get('/path', [VoiceUserController::class, 'path']);
         Route::get('/last_pair', [VoiceUserController::class, 'lastPair']);
+        Route::delete('/{id}', [VoiceUserController::class, 'destroy']);
     });
 
     // Subject

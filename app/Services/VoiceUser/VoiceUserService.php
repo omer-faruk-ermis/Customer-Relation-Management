@@ -8,11 +8,14 @@ use App\Enums\DefaultConstant;
 use App\Enums\NumericalConstant;
 use App\Enums\Status;
 use App\Exceptions\Call\CallNotFoundException;
+use App\Exceptions\Voice\VoiceUserNotFoundException;
 use App\Exceptions\WebUser\WebUserNotFoundException;
 use App\Models\Call\Cagri;
 use App\Models\Voice\SesUser;
 use App\Models\WebUser\WebUser;
 use App\Services\AbstractService;
+use App\Utils\DateUtil;
+use App\Utils\Security;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -51,14 +54,16 @@ class VoiceUserService extends AbstractService
         }
 
         SesUser::create([
-                            'cagri_id'      => $request->input('call_id'),
-                            'userid'        => $request->input('user_id'),
+                            'cagri_id' => $request->input('call_id'),
+                            'userid'   => $request->input('user_id'),
+
                             'eslestiren_id' => Auth::id(),
                             'eslestiren_ip' => $request->ip(),
-                            'eslesme_tar'   => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT),
-                            'sildurum'      => Status::PASSIVE,
-                            'tip'           => $request->input('type') ?? NumericalConstant::ZERO,
-                            'kul_tur'       => $request->input('user_type'),
+                            'eslesme_tar'   => DateUtil::now(),
+
+                            'sildurum' => Status::PASSIVE,
+                            'tip'      => $request->input('type') ?? NumericalConstant::ZERO,
+                            'kul_tur'  => $request->input('user_type'),
                         ]);
     }
 
@@ -98,5 +103,22 @@ class VoiceUserService extends AbstractService
                       ->where('ceptel', '<>', (string)NumericalConstant::ZERO)
                       ->distinct()
                       ->get();
+    }
+
+    /**
+     * @param string  $id
+     *
+     * @return void
+     * @throws VoiceUserNotFoundException
+     */
+    public function destroy(string $id): void
+    {
+        $voiceUser = SesUser::find(Security::decrypt($id));
+        if (empty($voiceUser)) {
+            throw new VoiceUserNotFoundException();
+        }
+
+        $voiceUser->sildurum = Status::ACTIVE;
+        $voiceUser->update();
     }
 }

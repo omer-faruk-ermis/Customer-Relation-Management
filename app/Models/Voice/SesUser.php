@@ -33,7 +33,11 @@ class SesUser extends AbstractModel
 {
     protected $table = 'crm.dbo.ses_user';
 
-    protected $fillable = [];
+    protected $fillable = [
+        'cagri_id',
+        'userid',
+        'tip'
+    ];
 
     /**
      * @return hasOne

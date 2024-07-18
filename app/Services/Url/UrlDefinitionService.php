@@ -11,6 +11,7 @@ use App\Exceptions\Url\HaveAlreadyUrlDefinitionException;
 use App\Exceptions\Url\UrlDefinitionNotFoundException;
 use App\Models\Url\UrlTanim;
 use App\Services\AbstractService;
+use App\Utils\DateUtil;
 use App\Utils\Security;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -74,9 +75,10 @@ class UrlDefinitionService extends AbstractService
                                     'durum'       => Status::ACTIVE,
                                     'arkaplan_id' => $request->input('background_id'),
                                     'tab_id'      => NumericalConstant::ZERO,
+
                                     'kayit_id'    => Auth::id(),
                                     'kayit_ip'    => $request->ip(),
-                                    'kayit_tarih' => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT),
+                                    'kayit_tarih' => DateUtil::now(),
                                 ]);
     }
 

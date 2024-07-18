@@ -4,7 +4,6 @@ namespace App\Services\Menu;
 
 use App\Enums\Authorization\AuthorizationTypeName;
 use App\Enums\Authorization\SmsManagement;
-use App\Enums\DefaultConstant;
 use App\Enums\Method;
 use App\Enums\Status;
 use App\Exceptions\DetailMenu\DetailMenuUserAlreadyHaveException;
@@ -13,6 +12,7 @@ use App\Helpers\CacheOperation;
 use App\Models\Menu\DetayMenuUser;
 use App\Services\AbstractService;
 use App\Services\BulkAuthorizationTrait;
+use App\Utils\DateUtil;
 use App\Utils\RouteUtil;
 use Exception;
 use Illuminate\Http\Request;
@@ -56,10 +56,11 @@ class DetailMenuUserService extends AbstractService
         DetayMenuUser::create([
                                   'menu_id'   => $request->input('authorization_id'),
                                   'userid'    => $request->input('employee_id'),
-                                  'kayit_tar' => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT),
-                                  'kayit_id'  => Auth::id(),
-                                  'kayit_ip'  => $request->ip(),
                                   'durum'     => Status::ACTIVE,
+
+                                  'kayit_id'  => Auth::id(),
+                                  'kayit_tar' => DateUtil::now(),
+                                  'kayit_ip'  => $request->ip(),
                               ]);
 
         if (Method::STORE === RouteUtil::currentRoute())

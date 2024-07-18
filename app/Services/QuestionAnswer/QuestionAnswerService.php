@@ -14,6 +14,7 @@ use App\Http\Requests\QuestionAnswer\UpdateQuestionAnswerRequest;
 use App\Models\QuestionAnswer\SoruCevap;
 use App\Models\QuestionAnswer\SoruCevapKategori;
 use App\Services\AbstractService;
+use App\Utils\DateUtil;
 use App\Utils\Security;
 use Illuminate\Support\Facades\DB;
 
@@ -72,8 +73,9 @@ class QuestionAnswerService extends AbstractService
                                      'durum'          => Status::ACTIVE,
                                      'soru_keywords'  => $request->input('question_keywords'),
                                      'cevap_keywords' => $request->input('answer_keywords'),
+
                                      'kaydeden_ip'    => $request->ip(),
-                                     'kayit_tarih'    => now()->format(DefaultConstant::DEFAULT_DATETIME_FORMAT),
+                                     'kayit_tarih'    => DateUtil::now(),
                                  ]);
     }
 
