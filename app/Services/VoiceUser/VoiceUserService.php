@@ -93,8 +93,7 @@ class VoiceUserService extends AbstractService
      */
     public function lastPair(Request $request): Collection
     {
-        return WebUser::select('ceptel')
-                      ->whereIn('id',
+        return WebUser::whereIn('id',
                                 SesUser::select('userid')
                                        ->whereIn('cagri_id',
                                                  Cagri::select('id')

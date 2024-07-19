@@ -11,8 +11,8 @@ use App\Http\Requests\VoiceUser\LastPairVoiceUserRequest;
 use App\Http\Requests\VoiceUser\PathVoiceUserRequest;
 use App\Http\Requests\VoiceUser\StoreVoiceUserRequest;
 use App\Http\Resources\SuccessResource;
-use App\Http\Resources\VoiceUser\LastPairCollection;
 use App\Http\Resources\VoiceUser\PathResource;
+use App\Http\Resources\WebUser\WebUserCollection;
 use App\Services\VoiceUser\VoiceUserService;
 use Illuminate\Http\Request;
 
@@ -65,13 +65,13 @@ class VoiceUserController extends Controller
     /**
      * @param LastPairVoiceUserRequest  $request
      *
-     * @return LastPairCollection
+     * @return WebUserCollection
      */
-    public function lastPair(LastPairVoiceUserRequest $request): LastPairCollection
+    public function lastPair(LastPairVoiceUserRequest $request): WebUserCollection
     {
-        $lastPairs = $this->voiceUserService->lastPair($request);
+        $lastPairUsers = $this->voiceUserService->lastPair($request);
 
-        return new LastPairCollection($lastPairs, 'VOICE_USER.LAST_PAIR.SUCCESS');
+        return new WebUserCollection($lastPairUsers, 'VOICE_USER.LAST_PAIR_USER.SUCCESS');
     }
 
     /**

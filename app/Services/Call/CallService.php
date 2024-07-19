@@ -88,6 +88,7 @@ class CallService extends AbstractService
                                        $webUser->getQualifiedKeyName())
                                   ->where($sesUser->qualifyColumn('kul_tur'), '<>', UserType::CUSTOMER);
                          })
+                         ->whereNotNull($cagri->qualifyColumn('cagri_yonu'))
                          ->filter($request->all());
 
         $query = QueryBuilder::createSubQuery($subQuery)
