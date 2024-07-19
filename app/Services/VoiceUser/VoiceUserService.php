@@ -7,6 +7,7 @@ use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
 use App\Enums\NumericalConstant;
 use App\Enums\Status;
+use App\Enums\UserType;
 use App\Exceptions\Call\CallNotFoundException;
 use App\Exceptions\Voice\VoiceUserNotFoundException;
 use App\Exceptions\WebUser\WebUserNotFoundException;
@@ -63,7 +64,7 @@ class VoiceUserService extends AbstractService
 
                             'sildurum' => Status::PASSIVE,
                             'tip'      => $request->input('type') ?? NumericalConstant::ZERO,
-                            'kul_tur'  => $request->input('user_type'),
+                            'kul_tur'  => UserType::SUBSCRIBER,
                         ]);
     }
 
