@@ -24,12 +24,14 @@ class KibanaLog
     }
 
     /**
-     * @param      $message
-     * @param int  $level
+     * @param string|null  $message
+     * @param string|null  $file
+     * @param int          $line
+     * @param int          $level
      *
      * @return void
      */
-    public function send($message, int $level = LOG_NOTICE): void
+    public function send(?string $message, ?string $file, int $line = 0, int $level = LOG_NOTICE): void
     {
         $sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 
@@ -45,6 +47,8 @@ class KibanaLog
                     '@timestamp'  => $timestamp,
                     'source'      => gethostname(),
                     'message'     => $value,
+                    'file'        => $file,
+                    'line'        => $line,
                     'level'       => LogUtil::level2String($level),
                     'thread_id'   => $uniqid,
                     'thread_name' => 'logger',

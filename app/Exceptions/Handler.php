@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Models\Log\KibanaLog;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -43,12 +44,14 @@ class Handler extends ExceptionHandler
 
     public function render($request, Exception|Throwable $e)
     {
+        (new KibanaLog())->send($e->getMessage(), $e->getFile(), $e->getLine());
+
         // This will replace our 404 response with
         // a JSON response.
         if ($e instanceof ModelNotFoundException) {
             return response()->json([
-                'error' => 'Resource not found'
-            ], 404);
+                                        'error' => 'Resource not found'
+                                    ], 404);
         }
 
         return parent::render($request, $e);

@@ -16,7 +16,7 @@ class StoreStaffGroupAuthorizationMatchRequest extends AbstractRequest
         $extraRules = [
             'staff_group_id'   => ['string', 'required'],
             'authorization_id' => ['string', 'required'],
-            'type'             => ['integer', 'required', Rule::in(AuthorizationType::getValues())],
+            'type'             => ['integer', 'required'],
         ];
 
         return array_merge_recursive(PersonelGrupYetkiEslestir::$ensRules, PersonelGrupYetkiEslestir::$rules, $extraRules);
