@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\API\Authorization\SmsKimlikWebUserTipYetkiController;
 use App\Http\Controllers\API\Authorization\SmsKimlikYetkiController;
 use App\Http\Controllers\API\Call\CagriController;
 use App\Http\Controllers\API\Code\CodeController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\API\Log\LogController;
 use App\Http\Controllers\API\Menu\DetayMenuController;
 use App\Http\Controllers\API\Menu\DetayMenuUserController;
 use App\Http\Controllers\API\Menu\MenuTanimController;
+use App\Http\Controllers\API\Operator\OperatorTanimlariController;
 use App\Http\Controllers\API\QuestionAnswer\SoruCevapController;
 use App\Http\Controllers\API\QuestionAnswer\SoruCevapKategoriController;
 use App\Http\Controllers\API\Reason\SebepIsteneceklerController;
@@ -56,6 +58,9 @@ Route::group(['middleware' => 'auth_with_token'], function () {
     // Reason
     Route::get('reasons', [SebeplerController::class, 'index']);
     Route::get('reason_wanted', [SebepIsteneceklerController::class, 'index']);
+
+    // Operator
+    Route::get('operator_define', [OperatorTanimlariController::class, 'index']);
 
     // Employee
     Route::prefix('employee')->group(function () {
@@ -175,6 +180,14 @@ Route::group(['middleware' => 'auth_with_token'], function () {
     Route::prefix('subscriber_billet_authorization')->group(function () {
         Route::get('/menu', [AboneKutukYetkiController::class, 'menu']);
         Route::get('/page', [AboneKutukYetkiController::class, 'page']);
+    });
+
+    // Employee WebUser Type Authorization
+    Route::prefix('/employee_web_user_type_authorization')->group(function () {
+        Route::get('/', [SmsKimlikWebUserTipYetkiController::class, 'index']);
+        Route::post('/', [SmsKimlikWebUserTipYetkiController::class, 'store']);
+        Route::delete('/', [SmsKimlikWebUserTipYetkiController::class, 'destroy']);
+        Route::post('/bulk', [SmsKimlikWebUserTipYetkiController::class, 'bulk']);
     });
 
     // StaffGroup

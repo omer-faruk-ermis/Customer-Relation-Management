@@ -9,6 +9,7 @@ use App\Enums\Authorization\AuthorizationUserType;
 use App\Enums\NumericalConstant;
 use App\Enums\Status;
 use App\Models\Authorization\AboneKutukYetkileri;
+use App\Models\Authorization\SmsKimlikWebUserTipYetki;
 use App\Models\Authorization\SmsKimlikYetki;
 use App\Models\Menu\DetayMenu;
 use App\Models\Menu\DetayMenuUser;
@@ -30,6 +31,7 @@ class AuthorizationService
 {
     private const AUTHORIZATION = 'authorization';
     private const PROCESS_AUTHORIZATION = 'process_authorization';
+    private const USER_AUTHORIZATION = 'user_authorization';
     private int $id;
     private int $pluck;
 
@@ -66,6 +68,7 @@ class AuthorizationService
             [
                 AuthorizationTypeName::BLUE_SCREEN       => $this->mergeAuthorization($this->blueScreen(), AuthorizationType::BLUE_SCREEN),
                 AuthorizationTypeName::SUBSCRIBER_BILLET => $this->mergeAuthorization($this->subscriberBillet(), AuthorizationType::SUBSCRIBER_BILLET),
+                self::USER_AUTHORIZATION                 => $this->userAuthorization(),
             ]
         );
     }
@@ -435,5 +438,22 @@ class AuthorizationService
                                   })
                                   ->active()
                                   ->get();
+    }
+
+    /**
+     * @return array
+     */
+    public function userAuthorization(): array
+    {
+        return SmsKimlikWebUserTipYetki::select([
+                                                    'id',
+                                                    'sms_kimlik',
+                                                    'webuser_tip',
+                                                    'kopkodu',
+                                                ])
+                                       ->where('sms_kimlik', $this->id)
+                                       ->active()
+                                       ->get()
+                                       ->toArray();
     }
 }

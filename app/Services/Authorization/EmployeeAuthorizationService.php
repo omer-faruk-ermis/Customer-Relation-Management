@@ -43,12 +43,12 @@ class EmployeeAuthorizationService extends AbstractService
      */
     public function store(Request $request): void
     {
-        $webPortalAuthorizationPermission = SmsKimlikYetki::where('url_id', '=', $request->input('authorization_id'))
+        $employeelAuthorizationPermission = SmsKimlikYetki::where('url_id', '=', $request->input('authorization_id'))
                                                           ->where('sms_kimlik', '=', $request->input('employee_id'))
                                                           ->active()
                                                           ->first();
 
-        if ($webPortalAuthorizationPermission) {
+        if ($employeelAuthorizationPermission) {
             throw new EmployeeAuthorizationAlreadyHaveException();
         }
 
@@ -86,6 +86,7 @@ class EmployeeAuthorizationService extends AbstractService
 
         $employeeAuthorization->durum = Status::PASSIVE;
         $employeeAuthorization->update();
+
         if (Method::DESTROY === RouteUtil::currentRoute())
             CacheOperation::setSession($this->request);
     }
