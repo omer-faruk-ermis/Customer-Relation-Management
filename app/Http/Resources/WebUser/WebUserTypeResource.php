@@ -3,7 +3,6 @@
 namespace App\Http\Resources\WebUser;
 
 use App\Http\Resources\AbstractResource;
-use App\Utils\Security;
 
 /**
  * Class WebUserTypeResource
@@ -22,7 +21,7 @@ class WebUserTypeResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'          => Security::encrypt($this->ktip),
+            'id'          => $this->ktip,
             'description' => $this->kaciklama,
             'color'       => $this->kcolor,
             'type'        => $this->tip
