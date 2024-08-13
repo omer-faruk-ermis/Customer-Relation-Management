@@ -22,4 +22,5 @@ class DefaultConstant extends AbstractEnum
     const INTERNATIONAL_PHONE_LENGTH = 11;
     const NETGSM_PHONE_PREFIX = 510;
     const PARENT = 0;
+    const AUTHORIZATION_GROUP = 'Default Group';
 }

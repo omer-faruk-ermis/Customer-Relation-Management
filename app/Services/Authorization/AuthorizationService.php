@@ -20,7 +20,12 @@ use App\Models\Staff\PersonelGrupYetkiEslestir;
 use App\Models\Url\UrlTanim;
 use App\Models\WebPortal\WebPortalYetki;
 use App\Models\WebPortal\WebPortalYetkiIzin;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 /**
  * Class AuthorizationService
@@ -55,6 +60,7 @@ class AuthorizationService
             AuthorizationTypeName::BLUE_SCREEN       => $this->mergeAuthorization($this->blueScreen(), AuthorizationType::BLUE_SCREEN),
             AuthorizationTypeName::AUTHORIZATION     => $this->mergeAuthorization($this->authorization(), AuthorizationType::AUTHORIZATION),
             AuthorizationTypeName::SUBSCRIBER_BILLET => $this->mergeAuthorization($this->subscriberBillet(), AuthorizationType::SUBSCRIBER_BILLET),
+            self::USER_AUTHORIZATION                 => $this->userAuthorization(),
         ];
     }
 
@@ -74,18 +80,21 @@ class AuthorizationService
     }
 
     /**
+     * @param int|null  $id
+     *
      * @return string
      */
-    public function getAuthorizationString(): string
+    public function getAuthorizationString(?int $id = null): string
     {
-        $authorization = (new self($this->id, true))->getAuthorizationsGrouped();
+        $authorization = (new self($id ?? $this->id, true))->getAuthorizationsGrouped();
 
         $smsManagementIds = implode(',', $authorization[AuthorizationTypeName::SMS_MANAGEMENT]->toArray());
         $blueScreenIds = implode(',', $authorization[AuthorizationTypeName::BLUE_SCREEN]->toArray());
         $authorizationIds = implode(',', $authorization[AuthorizationTypeName::AUTHORIZATION]->toArray());
         $subscriberBilletIds = implode(',', $authorization[AuthorizationTypeName::SUBSCRIBER_BILLET]->toArray());
+        $userAuthorizations = implode(',', Arr::pluck($authorization[self::USER_AUTHORIZATION], 'id'));
 
-        return $smsManagementIds . '#' . $blueScreenIds . '#' . $authorizationIds . '#' . $subscriberBilletIds;
+        return $smsManagementIds . '#' . $blueScreenIds . '#' . $authorizationIds . '#' . $subscriberBilletIds . '#' . $userAuthorizations;
     }
 
     /**
@@ -105,6 +114,7 @@ class AuthorizationService
             AuthorizationTypeName::BLUE_SCREEN       => explode(',', $parts[1]),
             AuthorizationTypeName::AUTHORIZATION     => explode(',', $parts[2]),
             AuthorizationTypeName::SUBSCRIBER_BILLET => explode(',', $parts[3]),
+            self::USER_AUTHORIZATION                 => explode(',', $parts[4]),
         ];
     }
 
@@ -115,8 +125,6 @@ class AuthorizationService
      */
     protected function getProcessAuthorizations(string $type = null): array
     {
-        // TODO: REFACTOR AND TEST THIS PART OF CODE
-
         $checkAuthorization = !empty($this->mergeAuthorization($this->authorization(), AuthorizationType::AUTHORIZATION));
 
         if (isset($this->mergeAuthorization($this->authorization(), AuthorizationType::AUTHORIZATION)[$type])) {
@@ -455,5 +463,29 @@ class AuthorizationService
                                        ->active()
                                        ->get()
                                        ->toArray();
+    }
+
+    /**
+     * @param Request  $request
+     *
+     * @return void
+     * @throws Exception
+     * @throws Throwable
+     */
+    public function copyAuthorization(Request $request): void
+    {
+        $authorization = $this->parseAuthorizationString($this->getAuthorizationString($request->input('employee_id')));
+
+        $receiverId = $request->input('receiver_id');
+
+        DB::transaction(function () use ($authorization, $request, $receiverId) {
+            $dataPreparer = new AuthorizationDataPreparer();
+            $dataPreparer->clearGroup($receiverId);
+            $dataPreparer->prepareSmsManagement($authorization[AuthorizationTypeName::BLUE_SCREEN], $receiverId, $request);
+            $dataPreparer->prepareBlueScreen($authorization[AuthorizationTypeName::BLUE_SCREEN], $receiverId, $request);
+            $dataPreparer->prepareAuthorization($authorization[AuthorizationTypeName::AUTHORIZATION], $receiverId);
+            $dataPreparer->prepareSubscriberBillet($authorization[AuthorizationTypeName::SUBSCRIBER_BILLET], $receiverId, $request);
+            $dataPreparer->prepareUserAuthorization($authorization[self::USER_AUTHORIZATION], $receiverId, $request);
+        });
     }
 }

@@ -41,11 +41,11 @@ class StaffGroupMatchService extends AbstractService
     /**
      * @param Request  $request
      *
-     * @return void
+     * @return PersonelGrupEslestir
      * @throws StaffGroupMatchAlreadyHaveException
      * @throws Exception
      */
-    public function store(Request $request): void
+    public function store(Request $request): PersonelGrupEslestir
     {
         $staffGroupMatch = PersonelGrupEslestir::where('personel_grup_id', '=', $request->input('staff_group_id'))
                                                ->where('personel_id', '=', $request->input('staff_id'))
@@ -56,7 +56,7 @@ class StaffGroupMatchService extends AbstractService
             throw new StaffGroupMatchAlreadyHaveException();
         }
 
-        PersonelGrupEslestir::create([
+        $staffGroupMatchData = PersonelGrupEslestir::create([
                                          'personel_grup_id' => $request->input('staff_group_id'),
                                          'personel_id'      => $request->input('staff_id'),
                                          'durum'            => Status::ACTIVE,
@@ -64,8 +64,11 @@ class StaffGroupMatchService extends AbstractService
                                          'kayit_tarihi'     => DateUtil::now(),
                                          'sms_kimlik'       => Auth::id(),
                                      ]);
+
         if (Method::STORE === RouteUtil::currentRoute())
         CacheOperation::setSession($request);
+
+        return $staffGroupMatchData;
     }
 
     /**

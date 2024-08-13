@@ -8,8 +8,6 @@ use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
 use App\Enums\Status;
 use App\Exceptions\Staff\StaffGroupNotFoundException;
-use App\Http\Requests\Staff\StoreStaffGroupRequest;
-use App\Http\Requests\Staff\UpdateStaffGroupRequest;
 use App\Models\Staff\PersonelGruplari;
 use App\Models\Staff\PersonelGrupYetkiEslestir;
 use App\Services\AbstractService;
@@ -125,11 +123,11 @@ class StaffGroupService extends AbstractService
     }
 
     /**
-     * @param StoreStaffGroupRequest  $request
+     * @param Request  $request
      *
      * @return PersonelGruplari
      */
-    public function store(StoreStaffGroupRequest $request): PersonelGruplari
+    public function store(Request $request): PersonelGruplari
     {
         return PersonelGruplari::create([
                                             'grup_adi'     => $request->input('name'),
@@ -142,13 +140,13 @@ class StaffGroupService extends AbstractService
     }
 
     /**
-     * @param UpdateStaffGroupRequest  $request
+     * @param Request  $request
      * @param string                   $id
      *
      * @return PersonelGruplari
      * @throws StaffGroupNotFoundException
      */
-    public function update(UpdateStaffGroupRequest $request, string $id): PersonelGruplari
+    public function update(Request $request, string $id): PersonelGruplari
     {
         $staffGroup = PersonelGruplari::find(Security::decrypt($id));
         if (empty($staffGroup)) {

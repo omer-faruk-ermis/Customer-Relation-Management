@@ -27,6 +27,7 @@ class EmployeeWebUserTypeAuthorizationResource extends AbstractResource
             'web_user_type'       => $this->webuser_tip,
             'operator_code'       => $this->kopkodu,
             'state'               => $this->durum,
+            'is_authorized'       => true,
             'operator_name'       => $this->adi,
             'operator_short_name' => $this->kisa_ad,
             'web_user_type_name'  => $this->kaciklama,

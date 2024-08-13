@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Authorization\SmsKimlikWebUserTipYetkiController;
 use App\Http\Controllers\API\Authorization\SmsKimlikYetkiController;
+use App\Http\Controllers\API\Authorization\YetkiController;
 use App\Http\Controllers\API\Call\CagriController;
 use App\Http\Controllers\API\Code\CodeController;
 use App\Http\Controllers\API\Employee\SmsKimlikController;
@@ -61,6 +62,11 @@ Route::group(['middleware' => 'auth_with_token'], function () {
 
     // Operator
     Route::get('operator_define', [OperatorTanimlariController::class, 'index']);
+
+    // Authorization
+    Route::prefix('authorization')->group(function () {
+        Route::get('/copy', [YetkiController::class, 'copy']);
+    });
 
     // Employee
     Route::prefix('employee')->group(function () {
