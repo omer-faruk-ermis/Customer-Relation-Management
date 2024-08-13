@@ -65,7 +65,7 @@ Route::group(['middleware' => 'auth_with_token'], function () {
 
     // Authorization
     Route::prefix('authorization')->group(function () {
-        Route::get('/copy', [YetkiController::class, 'copy']);
+        Route::post('/copy', [YetkiController::class, 'copy']);
     });
 
     // Employee
