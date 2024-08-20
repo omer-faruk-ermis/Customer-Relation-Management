@@ -30,7 +30,7 @@ class MenuDefinitionBasicResource extends AbstractResource
             'path'  => $this->path,
             'icon'  => $this->icon,
             'color' => $this->color,
-            'pages' => UrlDefinitionBasicResource::collection($this->whenLoaded($this->page_data))
+            'pages' => UrlDefinitionBasicResource::collection($this->page_data)
         ];
     }
 }

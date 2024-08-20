@@ -31,7 +31,7 @@ class ModuleResource extends AbstractResource
             'path'  => $this->path,
             'icon'  => $this->icon,
             'color' => $this->color,
-            'menu'  => MenuDefinitionBasicResource::collection($this->whenLoaded($this->menu_data))
+            'menu'  => MenuDefinitionBasicResource::collection($this->menu_data)
         ];
     }
 }
