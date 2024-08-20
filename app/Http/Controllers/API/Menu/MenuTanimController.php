@@ -3,10 +3,17 @@
 namespace App\Http\Controllers\API\Menu;
 
 use App\Exceptions\ForbiddenException;
+use App\Exceptions\Menu\MenuNotFoundException;
+use App\Exceptions\RelationHaveException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Menu\IndexMenuDefinitionRequest;
+use App\Http\Requests\Menu\StoreMenuDefinitionRequest;
+use App\Http\Requests\Menu\UpdateMenuDefinitionRequest;
 use App\Http\Resources\Menu\MenuDefinitionCollection;
+use App\Http\Resources\Menu\MenuDefinitionResource;
+use App\Http\Resources\SuccessResource;
 use App\Services\Menu\MenuDefinitionService;
+use Exception;
 use Illuminate\Http\Request;
 
 /**
@@ -36,8 +43,48 @@ class MenuTanimController extends Controller
      */
     public function menu(IndexMenuDefinitionRequest $request): MenuDefinitionCollection
     {
-        $menuDefinition = $this->menuDefinitionService->menu($request);
+        $menuDefinition = $this->menuDefinitionService->menu($request, []);
 
         return new MenuDefinitionCollection($menuDefinition, 'SMS_MANAGEMENT_MENU.INDEX.SUCCESS');
+    }
+
+    /**
+     * @param StoreMenuDefinitionRequest  $request
+     *
+     * @return SuccessResource
+     * @throws Exception
+     */
+    public function store(StoreMenuDefinitionRequest $request): SuccessResource
+    {
+        $this->menuDefinitionService->store($request);
+
+        return new SuccessResource('SMS_MANAGEMENT_MENU.CREATE.SUCCESS');
+    }
+
+    /**
+     * @param UpdateMenuDefinitionRequest  $request
+     * @param string                      $id
+     *
+     * @return MenuDefinitionResource
+     * @throws MenuNotFoundException
+     */
+    public function update(UpdateMenuDefinitionRequest $request, string $id): MenuDefinitionResource
+    {
+        $employee = $this->menuDefinitionService->update($request, $id);
+
+        return new MenuDefinitionResource($employee, 'SMS_MANAGEMENT_MENU.UPDATE.SUCCESS');
+    }
+
+    /**
+     * @param string  $id
+     *
+     * @return SuccessResource
+     * @throws MenuNotFoundException|RelationHaveException
+     */
+    public function destroy(string $id): SuccessResource
+    {
+        $this->menuDefinitionService->destroy($id);
+
+        return new SuccessResource('SMS_MANAGEMENT_MENU.DESTROY.SUCCESS');
     }
 }

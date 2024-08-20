@@ -36,12 +36,16 @@ class UrlDefinitionService extends AbstractService
 
     /**
      * @param Request  $request
+     * @param array    $ids
      *
      * @return Collection|LengthAwarePaginator
      */
-    public function page(Request $request): Collection|LengthAwarePaginator
+    public function page(Request $request, array $ids = []): Collection|LengthAwarePaginator
     {
         $pages = UrlTanim::with(['recorder', 'menu', 'authorizations'])
+                         ->when(!empty($ids), function ($q) use ($ids) {
+                             $q->whereIn('id', $ids);
+                         })
                          ->filter($request->all())
                          ->active();
 

@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Http\Resources\Menu;
+namespace App\Http\Resources\Module;
 
 use App\Http\Resources\AbstractResource;
-use App\Http\Resources\Url\UrlDefinitionCollection;
+use App\Http\Resources\Menu\MenuDefinitionBasicResource;
+use App\Http\Resources\Url\UrlDefinitionBasicResource;
 use App\Utils\Security;
 
 /**
- * Class MenuDefinitionResource
+ * Class ModuleResource
  *
- * @package App\Http\Resources\Menu
+ * @package App\Http\Resources\Module
  *
  * @mixin mixed
  */
-class MenuDefinitionResource extends AbstractResource
+class ModuleResource extends AbstractResource
 {
     /**
      * @param $request
@@ -24,13 +25,13 @@ class MenuDefinitionResource extends AbstractResource
     {
         return [
             'id'    => Security::encrypt($this->getKey()),
-            'name'  => $this->menu,
-            'order' => $this->sira,
+            'name'  => $this->name,
+            'panel' => $this->panel,
             'state' => $this->durum,
             'path'  => $this->path,
             'icon'  => $this->icon,
             'color' => $this->color,
-            'pages' => UrlDefinitionCollection::make($this->whenLoaded('pages'))
+            'menu'  => MenuDefinitionBasicResource::collection($this->whenLoaded($this->menu_data))
         ];
     }
 }

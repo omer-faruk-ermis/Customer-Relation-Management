@@ -14,6 +14,7 @@ use App\Http\Controllers\API\Log\LogController;
 use App\Http\Controllers\API\Menu\DetayMenuController;
 use App\Http\Controllers\API\Menu\DetayMenuUserController;
 use App\Http\Controllers\API\Menu\MenuTanimController;
+use App\Http\Controllers\API\Module\ModuleController;
 use App\Http\Controllers\API\Operator\OperatorTanimlariController;
 use App\Http\Controllers\API\QuestionAnswer\SoruCevapController;
 use App\Http\Controllers\API\QuestionAnswer\SoruCevapKategoriController;
@@ -136,9 +137,23 @@ Route::group(['middleware' => 'auth_with_token'], function () {
         Route::get('/use_place', [KonuBilgiKullanimYeriController::class, 'index']);
     });
 
+    // Module
+    Route::prefix('/module')->group(function () {
+        Route::get('/', [ModuleController::class, 'index']);
+        Route::post('/', [ModuleController::class, 'store']);
+        Route::put('/{id}', [ModuleController::class, 'update']);
+        Route::delete('/{id}', [ModuleController::class, 'destroy']);
+    });
+
     // Menu-Url Tanim // SmsManagement type=1
     Route::prefix('sms_management')->group(function () {
-        Route::get('/menu', [MenuTanimController::class, 'menu']);
+        // Menu
+        Route::prefix('/menu')->group(function () {
+            Route::get('/', [MenuTanimController::class, 'menu']);
+            Route::post('/', [MenuTanimController::class, 'store']);
+            Route::put('/{id}', [MenuTanimController::class, 'update']);
+            Route::delete('/{id}', [MenuTanimController::class, 'destroy']);
+        });
 
         // Page
         Route::prefix('/page')->group(function () {

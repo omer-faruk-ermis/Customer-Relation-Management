@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Employee;
 
 use App\Http\Resources\AbstractResource;
+use App\Http\Resources\Module\ModuleResource;
 use App\Utils\Security;
 
 /**
@@ -38,6 +39,7 @@ class EmployeeResource extends AbstractResource
             'username'              => $this->sms_kimlik_email_username,
             'home_phone'            => $this->evtel,
             'netgsmsessionid'       => $this->netgsmsessionid,
+            'module'                => ModuleResource::collection($this->module),
         ];
     }
 }

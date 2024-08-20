@@ -3,17 +3,17 @@
 namespace App\Http\Resources\Menu;
 
 use App\Http\Resources\AbstractResource;
-use App\Http\Resources\Url\UrlDefinitionCollection;
+use App\Http\Resources\Url\UrlDefinitionBasicResource;
 use App\Utils\Security;
 
 /**
- * Class MenuDefinitionResource
+ * Class MenuDefinitionBasicResource
  *
  * @package App\Http\Resources\Menu
  *
  * @mixin mixed
  */
-class MenuDefinitionResource extends AbstractResource
+class MenuDefinitionBasicResource extends AbstractResource
 {
     /**
      * @param $request
@@ -30,7 +30,7 @@ class MenuDefinitionResource extends AbstractResource
             'path'  => $this->path,
             'icon'  => $this->icon,
             'color' => $this->color,
-            'pages' => UrlDefinitionCollection::make($this->whenLoaded('pages'))
+            'pages' => UrlDefinitionBasicResource::collection($this->whenLoaded($this->page_data))
         ];
     }
 }

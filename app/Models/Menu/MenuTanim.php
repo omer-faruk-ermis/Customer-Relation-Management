@@ -3,8 +3,10 @@
 namespace App\Models\Menu;
 
 use App\Models\AbstractModel;
+use App\Models\Module\Module;
 use App\Models\Url\UrlTanim;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Class MenuTanim
@@ -16,12 +18,26 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string        $menu
  * @property int           $sira
  * @property bool          $durum
+ * @property string        $path
+ * @property string        $color
+ * @property string        $icon
+ * @property int           $module_id
  *
  * @property-read UrlTanim $pages
  */
 class MenuTanim extends AbstractModel
 {
     protected $table = 'kaynaksms_diger.dbo.menutanim';
+
+    protected $fillable = [
+        'menu',
+        'sira',
+        'durum',
+        'path',
+        'color',
+        'icon',
+        'module_id'
+    ];
 
     /**
      * @return hasMany
@@ -30,6 +46,15 @@ class MenuTanim extends AbstractModel
     {
         return $this->hasMany(UrlTanim::class, 'ust_id', 'id')
                     ->with(['authorizations', 'recorder'])
+                    ->active();
+    }
+
+    /**
+     * @return hasOne
+     */
+    public function module(): hasOne
+    {
+        return $this->hasOne(Module::class, 'id', 'module_id')
                     ->active();
     }
 }
