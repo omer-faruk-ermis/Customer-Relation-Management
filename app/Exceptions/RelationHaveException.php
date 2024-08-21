@@ -10,7 +10,7 @@ class RelationHaveException extends AbstractException
 {
     public function __construct(
         string    $message = 'Alt ilişki kaydı mevcut! İşlem yapılamaz.',
-        int       $code = Response::HTTP_ALREADY_REPORTED,
+        int       $code = Response::HTTP_NOT_ACCEPTABLE,
         Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);

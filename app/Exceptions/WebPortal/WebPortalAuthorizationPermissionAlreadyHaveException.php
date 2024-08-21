@@ -10,7 +10,7 @@ class WebPortalAuthorizationPermissionAlreadyHaveException extends AbstractExcep
 {
     public function __construct(
         string    $message = 'Web Portal izin kaydı zaten mevcut!',
-        int       $code = Response::HTTP_ALREADY_REPORTED,
+        int       $code = Response::HTTP_NOT_ACCEPTABLE,
         Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);

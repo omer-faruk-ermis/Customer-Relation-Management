@@ -10,7 +10,7 @@ class StaffGroupMatchAlreadyHaveException extends AbstractException
 {
     public function __construct(
         string    $message = 'Yetki Grubu ile personel eşleşme kaydı zaten mevcut!',
-        int       $code = Response::HTTP_ALREADY_REPORTED,
+        int       $code = Response::HTTP_NOT_ACCEPTABLE,
         Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
