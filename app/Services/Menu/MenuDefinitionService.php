@@ -39,12 +39,12 @@ class MenuDefinitionService extends AbstractService
      */
     public function menu(Request $request, $pages): Collection
     {
-        return MenuTanim::when(!empty($pages), function ($q) use ($pages) {
-            $q->whereIn('id', $pages->pluck('ust_id')->toArray());
-        }, function ($q) {
-            $q->with(['pages']);
-        })
-                        ->active()
+        return MenuTanim::active()
+                        ->when(!empty($pages), function ($q) use ($pages) {
+                            $q->whereIn('id', $pages->pluck('ust_id')->toArray());
+                        }, function ($q) {
+                            $q->with(['pages']);
+                        })
                         ->orderBy('sira')
                         ->get()
                         ->map(function ($menu) use ($pages) {
