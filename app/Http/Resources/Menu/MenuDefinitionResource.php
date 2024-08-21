@@ -30,7 +30,7 @@ class MenuDefinitionResource extends AbstractResource
             'path'      => $this->path,
             'icon'      => $this->icon,
             'color'     => $this->color,
-            'module_id' => $this->module_id,
+            'module_id' => Security::encrypt($this->module_id),
             'pages'     => UrlDefinitionCollection::make($this->whenLoaded('pages'))
         ];
     }
