@@ -39,7 +39,7 @@ class EmployeeResource extends AbstractResource
             'username'              => $this->sms_kimlik_email_username,
             'home_phone'            => $this->evtel,
             'netgsmsessionid'       => $this->netgsmsessionid,
-            'module'                => ModuleResource::collection($this->module),
+            'module'                => ModuleResource::collection($this->module ?? []),
         ];
     }
 }
