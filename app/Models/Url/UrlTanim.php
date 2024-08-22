@@ -81,5 +81,4 @@ class UrlTanim extends AbstractModel
     {
         return new UrlDefinitionFilter($filters);
     }
-
 }

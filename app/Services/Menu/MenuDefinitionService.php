@@ -40,6 +40,7 @@ class MenuDefinitionService extends AbstractService
     public function menu(Request $request, $pages): Collection
     {
         return MenuTanim::active()
+                        ->filter($request->all())
                         ->with('module')
                         ->when(!empty($pages), function ($q) use ($pages) {
                             $q->whereIn('id', $pages->pluck('ust_id')->toArray());

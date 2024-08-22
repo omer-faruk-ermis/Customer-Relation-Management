@@ -2,9 +2,11 @@
 
 namespace App\Models\Menu;
 
+use App\Filters\Menu\MenuDefinitionFilter;
 use App\Models\AbstractModel;
 use App\Models\Module\Module;
 use App\Models\Url\UrlTanim;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -24,6 +26,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int           $module_id
  *
  * @property-read UrlTanim $pages
+ *
+ * @method static Builder|MenuTanim filter(array $filters = [])
  */
 class MenuTanim extends AbstractModel
 {
@@ -56,5 +60,15 @@ class MenuTanim extends AbstractModel
     {
         return $this->hasOne(Module::class, 'id', 'module_id')
                     ->active();
+    }
+
+    /**
+     * @param $filters
+     *
+     * @return MenuDefinitionFilter
+     */
+    protected function filter($filters): MenuDefinitionFilter
+    {
+        return new MenuDefinitionFilter($filters);
     }
 }

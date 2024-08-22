@@ -40,6 +40,7 @@ class ModuleService extends AbstractService
     public function index(Request $request, $menus): Collection
     {
         return Module::active()
+                     ->filter($request->all())
                      ->when(!empty($menus), function ($q) use ($menus) {
                          $q->whereIn('id', $menus->pluck('module_id')->toArray());
                      })
