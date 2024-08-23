@@ -15,6 +15,8 @@ class StoreUrlDefinitionRequest extends AbstractRequest
             'name'          => 'required|string',
             'menu_id'       => 'required|string',
             'background_id' => 'required|string',
+            'icon'          => 'sometimes|string',
+            'color'         => 'sometimes|string',
         ];
     }
 }

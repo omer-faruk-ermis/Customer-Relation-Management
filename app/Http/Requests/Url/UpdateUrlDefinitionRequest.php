@@ -15,6 +15,8 @@ class UpdateUrlDefinitionRequest extends AbstractRequest
             'name'          => 'required|string',
             'menu_id'       => 'sometimes|string',
             'background_id' => 'sometimes|string',
+            'icon'          => 'sometimes|string',
+            'color'         => 'sometimes|string',
         ];
     }
 }

@@ -138,6 +138,8 @@ class AuthorizationService
                                         'id',
                                         'adi as name',
                                         'url',
+                                        'icon',
+                                        'color',
                                         'ust_id'
                                     ])
                            ->with(['menu' => function ($q) {
@@ -337,6 +339,8 @@ class AuthorizationService
                                     $urlTanim->qualifyColumn('ust_id') . ' as menu_id',
                                     $urlTanim->qualifyColumn('adi') . ' as name',
                                     $urlTanim->qualifyColumn('url'),
+                                    $urlTanim->qualifyColumn('icon'),
+                                    $urlTanim->qualifyColumn('color'),
                                     $menuTanim->qualifyColumn('menu'),
                                 ])
                        ->join($menuTanim->getTable(),

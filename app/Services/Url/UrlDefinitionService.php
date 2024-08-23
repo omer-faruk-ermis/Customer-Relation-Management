@@ -75,6 +75,8 @@ class UrlDefinitionService extends AbstractService
         return UrlTanim::create([
                                     'adi'         => $request->input('name'),
                                     'url'         => $request->input('url'),
+                                    'color'       => $request->input('color'),
+                                    'icon'        => $request->input('icon'),
                                     'ust_id'      => $request->input('menu_id'),
                                     'durum'       => Status::ACTIVE,
                                     'arkaplan_id' => $request->input('background_id'),
@@ -103,6 +105,8 @@ class UrlDefinitionService extends AbstractService
         $urlDefinition->update([
                                    'adi'         => $request->input('name'),
                                    'url'         => $request->input('url'),
+                                   'color'       => $request->input('color'),
+                                   'icon'        => $request->input('icon'),
                                    'ust_id'      => $request->input('menu_id'),
                                    'arkaplan_id' => $request->input('background_id')
                                ]);

@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int                 $id
  * @property string              $adi
  * @property string              $url
+ * @property string              $color
+ * @property string              $icon
  * @property string              $ust_id
  * @property bool                $durum
  * @property int                 $arkaplan_id
@@ -44,6 +46,8 @@ class UrlTanim extends AbstractModel
     protected $fillable = [
         'adi',
         'url',
+        'color',
+        'icon',
         'ust_id',
         'durum',
         'arkaplan_id',

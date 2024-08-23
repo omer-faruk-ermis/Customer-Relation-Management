@@ -27,6 +27,8 @@ class UrlDefinitionResource extends AbstractResource
             'id'            => Security::encrypt($this->getKey()),
             'name'          => $this->adi,
             'url'           => $this->url,
+            'color'         => $this->color,
+            'icon'          => $this->icon,
             'menu_id'       => Security::encrypt($this->ust_id),
             'state'         => $this->durum,
             'is_authorized' => $this->is_authorized,
