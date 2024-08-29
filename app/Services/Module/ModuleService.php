@@ -39,15 +39,6 @@ class ModuleService extends AbstractService
     /**
      * @param Request  $request
      *
-     *
-     * employee: 5EEcdWLyzTlVu6XPDV3SHyeSqAmmJcSqJiz0Bsd9oI4
-     *
-     *  gsm ayarlari: _vtCoVkJ3XgEFQFNbzggfjplHFkcMUa61Q2LF0miKGY
-     *  sms ayarlari: cFm1x233JSW8EHQ9bYs5OxSB9rJ4LD4D969kCgZRfOs
-     *
-     *
-     *
-     *
      * @return void
      * @throws Exception
      */
