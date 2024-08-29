@@ -61,7 +61,7 @@ class AuthService
         Cache::put("sms_kimlik_$token", Arr::add($sms_kimlik, 'netgsmsessionid', $token), now()->addHours(24));
         Cache::put("sms_kimlik_image_$token", $request->input('security_code_path'));
 
-        return (object) ['token' => $token];
+        return (object)['token' => $token];
     }
 
     /**
@@ -100,7 +100,7 @@ class AuthService
         Cache::put("sms_kimlik_password_$token", Arr::add($sms_kimlik, 'netgsmsessionid', $token), now()->addHour());
         Cache::put("sms_kimlik_image_$token", $request->input('security_code_path'));
 
-        return (object) ['token' => $token];
+        return (object)['token' => $token];
     }
 
     /**
@@ -117,6 +117,9 @@ class AuthService
                                                      'netgsmsessionid' => $request->bearerToken(),
                                                      'code'            => $request->input('code'),
                                                  ]);
+
+        $smsRequest->headers->set('Authorization', 'Bearer ' . $request->bearerToken());
+
         SmsService::smsVerification($smsRequest);
 
         $token = $request->bearerToken();
@@ -139,11 +142,19 @@ class AuthService
     {
         PasswordValidate::handle($request);
 
-        if (empty(Auth::user()) && (Arr::get(Auth::user(), 'sifre') !== $request->input('old_password'))) {
+        if (empty(Auth::user()) || (Arr::get(Auth::user(), 'sifre') !== $request->input('old_password'))) {
             throw new OldPasswordException();
         }
-        Arr::except(Auth::user(), 'netgsmsessionid');
-        Auth::user()->update(['sifre' => $request->input('new_password')]);
+
+        $user = SmsKimlik::find(Auth::id());
+        $user->update(['sifre' => $request->input('new_password')]);
+
+        $token = $request->bearerToken();
+        $sms_kimlik = Cache::get("sms_kimlik_$token");
+        $sms_kimlik->sifre = $user->sifre;
+
+        Cache::put("sms_kimlik_$token", $sms_kimlik);
+        CacheOperation::setSession($request);
     }
 
     /**

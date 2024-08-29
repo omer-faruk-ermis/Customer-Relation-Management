@@ -21,22 +21,26 @@ class PermissionService
     /**
      * @throws ForbiddenException
      */
-    public function __construct(Request $request, array $serviceAuthorizations, array $privateMethods, array $publicMethods)
+    public function __construct(Request $request, string $serviceName, array $privateMethods, array $publicMethods)
     {
+        $matchingItems = array_filter(array_map(function ($item) use ($serviceName) {
+            return $item->name === $serviceName ? $item->page_id : null;
+        }, Auth::user()?->service_authorizations?->toArray() ?? []));
+
         $method = RouteUtil::currentRoute();
-        if (in_array($method, $publicMethods) || empty($serviceAuthorizations)) {
+        if (in_array($method, $publicMethods)) {
             return;
         }
 
         $authorizationIds = AuthorizationService::parseAuthorizationString(Auth::user()?->yetki_string);
         $strategies = [
             new SmsManagementStrategy(),
-            new BlueScreenStrategy(),
+            //new BlueScreenStrategy(),
             new GeneralAuthorizationStrategy($privateMethods, $method),
         ];
 
         foreach ($strategies as $strategy) {
-            $strategy->check($request, $authorizationIds, $serviceAuthorizations);
+            $strategy->check($request, $authorizationIds, $matchingItems);
         }
     }
 }

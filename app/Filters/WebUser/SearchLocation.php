@@ -26,7 +26,7 @@ class SearchLocation
                     $query
                         // USER_ID
                         ->when(self::USER_ID_LENGTH > $length, function ($q) use ($value) {
-                            $q->where('id', 'LIKE', '%' . $value . '%');
+                            $q->whereLike('id', $value);
                         })
                         // SUBSCRIBER PHONE/NO
                         ->when((DefaultConstant::LOCAL_PHONE_LENGTH >= $length) && ($length > 6),
@@ -52,18 +52,18 @@ class SearchLocation
                                || self::START_ZERO_FIVE == $twoChar
                                || self::START_DOUBLE_ZERO == $twoChar,
                             function ($q) use ($value) {
-                                $q->where('ceptel', 'LIKE', $value . '%');
+                                $q->whereLike('ceptel', $value);
                             })
                         // IDENTITY_NO
                         ->when(DefaultConstant::IDENTITY_NO_LENGTH == $value
                                && self::START_ZERO != $firstChar,
                             function ($q) use ($value) {
-                                $q->where('tckimlik', 'LIKE', $value . '%');
+                                $q->whereLike('tckimlik', $value);
                             })
                         // TAX IDENTIFICATION NUMBER
                         ->when(DefaultConstant::TAX_IDENTIFICATION_NO_LENGTH == $value,
                             function ($q) use ($value) {
-                                $q->where('verginumarasi', 'LIKE', $value . '%');
+                                $q->whereLike('verginumarasi', $value);
                             });
                 },
                 function ($query) use ($value) {
@@ -74,7 +74,7 @@ class SearchLocation
                                 $q->when(filter_var($value, FILTER_VALIDATE_EMAIL), function ($qq) use ($value) {
                                     $qq->where('email', '=', $value);
                                 }, function ($qq) use ($value) {
-                                    $qq->where('email', 'LIKE', '%' . $value . '%');
+                                    $qq->whereLike('email', $value);
                                 });
                             },
                             // GENERAL STRING MATCH

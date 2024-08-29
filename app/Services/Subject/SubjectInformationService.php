@@ -2,8 +2,6 @@
 
 namespace App\Services\Subject;
 
-use App\Enums\Authorization\AuthorizationTypeName;
-use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
 use App\Enums\Status;
 use App\Models\Subject\KonuBilgi;
@@ -18,15 +16,6 @@ use Illuminate\Support\Collection;
  */
 class SubjectInformationService extends AbstractService
 {
-    protected array $serviceAuthorizations = [
-        AuthorizationTypeName::SMS_MANAGEMENT => [
-            SmsManagement::AUTHORIZED_GROUPS,
-            SmsManagement::AUTHORIZED_GROUPS_GROUP,
-            SmsManagement::APP_MANAGEMENT,
-            SmsManagement::APP_EMPLOYEE
-        ]
-    ];
-
     /**
      * @param Request  $request
      *

@@ -2,8 +2,6 @@
 
 namespace App\Services\Employee;
 
-use App\Enums\Authorization\AuthorizationTypeName;
-use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
 use App\Enums\Method;
 use App\Enums\NumericalConstant;
@@ -35,12 +33,6 @@ use Illuminate\Support\Collection;
  */
 class EmployeeService extends AbstractService
 {
-    protected array $serviceAuthorizations = [
-        AuthorizationTypeName::SMS_MANAGEMENT => [
-            SmsManagement::APP_EMPLOYEE
-        ],
-    ];
-
     protected array $publicMethods = [Method::INDEX, Method::BASIC];
 
     /**
@@ -52,6 +44,7 @@ class EmployeeService extends AbstractService
     {
         return SmsKimlik::with(['unit', 'sip'])
                         ->filter($request->all())
+                        ->active()
                         ->paginate(DefaultConstant::PAGINATE);
     }
 
@@ -64,6 +57,7 @@ class EmployeeService extends AbstractService
     {
         return SmsKimlik::select(['id', 'ad_soyad'])
                         ->filter($request->all())
+                        ->active()
                         ->limit(DefaultConstant::SEARCH_LIST_LIMIT)
                         ->get();
     }

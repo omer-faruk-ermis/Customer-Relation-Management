@@ -2,8 +2,6 @@
 
 namespace App\Services\Module;
 
-use App\Enums\Authorization\AuthorizationTypeName;
-use App\Enums\Authorization\SmsManagement;
 use App\Enums\Status;
 use App\Exceptions\Module\ModuleAlreadyHaveException;
 use App\Exceptions\Module\ModuleNotFoundException;
@@ -22,15 +20,6 @@ use Illuminate\Support\Collection;
  */
 class ModuleService extends AbstractService
 {
-    protected array $serviceAuthorizations = [
-        AuthorizationTypeName::SMS_MANAGEMENT => [
-            SmsManagement::AUTHORIZED_GROUPS,
-            SmsManagement::AUTHORIZED_GROUPS_GROUP,
-            SmsManagement::APP_MANAGEMENT,
-            SmsManagement::APP_EMPLOYEE
-        ]
-    ];
-
     /**
      * @param Request  $request
      * @param          $menus
@@ -44,26 +33,20 @@ class ModuleService extends AbstractService
                      ->when(!empty($menus), function ($q) use ($menus) {
                          $q->whereIn('id', $menus->pluck('module_id')->toArray());
                      })
-                     ->get()
-                     ->map(function ($module) use ($menus) {
-                         if (!empty($menus)) {
-                             $menuArray = [];
-
-                             foreach ($menus as $menu) {
-                                 if ($module->id == $menu->module_id) {
-                                     $menuArray[] = $menu;
-                                 }
-                             }
-
-                             $module->menu_data = $menuArray;
-                         }
-
-                         return $module;
-                     });
+                     ->get();
     }
 
     /**
      * @param Request  $request
+     *
+     *
+     * employee: 5EEcdWLyzTlVu6XPDV3SHyeSqAmmJcSqJiz0Bsd9oI4
+     *
+     *  gsm ayarlari: _vtCoVkJ3XgEFQFNbzggfjplHFkcMUa61Q2LF0miKGY
+     *  sms ayarlari: cFm1x233JSW8EHQ9bYs5OxSB9rJ4LD4D969kCgZRfOs
+     *
+     *
+     *
      *
      * @return void
      * @throws Exception

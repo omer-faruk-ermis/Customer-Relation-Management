@@ -6,6 +6,6 @@ class Url
 {
     public function apply($query, $value): void
     {
-        $query->where('url', 'LIKE', '%' . $value . '%');
+        $query->whereLike('url', 'LIKE', $value);
     }
 }

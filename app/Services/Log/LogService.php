@@ -2,8 +2,6 @@
 
 namespace App\Services\Log;
 
-use App\Enums\Authorization\AuthorizationTypeName;
-use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
 use App\Exceptions\Log\LogReasonRecordNotFoundException;
 use App\Models\Log\SebepLog;
@@ -19,12 +17,6 @@ use Illuminate\Http\Request;
  */
 class LogService extends AbstractService
 {
-    protected array $serviceAuthorizations = [
-        AuthorizationTypeName::SMS_MANAGEMENT => [
-            SmsManagement::DEFINE_REASON
-        ],
-    ];
-
     /**
      * @param Request  $request
      *

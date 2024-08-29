@@ -8,7 +8,7 @@ use App\Models\AbstractModel;
  * Class AboneNoThk
  *
  * @package App\Models\Subscriber
- * @version July 11, 2024, 9:29 pm UTC
+ * @version July 11, 2024, 9:29 am UTC
  *
  * @property int $id
  * @property int $telno

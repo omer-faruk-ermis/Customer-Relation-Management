@@ -2,9 +2,7 @@
 
 namespace App\Services\WebPortal;
 
-use App\Enums\Authorization\AuthorizationTypeName;
 use App\Enums\Authorization\AuthorizationUserType;
-use App\Enums\Authorization\SmsManagement;
 use App\Enums\Method;
 use App\Enums\Status;
 use App\Exceptions\WebPortal\WebPortalAuthorizationPermissionAlreadyHaveException;
@@ -26,15 +24,6 @@ use Illuminate\Http\Request;
 class WebPortalAuthorizationPermissionService extends AbstractService
 {
     use BulkAuthorizationTrait;
-
-    protected array $serviceAuthorizations = [
-        AuthorizationTypeName::SMS_MANAGEMENT => [
-            SmsManagement::AUTHORIZED_GROUPS,
-            SmsManagement::AUTHORIZED_GROUPS_GROUP,
-            SmsManagement::APP_MANAGEMENT,
-            SmsManagement::APP_EMPLOYEE
-        ]
-    ];
 
     /**
      * @param Request  $request

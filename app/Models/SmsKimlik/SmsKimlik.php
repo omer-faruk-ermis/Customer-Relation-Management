@@ -80,8 +80,6 @@ class SmsKimlik extends AbstractSmsKimlik
         'mattermost_id'  => NumericalConstant::ZERO,
     ];
 
-    protected $hidden = ['sifre'];
-
     /**
      * @return HasOne
      */

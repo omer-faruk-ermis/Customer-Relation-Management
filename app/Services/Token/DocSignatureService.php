@@ -2,8 +2,6 @@
 
 namespace App\Services\Token;
 
-use App\Enums\Authorization\AuthorizationTypeName;
-use App\Enums\Authorization\SmsManagement;
 use App\Services\AbstractService;
 use App\Utils\DateUtil;
 use Illuminate\Http\Request;
@@ -11,12 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class DocSignatureService extends AbstractService
 {
-    protected array $serviceAuthorizations = [
-        AuthorizationTypeName::SMS_MANAGEMENT => [
-            SmsManagement::NEW_ANNOUNCEMENTS,
-        ]
-    ];
-
     /**
      * @param Request  $request
      *

@@ -10,6 +10,6 @@ class HomePhone
     {
         $smsKimlik = SmsKimlik::getModel();
 
-        $query->where($smsKimlik->qualifyColumn('evtel'), 'LIKE', '%' . $value . '%');
+        $query->whereLike($smsKimlik->qualifyColumn('evtel'), $value);
     }
 }

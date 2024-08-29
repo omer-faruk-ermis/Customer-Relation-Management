@@ -10,6 +10,6 @@ class Username
     {
         $smsKimlik = SmsKimlik::getModel();
 
-        $query->where($smsKimlik->qualifyColumn('sms_kimlik_email_username'), 'LIKE', '%' . $value . '%');
+        $query->whereLike($smsKimlik->qualifyColumn('sms_kimlik_email_username'), $value);
     }
 }

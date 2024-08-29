@@ -2,8 +2,6 @@
 
 namespace App\Services\WebUser;
 
-use App\Enums\Authorization\AuthorizationTypeName;
-use App\Enums\Authorization\BlueScreen;
 use App\Enums\DefaultConstant;
 use App\Exceptions\WebUser\WebUserNotFoundException;
 use App\Models\Subscriber\AboneNo;
@@ -23,13 +21,6 @@ use Illuminate\Support\Facades\DB;
  */
 class WebUserService extends AbstractService
 {
-    protected array $serviceAuthorizations = [
-        AuthorizationTypeName::BLUE_SCREEN => [
-            BlueScreen::USER_INFORMATION,
-            BlueScreen::USER_MOVEMENTS,
-        ],
-    ];
-
     /**
      * @param Request  $request
      *

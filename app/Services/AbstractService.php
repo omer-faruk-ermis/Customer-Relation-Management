@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
  */
 abstract class AbstractService
 {
-    protected array $serviceAuthorizations = [];
     protected array $privateMethods = [];
     protected array $publicMethods = [];
     protected Request $request;
@@ -26,7 +25,7 @@ abstract class AbstractService
 
         new PermissionService(
             $request,
-            $this->serviceAuthorizations,
+            class_basename($this),
             $this->privateMethods,
             $this->publicMethods
         );

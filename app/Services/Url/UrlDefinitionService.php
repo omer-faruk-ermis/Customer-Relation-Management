@@ -2,8 +2,6 @@
 
 namespace App\Services\Url;
 
-use App\Enums\Authorization\AuthorizationTypeName;
-use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
 use App\Enums\NumericalConstant;
 use App\Enums\Status;
@@ -12,6 +10,7 @@ use App\Exceptions\Url\UrlDefinitionNotFoundException;
 use App\Models\Url\UrlTanim;
 use App\Services\AbstractService;
 use App\Utils\DateUtil;
+use App\Utils\RouteUtil;
 use App\Utils\Security;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -25,15 +24,6 @@ use Illuminate\Support\Facades\Auth;
  */
 class UrlDefinitionService extends AbstractService
 {
-    protected array $serviceAuthorizations = [
-        AuthorizationTypeName::SMS_MANAGEMENT => [
-            SmsManagement::AUTHORIZED_GROUPS,
-            SmsManagement::AUTHORIZED_GROUPS_GROUP,
-            SmsManagement::APP_MANAGEMENT,
-            SmsManagement::APP_EMPLOYEE
-        ]
-    ];
-
     /**
      * @param Request  $request
      * @param array    $ids

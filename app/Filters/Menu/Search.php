@@ -6,6 +6,6 @@ class Search
 {
     public function apply($query, $value): void
     {
-        $query->where('menu', 'LIKE', '%' . $value . '%');
+        $query->whereLike('menu', $value);
     }
 }

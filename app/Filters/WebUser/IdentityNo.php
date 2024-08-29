@@ -6,6 +6,6 @@ class IdentityNo
 {
     public function apply($query, $value): void
     {
-        $query->where('tckimlik', 'LIKE', '%' . $value . '%');
+        $query->whereLike('tckimlik', $value);
     }
 }

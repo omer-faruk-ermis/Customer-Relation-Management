@@ -19,7 +19,7 @@ use Laravel\Passport\HasApiTokens;
  */
 abstract class AbstractSmsKimlik extends Authenticatable
 {
-    use HasFactory, Notifiable, QualifiableTrait, HasApiTokens, StatusTrait;
+    use HasFactory, Notifiable, QualifiableTrait, HasApiTokens, StatusTrait, DatabaseTrait;
 
     /**
      * set fillable fields

@@ -2,8 +2,6 @@
 
 namespace App\Services\Menu;
 
-use App\Enums\Authorization\AuthorizationTypeName;
-use App\Enums\Authorization\SmsManagement;
 use App\Enums\Method;
 use App\Enums\Status;
 use App\Exceptions\DetailMenu\DetailMenuUserAlreadyHaveException;
@@ -26,15 +24,6 @@ use Illuminate\Support\Facades\Auth;
 class DetailMenuUserService extends AbstractService
 {
     use BulkAuthorizationTrait;
-
-    protected array $serviceAuthorizations = [
-        AuthorizationTypeName::SMS_MANAGEMENT => [
-            SmsManagement::AUTHORIZED_GROUPS,
-            SmsManagement::AUTHORIZED_GROUPS_GROUP,
-            SmsManagement::APP_MANAGEMENT,
-            SmsManagement::APP_EMPLOYEE
-        ]
-    ];
 
     /**
      * @param Request  $request

@@ -2,8 +2,6 @@
 
 namespace App\Services\QuestionAnswer;
 
-use App\Enums\Authorization\AuthorizationTypeName;
-use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
 use App\Enums\NumericalConstant;
 use App\Enums\Status;
@@ -25,12 +23,6 @@ use Illuminate\Support\Facades\DB;
  */
 class QuestionAnswerService extends AbstractService
 {
-    protected array $serviceAuthorizations = [
-        AuthorizationTypeName::SMS_MANAGEMENT => [
-            SmsManagement::MANAGEMENT_READY_QUESTION_ANSWERS,
-        ],
-    ];
-
     /**
      * @param IndexQuestionAnswerRequest  $request
      *

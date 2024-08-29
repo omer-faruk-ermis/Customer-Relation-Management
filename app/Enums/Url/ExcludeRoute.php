@@ -9,6 +9,8 @@ class ExcludeRoute extends AbstractEnum
     public const SECURITY_CODE = 'api/security_code';
     public const SMS_CODE = 'api/sms_code';
     public const LOGIN = 'api/login';
+    public const FORGOT_PASSWORD = 'api/forgot_password';
+    public const NEW_PASSWORD = 'api/new_password';
     public const SMS_VERIFICATION = 'api/sms_verification';
     public const LOGIN_VERIFICATION = 'api/login_verification';
     public const TELESCOPE = 'telescope';

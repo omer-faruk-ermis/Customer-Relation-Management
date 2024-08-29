@@ -2,8 +2,6 @@
 
 namespace App\Services\QuestionAnswer;
 
-use App\Enums\Authorization\AuthorizationTypeName;
-use App\Enums\Authorization\SmsManagement;
 use App\Enums\Status;
 use App\Exceptions\QuestionAnswer\QuestionAnswerCategoryNotFoundException;
 use App\Http\Requests\QuestionAnswerCategory\IndexQuestionAnswerCategoryRequest;
@@ -22,12 +20,6 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class QuestionAnswerCategoryService extends AbstractService
 {
-    protected array $serviceAuthorizations = [
-        AuthorizationTypeName::SMS_MANAGEMENT => [
-            SmsManagement::MANAGEMENT_READY_QUESTION_ANSWERS,
-        ],
-    ];
-
     /**
      * @param IndexQuestionAnswerCategoryRequest  $request
      *

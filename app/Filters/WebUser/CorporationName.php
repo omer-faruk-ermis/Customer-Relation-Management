@@ -6,6 +6,6 @@ class CorporationName
 {
     public function apply($query, $value): void
     {
-        $query->where('kurumadi', 'LIKE', '%' . $value . '%');
+        $query->whereLike('kurumadi', $value);
     }
 }

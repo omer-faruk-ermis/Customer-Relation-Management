@@ -23,4 +23,5 @@ class DefaultConstant extends AbstractEnum
     const NETGSM_PHONE_PREFIX = 510;
     const PARENT = 0;
     const AUTHORIZATION_GROUP = 'Default Group';
+    const CUSTOMER_AGENT_MANAGEMENT = 'Müşteri Temsilci Yönetimi';
 }

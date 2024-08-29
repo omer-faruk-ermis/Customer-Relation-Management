@@ -2,8 +2,6 @@
 
 namespace App\Services\Authorization;
 
-use App\Enums\Authorization\AuthorizationTypeName;
-use App\Enums\Authorization\SmsManagement;
 use App\Enums\Method;
 use App\Enums\Status;
 use App\Exceptions\Authorization\EmployeeAuthorizationNotFoundException;
@@ -26,15 +24,6 @@ class EmployeeAuthorizationService extends AbstractService
 {
     use BulkAuthorizationTrait;
 
-    protected array $serviceAuthorizations = [
-        AuthorizationTypeName::SMS_MANAGEMENT => [
-            SmsManagement::AUTHORIZED_GROUPS,
-            SmsManagement::AUTHORIZED_GROUPS_GROUP,
-            SmsManagement::APP_MANAGEMENT,
-            SmsManagement::APP_EMPLOYEE
-        ],
-    ];
-
     /**
      * @param Request  $request
      *
@@ -43,13 +32,21 @@ class EmployeeAuthorizationService extends AbstractService
      */
     public function store(Request $request): void
     {
-        $employeelAuthorizationPermission = SmsKimlikYetki::where('url_id', '=', $request->input('authorization_id'))
-                                                          ->where('sms_kimlik', '=', $request->input('employee_id'))
-                                                          ->active()
-                                                          ->first();
+        $employeeAuthorizationPermission = SmsKimlikYetki::where('url_id', '=', $request->input('authorization_id'))
+                                                         ->where('sms_kimlik', '=', $request->input('employee_id'))
+                                                         ->first();
 
-        if ($employeelAuthorizationPermission) {
-            throw new EmployeeAuthorizationAlreadyHaveException();
+        if ($employeeAuthorizationPermission && $employeeAuthorizationPermission->durum == Status::ACTIVE) {
+            if (Method::STORE === RouteUtil::currentRoute()) {
+                throw new EmployeeAuthorizationAlreadyHaveException();
+            } else {
+                return;
+            }
+        }
+
+        if ($employeeAuthorizationPermission && $employeeAuthorizationPermission->durum != Status::ACTIVE) {
+            self::update($request, $employeeAuthorizationPermission->id);
+            return;
         }
 
         SmsKimlikYetki::create([
@@ -66,6 +63,26 @@ class EmployeeAuthorizationService extends AbstractService
 
     /**
      * @param Request  $request
+     * @param int      $id
+     *
+     * @return SmsKimlikYetki
+     * @throws EmployeeAuthorizationNotFoundException
+     */
+    public function update(Request $request, int $id): SmsKimlikYetki
+    {
+        $employeeAuthorizationPermission = SmsKimlikYetki::find($id);
+        if (empty($employeeAuthorizationPermission)) {
+            throw new EmployeeAuthorizationNotFoundException();
+        }
+
+        $employeeAuthorizationPermission->durum = Status::ACTIVE;
+        $employeeAuthorizationPermission->update();
+
+        return $employeeAuthorizationPermission;
+    }
+
+    /**
+     * @param Request  $request
      *
      * @return void
      * @throws EmployeeAuthorizationNotFoundException
@@ -73,19 +90,19 @@ class EmployeeAuthorizationService extends AbstractService
      */
     public function destroy(Request $request): void
     {
-        $employeeAuthorization = SmsKimlikYetki::where('url_id', '=', $request->input('authorization_id'))
-                                               ->where('sms_kimlik', '=', $request->input('employee_id'))
-                                               ->when(Method::DESTROY === RouteUtil::currentRoute(), function ($q) {
-                                                   $q->active();
-                                               })
-                                               ->first();
+        $employeeAuthorizationPermission = SmsKimlikYetki::where('url_id', '=', $request->input('authorization_id'))
+                                                         ->where('sms_kimlik', '=', $request->input('employee_id'))
+                                                         ->when(Method::DESTROY === RouteUtil::currentRoute(), function ($q) {
+                                                             $q->active();
+                                                         })
+                                                         ->first();
 
-        if (empty($employeeAuthorization)) {
+        if (empty($employeeAuthorizationPermission)) {
             throw new EmployeeAuthorizationNotFoundException();
         }
 
-        $employeeAuthorization->durum = Status::PASSIVE;
-        $employeeAuthorization->update();
+        $employeeAuthorizationPermission->durum = Status::PASSIVE;
+        $employeeAuthorizationPermission->update();
 
         if (Method::DESTROY === RouteUtil::currentRoute())
             CacheOperation::setSession($this->request);

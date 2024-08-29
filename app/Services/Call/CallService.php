@@ -2,8 +2,6 @@
 
 namespace App\Services\Call;
 
-use App\Enums\Authorization\AuthorizationTypeName;
-use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
 use App\Enums\Status;
 use App\Enums\UserType;
@@ -24,12 +22,6 @@ use Illuminate\Support\Facades\DB;
  */
 class CallService extends AbstractService
 {
-    protected array $serviceAuthorizations = [
-        AuthorizationTypeName::SMS_MANAGEMENT => [
-            SmsManagement::DEFINE_REASON
-        ],
-    ];
-
     /**
      * @param Request  $request
      *
@@ -93,10 +85,10 @@ class CallService extends AbstractService
 
         $query = QueryBuilder::createSubQuery($subQuery)
                              ->when(!is_null($userName), function ($q) use ($userName) {
-                                 $q->WHERE('user_name', 'LIKE', '%' . $userName . '%');
+                                 $q->whereLike('user_name', $userName);
                              })
                              ->when(!is_null($userPhone), function ($q) use ($userPhone) {
-                                 $q->WHERE('user_phone', 'LIKE', '%' . $userPhone . '%');
+                                 $q->whereLike('user_phone', $userPhone);
                              })
                              ->paginate(DefaultConstant::PAGINATE);
 

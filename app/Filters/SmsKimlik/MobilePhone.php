@@ -10,6 +10,6 @@ class MobilePhone
     {
         $smsKimlik = SmsKimlik::getModel();
 
-        $query->where($smsKimlik->qualifyColumn('ceptel'), 'LIKE', '%' . $value . '%');
+        $query->whereLike($smsKimlik->qualifyColumn('ceptel'), $value);
     }
 }

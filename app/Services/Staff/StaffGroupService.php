@@ -3,8 +3,6 @@
 namespace App\Services\Staff;
 
 use App\Enums\Authorization\AuthorizationType;
-use App\Enums\Authorization\AuthorizationTypeName;
-use App\Enums\Authorization\SmsManagement;
 use App\Enums\DefaultConstant;
 use App\Enums\Status;
 use App\Exceptions\Staff\StaffGroupNotFoundException;
@@ -27,15 +25,6 @@ use Illuminate\Support\Facades\Auth;
  */
 class StaffGroupService extends AbstractService
 {
-    protected array $serviceAuthorizations = [
-        AuthorizationTypeName::SMS_MANAGEMENT => [
-            SmsManagement::AUTHORIZED_GROUPS,
-            SmsManagement::AUTHORIZED_GROUPS_GROUP,
-            SmsManagement::APP_MANAGEMENT,
-            SmsManagement::APP_EMPLOYEE
-        ]
-    ];
-
     private const AUTHORIZATION_TYPES = [
         'smsManagement'    => AuthorizationType::SMS_MANAGEMENT,
         'blueScreen'       => AuthorizationType::BLUE_SCREEN,

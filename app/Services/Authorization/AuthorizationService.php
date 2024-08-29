@@ -239,9 +239,13 @@ class AuthorizationService
         $existingIds = $employeeGroup->pluck('id')->all();
 
         foreach ($authorizations as $authorization) {
-            if (!in_array($authorization['id'], $existingIds)) {
+            if (!in_array($authorization['id'], $existingIds) && $authorization['main_authorization_state'] == Status::ACTIVE) {
                 $employeeGroup->push($authorization);
                 $existingIds[] = $authorization['id'];
+            } else if (in_array($authorization['id'], $existingIds) && $authorization['main_authorization_state'] == Status::PASSIVE) {
+                $employeeGroup = $employeeGroup->reject(function ($item) use ($authorization) {
+                    return $item['id'] == $authorization['id'];
+                });
             }
         }
 
@@ -334,15 +338,19 @@ class AuthorizationService
         $menuTanim = MenuTanim::getModel();
         $smsKimlikYetki = SmsKimlikYetki::getModel();
 
-        return UrlTanim::select([
-                                    $urlTanim->getQualifiedKeyName(),
-                                    $urlTanim->qualifyColumn('ust_id') . ' as menu_id',
-                                    $urlTanim->qualifyColumn('adi') . ' as name',
-                                    $urlTanim->qualifyColumn('url'),
-                                    $urlTanim->qualifyColumn('icon'),
-                                    $urlTanim->qualifyColumn('color'),
-                                    $menuTanim->qualifyColumn('menu'),
-                                ])
+        $select = [
+            $urlTanim->getQualifiedKeyName(),
+            $urlTanim->qualifyColumn('ust_id') . ' as menu_id',
+            $urlTanim->qualifyColumn('adi') . ' as name',
+            $urlTanim->qualifyColumn('url'),
+            $urlTanim->qualifyColumn('icon'),
+            $urlTanim->qualifyColumn('color'),
+            $menuTanim->qualifyColumn('menu'),
+        ];
+
+        return UrlTanim::select(!$fullList && empty($ids)
+                                    ? array_merge($select, [$smsKimlikYetki->qualifyColumn('durum') . ' as main_authorization_state'])
+                                    : $select)
                        ->join($menuTanim->getTable(),
                               $urlTanim->qualifyColumn('ust_id'),
                               '=',
@@ -353,8 +361,7 @@ class AuthorizationService
                                          $urlTanim->getQualifiedKeyName(),
                                          '=',
                                          $smsKimlikYetki->qualifyColumn('url_id'))
-                                  ->where($smsKimlikYetki->qualifyColumn('sms_kimlik'), '=', $this->id)
-                                  ->where($smsKimlikYetki->qualifyColumn('durum'), '=', Status::ACTIVE);
+                                  ->where($smsKimlikYetki->qualifyColumn('sms_kimlik'), '=', $this->id);
                            }, function ($qq) use ($ids, $urlTanim) {
                                $qq->whereIn($urlTanim->getQualifiedKeyName(), $ids);
                            });
@@ -376,20 +383,23 @@ class AuthorizationService
         $detailMenu = DetayMenu::getModel();
         $detailMenuUser = DetayMenuUser::getModel();
 
-        return DetayMenu::select([
-                                     $detailMenu->getQualifiedKeyName(),
-                                     $detailMenu->qualifyColumn('parentid') . ' as menu_id',
-                                     $detailMenu->qualifyColumn('menu_adi') . ' as name',
-                                     $detailMenu->qualifyColumn('menu_url') . ' as url',
-                                 ])
+        $select = [
+            $detailMenu->getQualifiedKeyName(),
+            $detailMenu->qualifyColumn('parentid') . ' as menu_id',
+            $detailMenu->qualifyColumn('menu_adi') . ' as name',
+            $detailMenu->qualifyColumn('menu_url') . ' as url',
+        ];
+
+        return DetayMenu::select(!$fullList && empty($ids)
+                                     ? array_merge($select, [$detailMenuUser->qualifyColumn('durum') . ' as main_authorization_state'])
+                                     : $select)
                         ->when(!$fullList, function ($q) use ($detailMenuUser, $detailMenu, $ids) {
                             $q->when(empty($ids), function ($qq) use ($detailMenuUser, $detailMenu) {
                                 $qq->join($detailMenuUser->getTable(),
                                           $detailMenu->getQualifiedKeyName(),
                                           '=',
                                           $detailMenuUser->qualifyColumn('menu_id'))
-                                   ->where($detailMenuUser->qualifyColumn('userid'), '=', $this->id)
-                                   ->where($detailMenuUser->qualifyColumn('durum'), '=', Status::ACTIVE);
+                                   ->where($detailMenuUser->qualifyColumn('userid'), '=', $this->id);
                             }, function ($qq) use ($ids, $detailMenu) {
                                 $qq->whereIn($detailMenu->getQualifiedKeyName(), $ids);
                             });
@@ -409,13 +419,17 @@ class AuthorizationService
         $webPortalYetki = WebPortalYetki::getModel();
         $webPortalYetkiIzin = WebPortalYetkiIzin::getModel();
 
-        return WebPortalYetki::select([
-                                          $webPortalYetki->getQualifiedKeyName(),
-                                          $webPortalYetki->qualifyColumn('menu_id') . ' as menu_id',
-                                          $webPortalYetki->qualifyColumn('aciklama') . ' as name',
-                                          $webPortalYetki->qualifyColumn('tanim') . ' as authorization',
-                                          $webPortalYetki->qualifyColumn('yetki_detay') . ' as menu',
-                                      ])
+        $select = [
+            $webPortalYetki->getQualifiedKeyName(),
+            $webPortalYetki->qualifyColumn('menu_id') . ' as menu_id',
+            $webPortalYetki->qualifyColumn('aciklama') . ' as name',
+            $webPortalYetki->qualifyColumn('tanim') . ' as authorization',
+            $webPortalYetki->qualifyColumn('yetki_detay') . ' as menu',
+        ];
+
+        return WebPortalYetki::select(!$fullList && empty($ids)
+                                          ? array_merge($select, [$webPortalYetkiIzin->qualifyColumn('durum') . ' as main_authorization_state'])
+                                          : $select)
                              ->when(!$fullList, function ($q) use ($webPortalYetkiIzin, $webPortalYetki, $ids) {
                                  $q->when(empty($ids), function ($qq) use ($webPortalYetkiIzin, $webPortalYetki) {
                                      $qq->join($webPortalYetkiIzin->getTable(),
@@ -423,8 +437,7 @@ class AuthorizationService
                                                '=',
                                                $webPortalYetkiIzin->qualifyColumn('yetki_id'))
                                         ->where($webPortalYetkiIzin->qualifyColumn('userid'), '=', $this->id)
-                                        ->where($webPortalYetkiIzin->qualifyColumn('usermi'), '=', AuthorizationUserType::AGENT)
-                                        ->where($webPortalYetkiIzin->qualifyColumn('durum'), '=', Status::ACTIVE);
+                                        ->where($webPortalYetkiIzin->qualifyColumn('usermi'), '=', AuthorizationUserType::AGENT);
                                  }, function ($qq) use ($ids, $webPortalYetki) {
                                      $qq->whereIn($webPortalYetki->getQualifiedKeyName(), $ids);
                                  });

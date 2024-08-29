@@ -18,4 +18,29 @@ final class RouteUtil
     {
         return explode('@', Route::current()->getAction()['controller'])[1];
     }
+
+    /**
+     * @return string|null
+     */
+    public static function currentPath(): string|null
+    {
+        $path = request()->headers->get('Page-Pathname');
+
+        $basePaths = [
+            '/panel2/agent/'
+        ];
+
+        /** Loop through each base path and check if the current path starts with one of them */
+        foreach ($basePaths as $basePath) {
+            if (str_starts_with($path, $basePath)) {
+                /** Strip off any extra segments after the third segment (base path + 2 more segments) */
+                $segments = explode('/', trim($path, '/'));
+
+                return '/' . implode('/', array_slice($segments, 0, 3));
+            }
+        }
+
+        /** Return the original path*/
+        return $path;
+    }
 }

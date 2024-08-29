@@ -6,6 +6,6 @@ class SubscriberNo
 {
     public function apply($query, $value): void
     {
-        $query->where('telno', 'LIKE', '%' . $value . '%');
+        $query->whereLike('telno', $value);
     }
 }

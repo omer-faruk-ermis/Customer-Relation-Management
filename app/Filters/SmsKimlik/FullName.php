@@ -10,6 +10,6 @@ class FullName
     {
         $smsKimlik = SmsKimlik::getModel();
 
-        $query->where($smsKimlik->qualifyColumn('ad_soyad'), 'LIKE', '%' . $value . '%');
+        $query->whereLike($smsKimlik->qualifyColumn('ad_soyad'), $value);
     }
 }

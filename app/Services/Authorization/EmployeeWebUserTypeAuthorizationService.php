@@ -2,8 +2,6 @@
 
 namespace App\Services\Authorization;
 
-use App\Enums\Authorization\AuthorizationTypeName;
-use App\Enums\Authorization\SmsManagement;
 use App\Enums\Method;
 use App\Enums\NumericalConstant;
 use App\Enums\Status;
@@ -30,15 +28,6 @@ use Illuminate\Support\Facades\Auth;
 class EmployeeWebUserTypeAuthorizationService extends AbstractService
 {
     use BulkAuthorizationTrait;
-
-    protected array $serviceAuthorizations = [
-        AuthorizationTypeName::SMS_MANAGEMENT => [
-            SmsManagement::AUTHORIZED_GROUPS,
-            SmsManagement::AUTHORIZED_GROUPS_GROUP,
-            SmsManagement::APP_MANAGEMENT,
-            SmsManagement::APP_EMPLOYEE
-        ],
-    ];
 
     /**
      * @param Request  $request

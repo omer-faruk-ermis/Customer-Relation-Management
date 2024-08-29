@@ -10,6 +10,6 @@ class AnswerKeywords
     {
         $soruCevap = SoruCevap::getModel();
 
-        $query->where($soruCevap->qualifyColumn('cevap_keywords'), 'LIKE', '%' . $value . '%');
+        $query->whereLike($soruCevap->qualifyColumn('cevap_keywords'), $value);
     }
 }

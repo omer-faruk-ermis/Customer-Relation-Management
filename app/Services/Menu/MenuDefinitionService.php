@@ -2,8 +2,6 @@
 
 namespace App\Services\Menu;
 
-use App\Enums\Authorization\AuthorizationTypeName;
-use App\Enums\Authorization\SmsManagement;
 use App\Enums\Status;
 use App\Exceptions\Menu\MenuAlreadyHaveException;
 use App\Exceptions\Menu\MenuNotFoundException;
@@ -22,15 +20,6 @@ use Illuminate\Support\Collection;
  */
 class MenuDefinitionService extends AbstractService
 {
-    protected array $serviceAuthorizations = [
-        AuthorizationTypeName::SMS_MANAGEMENT => [
-            SmsManagement::AUTHORIZED_GROUPS,
-            SmsManagement::AUTHORIZED_GROUPS_GROUP,
-            SmsManagement::APP_MANAGEMENT,
-            SmsManagement::APP_EMPLOYEE
-        ]
-    ];
-
     /**
      * @param Request   $request
      * @param           $pages
@@ -48,22 +37,7 @@ class MenuDefinitionService extends AbstractService
                             $q->with(['pages']);
                         })
                         ->orderBy('sira')
-                        ->get()
-                        ->map(function ($menu) use ($pages) {
-                            if (!empty($pages)) {
-                                $pageArray = [];
-
-                                foreach ($pages as $page) {
-                                    if ($menu->id == $page->ust_id) {
-                                        $pageArray[] = $page;
-                                    }
-                                }
-
-                                $menu->page_data = $pageArray;
-                            }
-
-                            return $menu;
-                        });
+                        ->get();
     }
 
     /**
