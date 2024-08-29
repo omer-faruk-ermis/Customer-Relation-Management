@@ -23,8 +23,7 @@ class WebUserTypeResource extends AbstractResource
         return [
             'id'          => $this->ktip,
             'description' => $this->kaciklama,
-            'color'       => $this->kcolor,
-            'type'        => $this->tip
+            'color'       => $this->kcolor
         ];
     }
 }
