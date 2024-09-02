@@ -3,13 +3,12 @@
 namespace App\Services\Token;
 
 use App\Enums\DefaultConstant;
-use App\Services\AbstractService;
 use App\Utils\DateUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 
-class DocSignatureService extends AbstractService
+class DocSignatureService
 {
     /**
      * @param Request  $request
