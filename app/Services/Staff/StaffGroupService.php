@@ -48,6 +48,7 @@ class StaffGroupService extends AbstractService
                                              'authorizations.authorization.recorder',
                                              'authorizations.subscriberBillet.recorder'
                                          ])
+                                  ->filter($request->all())
                                   ->where('durum', '<>', Status::DESTROY);
 
         return $request->input('page')
@@ -119,9 +120,9 @@ class StaffGroupService extends AbstractService
     public function store(Request $request): PersonelGruplari
     {
         return PersonelGruplari::create([
-                                            'grup_adi'     => $request->input('name'),
-                                            'durum'        => $request->input('state'),
-                                            'aciklama'     => $request->input('description'),
+                                            'grup_adi' => $request->input('name'),
+                                            'durum'    => $request->input('state'),
+                                            'aciklama' => $request->input('description'),
 
                                             'sms_kimlik'   => Auth::id(),
                                             'kayit_tarihi' => DateUtil::now(),
@@ -130,7 +131,7 @@ class StaffGroupService extends AbstractService
 
     /**
      * @param Request  $request
-     * @param string                   $id
+     * @param string   $id
      *
      * @return PersonelGruplari
      * @throws StaffGroupNotFoundException

@@ -3,8 +3,10 @@
 namespace App\Models\WebPortal;
 
 use App\Enums\Authorization\AuthorizationUserType;
+use App\Filters\WebPortal\WebPortalYetkiFilter;
 use App\Models\AbstractModel;
 use App\Models\SmsKimlik\SmsKimlik;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Carbon;
 
@@ -22,6 +24,8 @@ use Illuminate\Support\Carbon;
  * @property string $yetki_detay
  * @property int    $menu_id
  * @property int    $tip
+ *
+ * @method static Builder|WebPortalYetki filter(array $filters = [])
  */
 class WebPortalYetki extends AbstractModel
 {
@@ -40,5 +44,15 @@ class WebPortalYetki extends AbstractModel
             'id',
             'userid'
         )->where('usermi', '=', AuthorizationUserType::AGENT);
+    }
+
+    /**
+     * @param $filters
+     *
+     * @return WebPortalYetkiFilter
+     */
+    protected function filter($filters): WebPortalYetkiFilter
+    {
+        return new WebPortalYetkiFilter($filters);
     }
 }

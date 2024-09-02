@@ -2,9 +2,11 @@
 
 namespace App\Models\Staff;
 
+use App\Filters\StaffGroup\StaffGroupFilter;
 use App\Models\AbstractModel;
 use App\Models\RecorderTrait;
 use App\Models\SmsKimlik\SmsKimlik;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -23,6 +25,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property-read SmsKimlik            $recorder
  * @property-read PersonelGrupEslestir $members
+ *
+ * @method static Builder|PersonelGruplari filter(array $filters = [])
  */
 class PersonelGruplari extends AbstractModel
 {
@@ -54,5 +58,15 @@ class PersonelGruplari extends AbstractModel
     {
         return $this->hasMany(PersonelGrupYetkiEslestir::class, 'personel_grup_id', 'id')
                     ->active();
+    }
+
+    /**
+     * @param $filters
+     *
+     * @return StaffGroupFilter
+     */
+    protected function filter($filters): StaffGroupFilter
+    {
+        return new StaffGroupFilter($filters);
     }
 }

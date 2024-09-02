@@ -22,6 +22,7 @@ class WebPortalAuthorizationService extends AbstractService
     public function menu(Request $request): Collection
     {
         return WebPortalYetki::with('members')
+                             ->filter($request->all())
                              ->active()
                              ->whereNotNull('yetki_detay')
                              ->whereNotNull('menu_id')
@@ -38,6 +39,7 @@ class WebPortalAuthorizationService extends AbstractService
     public function page(Request $request): Collection
     {
         return WebPortalYetki::with('members')
+                             ->filter($request->all())
                              ->active()
                              ->whereNotNull('yetki_detay')
                              ->whereNotNull('menu_id')
