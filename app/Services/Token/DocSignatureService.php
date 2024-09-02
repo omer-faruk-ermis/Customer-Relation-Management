@@ -2,10 +2,12 @@
 
 namespace App\Services\Token;
 
+use App\Enums\DefaultConstant;
 use App\Services\AbstractService;
 use App\Utils\DateUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redis;
 
 class DocSignatureService extends AbstractService
 {
@@ -24,7 +26,8 @@ class DocSignatureService extends AbstractService
         $value = json_encode($value, JSON_UNESCAPED_UNICODE);
         $token = substr(hash('md5', $value), 0, 32);
 
-        // Cache::store('memcached')->put("pdfimzalasrv_bearertoken_:$token", $value, DefaultConstant::CACHE_ONE_DAY);
+        Redis::connection('prod')->set("pdfimzalasrv_bearertoken_:$token", $value);
+        Redis::connection('prod')->command('EXPIRE', ["pdfimzalasrv_bearertoken_:$token", DefaultConstant::CACHE_ONE_DAY]);
 
         return (object) ['token' => $token];
     }

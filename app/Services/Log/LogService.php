@@ -37,7 +37,7 @@ class LogService extends AbstractService
             if ($request->input('log_subject') && $item?->reasonWanted?->ifade !== $request->input('log_subject')) {
                 unset($logs[$key]);
             } else {
-                if ($item?->reasonWanted->alan_adi !== $item->alanadi) {
+                if (!empty($item?->reasonWanted) && ($item?->reasonWanted->alan_adi !== $item->alanadi)) {
                     $item->unsetRelation('reasonWanted');
                 }
             }
