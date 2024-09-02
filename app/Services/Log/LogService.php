@@ -7,7 +7,6 @@ use App\Exceptions\Log\LogReasonRecordNotFoundException;
 use App\Models\Log\SebepLog;
 use App\Models\Log\SmsKimlikLog;
 use App\Services\AbstractService;
-use App\Utils\Security;
 use Illuminate\Http\Request;
 
 /**
@@ -54,7 +53,7 @@ class LogService extends AbstractService
      */
     public function updateReasonLog(Request $request): SebepLog
     {
-        $sebepLog = SebepLog::where('logid', '=', Security::decrypt($request->input('log_id')))->first();
+        $sebepLog = SebepLog::where('logid', '=', $request->input('log_id'))->first();
         if (empty($sebepLog)) {
             throw new LogReasonRecordNotFoundException();
         }
