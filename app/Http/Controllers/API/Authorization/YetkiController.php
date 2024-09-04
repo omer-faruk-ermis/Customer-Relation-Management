@@ -26,6 +26,6 @@ class YetkiController extends Controller
     {
         (new AuthorizationService(Auth::id()))->copyAuthorization($request);
 
-        return new SuccessResource('AUTHORIZATION.COPY.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.COPY'));
     }
 }

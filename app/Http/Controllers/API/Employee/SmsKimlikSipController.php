@@ -44,7 +44,7 @@ class SmsKimlikSipController extends Controller
     {
         $employeeSips = $this->employeeSipService->index($request);
 
-        return new EmployeeSipCollection($employeeSips, 'EMPLOYEE.SIP.INDEX.SUCCESS');
+        return new EmployeeSipCollection($employeeSips, __('messages.' . self::class . '.INDEX'));
     }
 
     /**
@@ -57,7 +57,7 @@ class SmsKimlikSipController extends Controller
     {
         $employeeSip = $this->employeeSipService->store($request);
 
-        return new EmployeeSipResource($employeeSip, 'EMPLOYEE.SIP.CREATE.SUCCESS', Response::HTTP_CREATED);
+        return new EmployeeSipResource($employeeSip, __('messages.' . self::class . '.CREATE'), Response::HTTP_CREATED);
     }
 
     /**
@@ -70,6 +70,6 @@ class SmsKimlikSipController extends Controller
     {
         $this->employeeSipService->destroy($id);
 
-        return new SuccessResource('EMPLOYEE.SIP.DESTROY.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.DESTROY'));
     }
 }

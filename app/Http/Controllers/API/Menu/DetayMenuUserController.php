@@ -43,7 +43,7 @@ class DetayMenuUserController extends Controller
     {
         $this->detailMenuUserService->store($request);
 
-        return new SuccessResource('BLUE_SCREEN_AUTHORIZATION.CREATE.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.CREATE'));
     }
 
     /**
@@ -56,7 +56,7 @@ class DetayMenuUserController extends Controller
     {
         $this->detailMenuUserService->destroy($request);
 
-        return new SuccessResource('BLUE_SCREEN_AUTHORIZATION.DESTROY.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.DESTROY'));
     }
 
     /**
@@ -69,6 +69,6 @@ class DetayMenuUserController extends Controller
     {
         $this->detailMenuUserService->bulk($request);
 
-        return new SuccessResource('BLUE_SCREEN_AUTHORIZATION.BULK.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.BULK'));
     }
 }

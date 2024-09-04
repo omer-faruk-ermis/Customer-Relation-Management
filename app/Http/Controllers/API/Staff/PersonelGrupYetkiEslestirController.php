@@ -43,7 +43,7 @@ class PersonelGrupYetkiEslestirController extends Controller
     {
         $this->staffGroupAuthorizationMatchService->store($request);
 
-        return new SuccessResource('STAFF_GROUP_AUTHORIZATION_MATCH.CREATE.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.CREATE'));
     }
 
     /**
@@ -56,7 +56,7 @@ class PersonelGrupYetkiEslestirController extends Controller
     {
         $this->staffGroupAuthorizationMatchService->destroy($request);
 
-        return new SuccessResource('STAFF_GROUP_AUTHORIZATION_MATCH.DESTROY.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.DESTROY'));
     }
 
     /**
@@ -69,6 +69,6 @@ class PersonelGrupYetkiEslestirController extends Controller
     {
         $this->staffGroupAuthorizationMatchService->bulk($request);
 
-        return new SuccessResource('STAFF_GROUP_AUTHORIZATION_MATCH.BULK.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.BULK'));
     }
 }

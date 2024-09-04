@@ -38,6 +38,6 @@ class KonuBilgiKullanimYeriController extends Controller
     {
         $subjectInformationUsePlaceService = $this->subjectInformationUsePlaceService->index($request);
 
-        return new SubjectInformationUsePlaceCollection($subjectInformationUsePlaceService, 'SUBJECT_INFORMATION_USE_PLACE.INDEX.SUCCESS');
+        return new SubjectInformationUsePlaceCollection($subjectInformationUsePlaceService, __('messages.' . self::class . '.INDEX'));
     }
 }

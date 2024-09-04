@@ -45,7 +45,7 @@ class ModuleController extends Controller
     {
         $modules = $this->moduleService->index($request, []);
 
-        return new ModuleCollection($modules, 'MODULE.INDEX.SUCCESS');
+        return new ModuleCollection($modules, __('messages.' . self::class . '.INDEX'));
     }
 
     /**
@@ -58,7 +58,7 @@ class ModuleController extends Controller
     {
         $this->moduleService->store($request);
 
-        return new SuccessResource('MODULE.CREATE.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.CREATE'));
     }
 
     /**
@@ -72,7 +72,7 @@ class ModuleController extends Controller
     {
         $module = $this->moduleService->update($request, $id);
 
-        return new ModuleResource($module, 'MODULE.UPDATE.SUCCESS');
+        return new ModuleResource($module, __('messages.' . self::class . '.UPDATE'));
     }
 
     /**
@@ -85,6 +85,6 @@ class ModuleController extends Controller
     {
         $this->moduleService->destroy($id);
 
-        return new SuccessResource('MODULE.DESTROY.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.DESTROY'));
     }
 }

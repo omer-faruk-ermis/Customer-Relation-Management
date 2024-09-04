@@ -46,8 +46,8 @@ class PersonelGrupController extends Controller
         $staffGroup = $this->staffGroupService->index($request);
 
         return $request->input('page')
-            ? new PaginationResource($staffGroup, 'STAFF_GROUP.INDEX.SUCCESS')
-            : new StaffGroupCollection($staffGroup, 'STAFF_GROUP.INDEX.SUCCESS');
+            ? new PaginationResource($staffGroup, __('messages.' . self::class . '.INDEX'))
+            : new StaffGroupCollection($staffGroup, __('messages.' . self::class . '.INDEX'));
     }
 
     /**
@@ -61,7 +61,7 @@ class PersonelGrupController extends Controller
     {
         $staffGroup = $this->staffGroupService->show($request, $id);
 
-        return new StaffGroupResource($staffGroup, 'STAFF_GROUP.SHOW.SUCCESS');
+        return new StaffGroupResource($staffGroup, __('messages.' . self::class . '.SHOW'));
     }
 
     /**
@@ -73,7 +73,7 @@ class PersonelGrupController extends Controller
     {
         $staffGroup = $this->staffGroupService->store($request);
 
-        return new StaffGroupResource($staffGroup, 'STAFF_GROUP.CREATE.SUCCESS');
+        return new StaffGroupResource($staffGroup, __('messages.' . self::class . '.CREATE'));
     }
 
     /**
@@ -88,7 +88,7 @@ class PersonelGrupController extends Controller
     {
         $staffGroup = $this->staffGroupService->update($request, $id);
 
-        return new StaffGroupResource($staffGroup, 'STAFF_GROUP.UPDATE.SUCCESS');
+        return new StaffGroupResource($staffGroup, __('messages.' . self::class . '.UPDATE'));
     }
 
     /**
@@ -101,6 +101,6 @@ class PersonelGrupController extends Controller
     {
         $this->staffGroupService->destroy($id);
 
-        return new SuccessResource('STAFF_GROUP.DESTROY.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.DESTROY'));
     }
 }

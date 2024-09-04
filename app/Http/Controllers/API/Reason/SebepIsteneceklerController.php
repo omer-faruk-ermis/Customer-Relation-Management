@@ -37,6 +37,6 @@ class SebepIsteneceklerController extends Controller
     {
         $reasonWanteds = $this->reasonWantedService->index($request);
 
-        return new ReasonWantedCollection($reasonWanteds, 'REASON_WANTED.INDEX.SUCCESS');
+        return new ReasonWantedCollection($reasonWanteds, __('messages.' . self::class . '.INDEX'));
     }
 }

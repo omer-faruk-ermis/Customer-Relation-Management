@@ -45,7 +45,7 @@ class SoruCevapController extends Controller
     {
         $questionAnswers = $this->questionAnswerService->index($request);
 
-        return new PaginationResource($questionAnswers, 'QUESTION_ANSWER.INDEX.SUCCESS');
+        return new PaginationResource($questionAnswers, __('messages.' . self::class . '.INDEX'));
     }
 
     /**
@@ -59,7 +59,7 @@ class SoruCevapController extends Controller
     {
         $questionAnswers = $this->questionAnswerService->store($request);
 
-        return new QuestionAnswerResource($questionAnswers, 'QUESTION_ANSWER.CREATE.SUCCESS', Response::HTTP_CREATED);
+        return new QuestionAnswerResource($questionAnswers, __('messages.' . self::class . '.CREATE'), Response::HTTP_CREATED);
     }
 
     /**
@@ -74,7 +74,7 @@ class SoruCevapController extends Controller
     {
         $questionAnswer = $this->questionAnswerService->update($request, $id);
 
-        return new QuestionAnswerResource($questionAnswer, 'QUESTION_ANSWER.UPDATE.SUCCESS');
+        return new QuestionAnswerResource($questionAnswer, __('messages.' . self::class . '.UPDATE'));
     }
 
     /**
@@ -88,6 +88,6 @@ class SoruCevapController extends Controller
     {
         $this->questionAnswerService->destroy($id);
 
-        return new SuccessResource('QUESTION_ANSWER.DESTROY.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.DESTROY'));
     }
 }

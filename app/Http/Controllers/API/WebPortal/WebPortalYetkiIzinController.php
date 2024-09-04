@@ -43,7 +43,7 @@ class WebPortalYetkiIzinController extends Controller
     {
         $this->webPortalAuthorizationPermissionService->store($request);
 
-        return new SuccessResource('WEB_PORTAL_AUTHORIZATION_PERMISSION.CREATE.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.CREATE'));
     }
 
     /**
@@ -56,7 +56,7 @@ class WebPortalYetkiIzinController extends Controller
     {
         $this->webPortalAuthorizationPermissionService->destroy($request);
 
-        return new SuccessResource('WEB_PORTAL_AUTHORIZATION_PERMISSION.DESTROY.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.DESTROY'));
     }
 
     /**
@@ -69,6 +69,6 @@ class WebPortalYetkiIzinController extends Controller
     {
         $this->webPortalAuthorizationPermissionService->bulk($request);
 
-        return new SuccessResource('WEB_PORTAL_AUTHORIZATION_PERMISSION.BULK.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.BULK'));
     }
 }

@@ -21,8 +21,7 @@ class DocSignatureController extends Controller
     /**
      * DocSignature constructor
      *
-     * @throws ForbiddenException
-*/
+     */
     public function __construct(Request $request)
     {
         $this->docSignatureService = new DocSignatureService($request);
@@ -37,6 +36,6 @@ class DocSignatureController extends Controller
     {
         $docSignatureToken = $this->docSignatureService->getSignatureToken($request);
 
-        return new TokenResource($docSignatureToken, 'DOC_SIGNATURE.SUCCESS');
+        return new TokenResource($docSignatureToken, __('messages.' . self::class . '.INDEX'));
     }
 }

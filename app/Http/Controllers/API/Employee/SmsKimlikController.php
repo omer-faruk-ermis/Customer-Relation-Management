@@ -49,7 +49,7 @@ class SmsKimlikController extends Controller
     {
         $employees = $this->employeeService->index($request);
 
-        return new PaginationResource($employees, 'EMPLOYEE.INDEX.SUCCESS');
+        return new PaginationResource($employees, __('messages.' . self::class . '.INDEX'));
     }
 
     /**
@@ -61,7 +61,7 @@ class SmsKimlikController extends Controller
     {
         $employees = $this->employeeService->basic($request);
 
-        return new EmployeeBasicCollection($employees, 'EMPLOYEE.BASIC.SUCCESS');
+        return new EmployeeBasicCollection($employees, __('messages.' . self::class . '.BASIC'));
     }
 
     /**
@@ -74,7 +74,7 @@ class SmsKimlikController extends Controller
     {
         $logs = $this->employeeService->log($request);
 
-        return new PaginationResource($logs, 'EMPLOYEE.LOG.SUCCESS');
+        return new PaginationResource($logs, __('messages.' . self::class . '.LOG'));
     }
 
     /**
@@ -87,7 +87,7 @@ class SmsKimlikController extends Controller
     {
         $employee = $this->employeeService->show($id);
 
-        return new EmployeeResource($employee, 'EMPLOYEE.SHOW.SUCCESS');
+        return new EmployeeResource($employee, __('messages.' . self::class . '.SHOW'));
     }
 
     /**
@@ -100,7 +100,7 @@ class SmsKimlikController extends Controller
     {
         $employee = $this->employeeService->store($request);
 
-        return new EmployeeResource($employee, 'EMPLOYEE.STORE.SUCCESS', Response::HTTP_CREATED);
+        return new EmployeeResource($employee, __('messages.' . self::class . '.CREATE'), Response::HTTP_CREATED);
     }
 
     /**
@@ -114,7 +114,7 @@ class SmsKimlikController extends Controller
     {
         $employee = $this->employeeService->update($request, $id);
 
-        return new EmployeeResource($employee, 'EMPLOYEE.UPDATE.SUCCESS');
+        return new EmployeeResource($employee, __('messages.' . self::class . '.UPDATE'));
     }
 
     /**
@@ -128,7 +128,7 @@ class SmsKimlikController extends Controller
     {
         $this->employeeService->changePassword($request, $id);
 
-        return new SuccessResource('EMPLOYEE.PASSWORD.UPDATE.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.PASSWORD_UPDATE'));
     }
 
     /**
@@ -141,6 +141,6 @@ class SmsKimlikController extends Controller
     {
         $this->employeeService->destroy($id);
 
-        return new SuccessResource('EMPLOYEE.DESTROY.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.DESTROY'));
     }
 }

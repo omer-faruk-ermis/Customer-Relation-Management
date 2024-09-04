@@ -41,7 +41,7 @@ class LogController extends Controller
     {
         $logs = $this->logService->index($request);
 
-        return new PaginationResource($logs, 'LOG.INDEX.SUCCESS');
+        return new PaginationResource($logs, __('messages.' . self::class . '.EMPLOYEE.INDEX'));
     }
 
     /**
@@ -54,6 +54,6 @@ class LogController extends Controller
     {
         $reasonLogs = $this->logService->updateReasonLog($request);
 
-        return new ReasonLogResource($reasonLogs, 'LOG.REASON_LOG.UPDATE.SUCCESS');
+        return new ReasonLogResource($reasonLogs, __('messages.' . self::class . '.REASON.UPDATE'));
     }
 }

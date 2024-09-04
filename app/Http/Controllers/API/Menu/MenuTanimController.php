@@ -45,7 +45,7 @@ class MenuTanimController extends Controller
     {
         $menuDefinition = $this->menuDefinitionService->menu($request, []);
 
-        return new MenuDefinitionCollection($menuDefinition, 'SMS_MANAGEMENT_MENU.INDEX.SUCCESS');
+        return new MenuDefinitionCollection($menuDefinition, __('messages.' . self::class . '.INDEX'));
     }
 
     /**
@@ -58,7 +58,7 @@ class MenuTanimController extends Controller
     {
         $this->menuDefinitionService->store($request);
 
-        return new SuccessResource('SMS_MANAGEMENT_MENU.CREATE.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.CREATE'));
     }
 
     /**
@@ -72,7 +72,7 @@ class MenuTanimController extends Controller
     {
         $employee = $this->menuDefinitionService->update($request, $id);
 
-        return new MenuDefinitionResource($employee, 'SMS_MANAGEMENT_MENU.UPDATE.SUCCESS');
+        return new MenuDefinitionResource($employee, __('messages.' . self::class . '.UPDATE'));
     }
 
     /**
@@ -85,6 +85,6 @@ class MenuTanimController extends Controller
     {
         $this->menuDefinitionService->destroy($id);
 
-        return new SuccessResource('SMS_MANAGEMENT_MENU.DESTROY.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.DESTROY'));
     }
 }

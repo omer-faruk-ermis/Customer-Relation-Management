@@ -58,7 +58,7 @@ class SmsKimlikWebUserTipYetkiController extends Controller
     {
         $this->employeeWebUserTypeAuthorizationService->store($request);
 
-        return new SuccessResource('EMPLOYEE_WEB_USER_TYPE_AUTHORIZATION.CREATE.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.CREATE'));
     }
 
     /**
@@ -71,7 +71,7 @@ class SmsKimlikWebUserTipYetkiController extends Controller
     {
         $this->employeeWebUserTypeAuthorizationService->destroy($request);
 
-        return new SuccessResource('EMPLOYEE_WEB_USER_TYPE_AUTHORIZATION.DESTROY.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.DESTROY'));
     }
 
     /**
@@ -84,6 +84,6 @@ class SmsKimlikWebUserTipYetkiController extends Controller
     {
         $this->employeeWebUserTypeAuthorizationService->bulk($request);
 
-        return new SuccessResource('EMPLOYEE_WEB_USER_TYPE_AUTHORIZATION.BULK.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.BULK'));
     }
 }

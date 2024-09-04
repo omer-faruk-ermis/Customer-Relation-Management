@@ -2,16 +2,18 @@
 
 namespace App\Exceptions;
 
-use App\Enums\NumericalConstant;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Throwable;
 
 class AbstractException extends Exception
 {
-    public function __construct(string $message = "", int $code = NumericalConstant::ZERO, Throwable $previous = null)
+    public function __construct(string $message = "", int $code = Response::HTTP_NOT_ACCEPTABLE, Throwable $previous = null)
     {
-        parent::__construct($message, $code, $previous);
+        $message = $message ?: ($this->message ?: __('exceptions.' . static::class));
+
+        parent::__construct($message, $code ?? $this->code, $previous);
     }
 
     public function render(): JsonResponse

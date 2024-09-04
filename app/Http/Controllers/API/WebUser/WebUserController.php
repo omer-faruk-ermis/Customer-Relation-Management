@@ -42,7 +42,7 @@ class WebUserController extends Controller
     {
         $webUsers = $this->webUserService->index($request);
 
-        return new WebUserCollection($webUsers, 'WEB_USER.INDEX.SUCCESS');
+        return new WebUserCollection($webUsers, __('messages.' . self::class . '.INDEX'));
     }
 
     /**
@@ -54,7 +54,7 @@ class WebUserController extends Controller
     {
         $webUserTypes = $this->webUserService->type($request);
 
-        return new WebUserTypeCollection($webUserTypes, 'WEB_USER.TYPE.SUCCESS');
+        return new WebUserTypeCollection($webUserTypes, __('messages.' . self::class . '.TYPE'));
     }
 
     /**
@@ -67,6 +67,6 @@ class WebUserController extends Controller
     {
         $webUser = $this->webUserService->show($id);
 
-        return new WebUserResource($webUser, 'WEB_USER.SHOW.SUCCESS');
+        return new WebUserResource($webUser, __('messages.' . self::class . '.SHOW'));
     }
 }

@@ -4,5 +4,5 @@ namespace App\Enums;
 
 interface EnumInterface
 {
-    public static function values(): array;
+    public static function values(): object;
 }

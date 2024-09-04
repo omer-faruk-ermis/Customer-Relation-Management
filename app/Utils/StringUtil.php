@@ -146,4 +146,16 @@ final class StringUtil
     {
         return !empty($subject) && preg_match($pattern, $subject);
     }
+
+    /**
+     * Transform Snake Case
+     *
+     * @param string  $key
+     *
+     * @return string
+     */
+    public static function snake(string $key): string
+    {
+        return Str::lower(str_replace(' ', '_', trim($key)));
+    }
 }

@@ -42,7 +42,7 @@ class AuthController extends Controller
     {
         $token = $this->authService->login($request);
 
-        return new TokenResource($token, 'AUTH.LOGIN.SUCCESS');
+        return new TokenResource($token, __('messages.' . self::class . '.LOGIN'));
     }
 
     /**
@@ -55,7 +55,7 @@ class AuthController extends Controller
     {
         $smsKimlik = $this->authService->loginVerification($request);
 
-        return new EmployeeResource($smsKimlik, 'AUTH.LOGIN_VERIFICATION.EMPLOYEE.SUCCESS');
+        return new EmployeeResource($smsKimlik, __('messages.' . self::class . '.LOGIN_VERIFICATION'));
     }
 
     /**
@@ -68,7 +68,7 @@ class AuthController extends Controller
     {
         $token = $this->authService->forgotPassword($request);
 
-        return new TokenResource($token, 'AUTH.FORGOT_PASSWORD.SUCCESS');
+        return new TokenResource($token, __('messages.' . self::class . '.FORGOT_PASSWORD'));
     }
 
     /**
@@ -80,7 +80,7 @@ class AuthController extends Controller
     {
         $this->authService->newPassword($request);
 
-        return new SuccessResource('AUTH.NEW_PASSWORD.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.NEW_PASSWORD'));
     }
 
     /**
@@ -92,7 +92,7 @@ class AuthController extends Controller
     {
         $this->authService->changePassword($request);
 
-        return new SuccessResource('AUTH.CHANGE_PASSWORD.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.CHANGE_PASSWORD'));
     }
 
     /**
@@ -105,6 +105,6 @@ class AuthController extends Controller
     {
         $this->authService->logout($request);
 
-        return new SuccessResource('AUTH.LOGOUT.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.LOGOUT'));
     }
 }

@@ -39,7 +39,7 @@ class DetayMenuController extends Controller
     {
         $detailMenu = $this->detailMenuService->menu($request);
 
-        return new DetailMenuCollection($detailMenu, 'BLUE_SCREEN_MENU.INDEX.SUCCESS');
+        return new DetailMenuCollection($detailMenu, __('messages.' . self::class . '.MENU.INDEX'));
     }
 
     /**
@@ -51,6 +51,6 @@ class DetayMenuController extends Controller
     {
         $detailMenuPage = $this->detailMenuService->page($request);
 
-        return new DetailMenuCollection($detailMenuPage, 'BLUE_SCREEN_PAGE.INDEX.SUCCESS');
+        return new DetailMenuCollection($detailMenuPage, __('messages.' . self::class . '.PAGE.INDEX'));
     }
 }

@@ -34,7 +34,7 @@ class SmsController extends Controller
     {
         $codeRemainingTime = $this->smsService->smsCode($request);
 
-        return new SmsCodeResource($codeRemainingTime, 'SMS.CODE_SEND.SUCCESS');
+        return new SmsCodeResource($codeRemainingTime, __('messages.' . self::class . '.SEND'));
     }
 
     /**
@@ -47,6 +47,6 @@ class SmsController extends Controller
     {
         $this->smsService->smsVerification($request);
 
-        return new SuccessResource('SMS.CODE_VERIFICATION.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.CODE_VERIFICATION'));
     }
 }

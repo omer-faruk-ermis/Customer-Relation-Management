@@ -33,6 +33,6 @@ class SmsKimlikUnitController extends Controller
     {
         $employeeUnits = $this->employeeUnitService->index($request);
 
-        return new EmployeeUnitCollection($employeeUnits, 'EMPLOYEE.UNIT.INDEX.SUCCESS');
+        return new EmployeeUnitCollection($employeeUnits, __('messages.' . self::class . '.INDEX'));
     }
 }

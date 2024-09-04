@@ -16,11 +16,11 @@ class EnumService
     /**
      * @param Request  $request
      *
-     * @return array
+     * @return object
      * @throws InvalidEnumException
      */
-    public function index(Request $request): array
+    public function index(Request $request): object
     {
-        return (new EnumFactory)->create($request->input('enum_type'))::values();
+        return (new EnumFactory)->create($request->input('enum_type'))::all();
     }
 }

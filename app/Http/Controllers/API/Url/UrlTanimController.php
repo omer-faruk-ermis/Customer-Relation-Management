@@ -47,8 +47,8 @@ class UrlTanimController extends Controller
         $urlDefinition = $this->urlDefinitionService->page($request);
 
         return $request->input('page')
-            ? new PaginationResource($urlDefinition, 'SMS_MANAGEMENT_PAGE.INDEX.SUCCESS')
-            : new UrlDefinitionCollection($urlDefinition, 'SMS_MANAGEMENT_PAGE.INDEX.SUCCESS');
+            ? new PaginationResource($urlDefinition, __('messages.' . self::class . '.INDEX'))
+            : new UrlDefinitionCollection($urlDefinition, __('messages.' . self::class . '.INDEX'));
     }
 
     /**
@@ -61,7 +61,7 @@ class UrlTanimController extends Controller
     {
         $urlDefinition = $this->urlDefinitionService->store($request);
 
-        return new UrlDefinitionResource($urlDefinition, 'SMS_MANAGEMENT_PAGE.STORE.SUCCESS', Response::HTTP_CREATED);
+        return new UrlDefinitionResource($urlDefinition, __('messages.' . self::class . '.CREATE'), Response::HTTP_CREATED);
     }
 
     /**
@@ -75,7 +75,7 @@ class UrlTanimController extends Controller
     {
         $employee = $this->urlDefinitionService->update($request, $id);
 
-        return new UrlDefinitionResource($employee, 'SMS_MANAGEMENT_PAGE.UPDATE.SUCCESS');
+        return new UrlDefinitionResource($employee, __('messages.' . self::class . '.UPDATE'));
     }
 
     /**
@@ -88,6 +88,6 @@ class UrlTanimController extends Controller
     {
         $this->urlDefinitionService->destroy($id);
 
-        return new SuccessResource('SMS_MANAGEMENT_PAGE.DESTROY.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.DESTROY'));
     }
 }

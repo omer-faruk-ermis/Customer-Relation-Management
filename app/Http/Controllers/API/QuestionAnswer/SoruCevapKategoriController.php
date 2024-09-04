@@ -44,7 +44,7 @@ class SoruCevapKategoriController extends Controller
     {
         $questionAnswerCategories = $this->questionAnswerCategoryService->index($request);
 
-        return new QuestionAnswerCategoryCollection($questionAnswerCategories, 'QUESTION_ANSWER_CATEGORY.INDEX.SUCCESS');
+        return new QuestionAnswerCategoryCollection($questionAnswerCategories, __('messages.' . self::class . '.INDEX'));
     }
 
     /**
@@ -56,7 +56,7 @@ class SoruCevapKategoriController extends Controller
     {
         $questionAnswerCategories = $this->questionAnswerCategoryService->store($request);
 
-        return new QuestionAnswerCategoryResource($questionAnswerCategories, 'QUESTION_ANSWER_CATEGORY.CREATE.SUCCESS', Response::HTTP_CREATED);
+        return new QuestionAnswerCategoryResource($questionAnswerCategories, __('messages.' . self::class . '.CREATE'), Response::HTTP_CREATED);
     }
 
     /**
@@ -71,7 +71,7 @@ class SoruCevapKategoriController extends Controller
     {
         $questionAnswerCategorY = $this->questionAnswerCategoryService->update($request, $id);
 
-        return new QuestionAnswerCategoryResource($questionAnswerCategorY, 'QUESTION_ANSWER_CATEGORY.UPDATE.SUCCESS');
+        return new QuestionAnswerCategoryResource($questionAnswerCategorY, __('messages.' . self::class . '.UPDATE'));
     }
 
     /**
@@ -85,6 +85,6 @@ class SoruCevapKategoriController extends Controller
     {
         $this->questionAnswerCategoryService->destroy($id);
 
-        return new SuccessResource('QUESTION_ANSWER_CATEGORY.DESTROY.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.DESTROY'));
     }
 }

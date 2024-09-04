@@ -38,6 +38,6 @@ class KonuBilgiController extends Controller
     {
         $subjectInformationService = $this->subjectInformationService->index($request);
 
-        return new SubjectInformationCollection($subjectInformationService, 'SUBJECT_INFORMATION.INDEX.SUCCESS');
+        return new SubjectInformationCollection($subjectInformationService, __('messages.' . self::class . '.INDEX'));
     }
 }

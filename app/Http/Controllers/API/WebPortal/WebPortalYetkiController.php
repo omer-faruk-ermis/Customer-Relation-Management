@@ -39,7 +39,7 @@ class WebPortalYetkiController extends Controller
     {
         $webPortalAuthorization = $this->webPortalAuthorizationService->menu($request);
 
-        return new WebPortalAuthorizationCollection($webPortalAuthorization, 'WEB_PORTAL_AUTHORIZATION.MENU.SUCCESS');
+        return new WebPortalAuthorizationCollection($webPortalAuthorization, __('messages.' . self::class . '.MENU.INDEX'));
     }
 
     /**
@@ -51,6 +51,6 @@ class WebPortalYetkiController extends Controller
     {
         $webPortalAuthorization = $this->webPortalAuthorizationService->page($request);
 
-        return new WebPortalAuthorizationPageCollection($webPortalAuthorization, 'WEB_PORTAL_AUTHORIZATION.PAGE.SUCCESS');
+        return new WebPortalAuthorizationPageCollection($webPortalAuthorization, __('messages.' . self::class . '.PAGE.INDEX'));
     }
 }

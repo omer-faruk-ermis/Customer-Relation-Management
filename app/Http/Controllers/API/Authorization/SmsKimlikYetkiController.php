@@ -43,7 +43,7 @@ class SmsKimlikYetkiController extends Controller
     {
         $this->employeeAuthorizationService->store($request);
 
-        return new SuccessResource('SMS_MANAGEMENT_AUTHORIZATION.CREATE.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.CREATE'));
     }
 
     /**
@@ -56,7 +56,7 @@ class SmsKimlikYetkiController extends Controller
     {
         $this->employeeAuthorizationService->destroy($request);
 
-        return new SuccessResource('SMS_MANAGEMENT_AUTHORIZATION.DESTROY.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.DESTROY'));
     }
 
     /**
@@ -69,6 +69,6 @@ class SmsKimlikYetkiController extends Controller
     {
         $this->employeeAuthorizationService->bulk($request);
 
-        return new SuccessResource('SMS_MANAGEMENT_AUTHORIZATION.BULK.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.BULK'));
     }
 }

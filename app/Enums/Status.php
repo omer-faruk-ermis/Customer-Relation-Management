@@ -2,18 +2,9 @@
 
 namespace App\Enums;
 
-class Status extends AbstractEnum implements EnumInterface
+class Status extends AbstractEnum
 {
     const ACTIVE = 1;
     const PASSIVE = 0;
     const DESTROY = 2;
-
-    public static function values(): array
-    {
-        return [
-            'Aktif'   => self::ACTIVE,
-            'Pasif'   => self::PASSIVE,
-            'Silinen' => self::DESTROY
-        ];
-    }
 }

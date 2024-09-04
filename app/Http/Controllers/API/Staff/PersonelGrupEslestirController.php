@@ -44,7 +44,7 @@ class PersonelGrupEslestirController extends Controller
     {
         $this->staffGroupMatchService->store($request);
 
-        return new SuccessResource('STAFF_GROUP_MATCH.CREATE.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.CREATE'));
     }
 
     /**
@@ -57,7 +57,7 @@ class PersonelGrupEslestirController extends Controller
     {
         $this->staffGroupMatchService->destroyStaff($id);
 
-        return new SuccessResource('STAFF_GROUP_MATCH.DESTROY.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.DESTROY'));
     }
 
     /**
@@ -70,7 +70,7 @@ class PersonelGrupEslestirController extends Controller
     {
         $this->staffGroupMatchService->destroy($request);
 
-        return new SuccessResource('STAFF_GROUP_MATCH.DESTROY.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.DESTROY'));
     }
 
     /**
@@ -83,6 +83,6 @@ class PersonelGrupEslestirController extends Controller
     {
         $this->staffGroupMatchService->bulk($request);
 
-        return new SuccessResource('STAFF_GROUP_MATCH.BULK.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.BULK'));
     }
 }

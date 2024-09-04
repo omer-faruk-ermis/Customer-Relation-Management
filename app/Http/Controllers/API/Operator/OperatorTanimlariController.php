@@ -37,6 +37,6 @@ class OperatorTanimlariController extends Controller
     {
         $operatorDefines = $this->operatorDefineService->index($request);
 
-        return new OperatorDefineCollection($operatorDefines, 'OPERATOR_DEFINE.INDEX.SUCCESS');
+        return new OperatorDefineCollection($operatorDefines, __('messages.' . self::class . '.INDEX'));
     }
 }

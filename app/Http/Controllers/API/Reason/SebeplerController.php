@@ -39,6 +39,6 @@ class SebeplerController extends Controller
     {
         $reasons = $this->reasonService->index($request);
 
-        return new ReasonCollection($reasons, 'REASON.INDEX.SUCCESS');
+        return new ReasonCollection($reasons, __('messages.' . self::class . '.INDEX'));
     }
 }

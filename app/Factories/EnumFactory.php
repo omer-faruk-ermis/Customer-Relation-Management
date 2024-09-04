@@ -6,7 +6,6 @@ use App\Enums\Authorization\AuthorizationType;
 use App\Enums\Brand;
 use App\Enums\Call\CallDirection;
 use App\Enums\Call\PairStatus;
-use App\Enums\EnumInterface;
 use App\Enums\MeetingTypeSpecies;
 use App\Enums\ReasonType;
 use App\Enums\Status;
@@ -36,10 +35,10 @@ class EnumFactory
     /**
      * @param string  $enumType
      *
-     * @return EnumInterface
+     * @return mixed
      * @throws InvalidEnumException
      */
-    public function create(string $enumType): EnumInterface
+    public function create(string $enumType): mixed
     {
         if (!array_key_exists($enumType, $this->enumList)) {
             throw new InvalidEnumException();

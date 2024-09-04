@@ -47,7 +47,7 @@ class VoiceUserController extends Controller
     {
         $this->voiceUserService->store($request);
 
-        return new SuccessResource('VOICE_USER.STORE.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.STORE'));
     }
 
     /**
@@ -59,7 +59,7 @@ class VoiceUserController extends Controller
     {
         $path = $this->voiceUserService->path($request);
 
-        return new PathResource($path, 'VOICE_USER.PATH.SUCCESS');
+        return new PathResource($path, __('messages.' . self::class . '.PATH'));
     }
 
     /**
@@ -71,7 +71,7 @@ class VoiceUserController extends Controller
     {
         $lastPairUsers = $this->voiceUserService->lastPair($request);
 
-        return new WebUserCollection($lastPairUsers, 'VOICE_USER.LAST_PAIR_USER.SUCCESS');
+        return new WebUserCollection($lastPairUsers, __('messages.' . self::class . '.LAST_PAIR_USER'));
     }
 
     /**
@@ -84,6 +84,6 @@ class VoiceUserController extends Controller
     {
         $this->voiceUserService->destroy($id);
 
-        return new SuccessResource('VOICE_USER.DESTROY.SUCCESS');
+        return new SuccessResource(__('messages.' . self::class . '.DESTROY'));
     }
 }

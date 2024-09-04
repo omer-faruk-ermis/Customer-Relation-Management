@@ -38,6 +38,6 @@ class CagriController extends Controller
     {
         $calls = $this->callService->index($request);
 
-        return new PaginationResource($calls, 'CALL.INDEX.SUCCESS');
+        return new PaginationResource($calls, __('messages.' . self::class . '.INDEX'));
     }
 }

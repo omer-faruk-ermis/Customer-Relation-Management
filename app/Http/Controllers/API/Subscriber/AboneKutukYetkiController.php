@@ -39,7 +39,7 @@ class AboneKutukYetkiController extends Controller
     {
         $subscriberBilletAuthorization = $this->subscriberBilletAuthorizationService->menu($request);
 
-        return new SubscriberBilletMenuAuthorizationResource($subscriberBilletAuthorization, 'SUBSCRIBER_BILLET_AUTHORIZATION.MENU.SUCCESS');
+        return new SubscriberBilletMenuAuthorizationResource($subscriberBilletAuthorization, __('messages.' . self::class . '.MENU.INDEX'));
     }
 
     /**
@@ -51,6 +51,6 @@ class AboneKutukYetkiController extends Controller
     {
         $subscriberBilletAuthorization = $this->subscriberBilletAuthorizationService->page($request);
 
-        return new SubscriberBilletAuthorizationCollection($subscriberBilletAuthorization, 'SUBSCRIBER_BILLET_AUTHORIZATION.PAGE.SUCCESS');
+        return new SubscriberBilletAuthorizationCollection($subscriberBilletAuthorization, __('messages.' . self::class . '.PAGE.INDEX'));
     }
 }
