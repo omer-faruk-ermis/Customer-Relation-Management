@@ -98,7 +98,6 @@ class SmsKimlikBuilder
     {
         return DB::table('kaynaksms_diger.dbo.page_services as ps')
                  ->join('kaynaksms_diger.dbo.services as s', 'ps.service_id', '=', 's.id')
-                 ->where('s.project', '=', DefaultConstant::CUSTOMER_AGENT_MANAGEMENT)
                  ->get();
     }
 }
