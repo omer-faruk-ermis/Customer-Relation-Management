@@ -52,6 +52,7 @@ class CacheOperation
      */
     public static function setSession($request): SmsKimlik
     {
+        TokenValidate::handle($request->bearerToken());
         $netgsmsessionid = $request->bearerToken();
         $sms_kimlik = SmsKimlikBuilder::handle(Cache::get("sms_kimlik_$netgsmsessionid"));
 

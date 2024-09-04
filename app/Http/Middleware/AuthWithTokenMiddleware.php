@@ -46,9 +46,6 @@ class AuthWithTokenMiddleware
             ExcludeRoute::PUBLIC_PREFIX,
         ];
 
-        $token = $request->bearerToken();
-        TokenValidate::handle($token);
-
         if (in_array($request->path(), $excludedRoutes)) {
             return $next($request);
         }
@@ -58,6 +55,9 @@ class AuthWithTokenMiddleware
                 return $next($request);
             }
         }
+
+        $token = $request->bearerToken();
+        TokenValidate::handle($token);
 
         if (!Cache::get("login_$token")) {
             throw new NotLoginException();

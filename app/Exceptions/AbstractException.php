@@ -13,7 +13,7 @@ class AbstractException extends Exception
     {
         $message = $message ?: ($this->message ?: __('exceptions.' . static::class));
 
-        parent::__construct($message, $this->code ?? $code, $previous);
+        parent::__construct($message, $this->code != 0 ? $this->code : $code, $previous);
     }
 
     public function render(): JsonResponse

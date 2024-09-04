@@ -3,7 +3,6 @@
 namespace App\Builder;
 
 use App\Enums\Authorization\AuthorizationTypeName;
-use App\Enums\DefaultConstant;
 use App\Models\Menu\MenuTanim;
 use App\Models\Module\Module;
 use App\Models\SmsKimlik\SmsKimlik;
