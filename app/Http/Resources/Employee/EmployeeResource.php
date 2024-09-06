@@ -36,7 +36,6 @@ class EmployeeResource extends AbstractResource
             'web_portal_permission' => $this->webportal_izin,
             'mobile_phone'          => $this->ceptel,
             'email'                 => $this->sms_kimlik_email,
-            'username'              => $this->sms_kimlik_email_username,
             'home_phone'            => $this->evtel,
             'netgsmsessionid'       => $this->netgsmsessionid,
             'module'                => ModuleResource::collection($this->module ?? []),

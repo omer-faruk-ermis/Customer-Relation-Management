@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Employee;
 
 use App\Http\Requests\AbstractRequest;
-use App\Utils\Security;
 
 class BasicEmployeeRequest extends AbstractRequest
 {
@@ -19,8 +18,6 @@ class BasicEmployeeRequest extends AbstractRequest
             'currency_limit'   => 'sometimes|numeric',
             'mobile_phone'     => 'sometimes|integer',
             'email'            => 'sometimes|email',
-            'username'         => 'sometimes|string',
-            'email_password'   => 'sometimes|string',
             'home_phone'       => 'sometimes|integer',
         ];
     }

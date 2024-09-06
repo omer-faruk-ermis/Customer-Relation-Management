@@ -17,7 +17,6 @@ class SmsKimlikFilter extends AbstractFilter
             'currency_limit'   => CurrencyLimit::class,
             'mobile_phone'     => MobilePhone::class,
             'email'            => Email::class,
-            'username'         => Username::class,
             'email_password'   => EmailPassword::class,
             'home_phone'       => HomePhone::class,
             'state'            => State::class,

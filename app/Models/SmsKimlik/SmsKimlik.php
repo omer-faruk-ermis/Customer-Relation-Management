@@ -32,8 +32,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property bool                $webportal_izin
  * @property int                 $ceptel
  * @property string              $sms_kimlik_email
- * @property string              $sms_kimlik_email_username
- * @property string              $sms_kimlik_email_password
  * @property int                 $mattermost_id
  * @property int                 $evtel
  *
@@ -63,8 +61,6 @@ class SmsKimlik extends AbstractSmsKimlik
         'webportal_izin',
         'ceptel',
         'sms_kimlik_email',
-        'sms_kimlik_email_username',
-        'sms_kimlik_email_password',
         'mattermost_id',
         'evtel'
     ];

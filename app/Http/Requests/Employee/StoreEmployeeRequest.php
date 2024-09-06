@@ -20,8 +20,6 @@ class StoreEmployeeRequest extends AbstractRequest
                                'currency_limit'   => 'required|numeric',
                                'mobile_phone'     => 'required|integer',
                                'email'            => 'required|email',
-                               'username'         => 'sometimes|string',
-                               'email_password'   => 'sometimes|string',
                                'home_phone'       => 'sometimes|integer',
                            ],
                            $storeEmployeeSipRules);

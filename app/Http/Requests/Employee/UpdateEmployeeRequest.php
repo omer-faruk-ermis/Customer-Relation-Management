@@ -17,8 +17,6 @@ class UpdateEmployeeRequest extends AbstractRequest
             'currency_limit'   => 'sometimes|numeric',
             'mobile_phone'     => 'sometimes|integer',
             'email'            => 'sometimes|email',
-            'username'         => 'sometimes|string',
-            'email_password'   => 'sometimes|string',
             'home_phone'       => 'sometimes|integer',
         ];
     }

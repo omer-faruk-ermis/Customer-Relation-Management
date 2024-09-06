@@ -116,8 +116,6 @@ class EmployeeService extends AbstractService
                                              'para_limit'                => $request->input('currency_limit'),
                                              'ceptel'                    => $request->input('mobile_phone'),
                                              'sms_kimlik_email'          => $request->input('email'),
-                                             'sms_kimlik_email_username' => $request->input('username'),
-                                             'sms_kimlik_email_password' => $request->input('email_password'),
                                              'evtel'                     => $request->input('home_phone')
                                          ]);
 
@@ -148,8 +146,6 @@ class EmployeeService extends AbstractService
                               'para_limit'                => $request->input('currency_limit'),
                               'ceptel'                    => $request->input('mobile_phone'),
                               'sms_kimlik_email'          => $request->input('email'),
-                              'sms_kimlik_email_username' => $request->input('username'),
-                              'sms_kimlik_email_password' => $request->input('email_password'),
                               'evtel'                     => $request->input('home_phone'),
                           ]);
 
