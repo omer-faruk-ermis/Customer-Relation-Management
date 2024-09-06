@@ -45,6 +45,7 @@ class EmployeeService extends AbstractService
         return SmsKimlik::with(['unit', 'sip'])
                         ->filter($request->all())
                         ->active()
+                        ->where('loginpage', '=', Status::ACTIVE)
                         ->paginate(DefaultConstant::PAGINATE);
     }
 
@@ -58,6 +59,7 @@ class EmployeeService extends AbstractService
         return SmsKimlik::select(['id', 'ad_soyad'])
                         ->filter($request->all())
                         ->active()
+                        ->where('loginpage', '=', Status::ACTIVE)
                         ->limit(DefaultConstant::SEARCH_LIST_LIMIT)
                         ->get();
     }
