@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Config\SqlServerGrammar;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,9 +12,9 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        //
+        app('db.connection')->setQueryGrammar(new SqlServerGrammar());
     }
 
     /**
@@ -23,13 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        /*if (config('app.debug')) {
-            DB::listen(function ($query) {
-                Log::channel('sql')->debug($query->sql, $query->bindings, $query->time);
-            });
-        }*/
-        /*if(config('app.env') === 'local') {
-            $this->app['request']->server->set('HTTPS', true);
-        }*/
+        //
     }
 }
