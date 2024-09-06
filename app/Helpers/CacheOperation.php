@@ -6,6 +6,7 @@ use App\Builder\SmsKimlikBuilder;
 use App\Enums\DefaultConstant;
 use App\Exceptions\Auth\NotLoginException;
 use App\Models\SmsKimlik\SmsKimlik;
+use App\Utils\ArrayUtil;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
@@ -76,6 +77,6 @@ class CacheOperation
             throw new NotLoginException();
         }
 
-        Cache::put("sms_kimlik_$token", $redisEmployee);
+        Cache::put("sms_kimlik_$token", new SmsKimlik(ArrayUtil::castArray($redisEmployee)));
     }
 }
