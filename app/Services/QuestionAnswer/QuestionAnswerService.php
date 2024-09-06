@@ -36,7 +36,7 @@ class QuestionAnswerService extends AbstractService
         return SoruCevap::with('category')
                         ->select([
                                      $questionAnswer->qualifyAllColumns(),
-                                     DB::raw($questionAnswerCategory->getQualifiedKeyName() . ' AS kategori_id'),
+                                     DB::raw($questionAnswerCategory->getQualifiedKeyName() . ' AS category_id'),
                                      $questionAnswerCategory->qualifyColumn('kategori_adi'),
                                      $questionAnswerCategory->qualifyColumn('kategori_durum'),
                                  ])

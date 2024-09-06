@@ -26,7 +26,7 @@ class QuestionAnswerResource extends AbstractResource
     {
         return [
             'id'                => Security::encrypt($this->getKey()),
-            'category_id'       => Security::encrypt($this->kategori_id),
+            'category_id'       => Security::encrypt($this->category_id),
             'question'          => $this->soru,
             'answer'            => $this->cevap,
             'counter'           => $this->sayac,
