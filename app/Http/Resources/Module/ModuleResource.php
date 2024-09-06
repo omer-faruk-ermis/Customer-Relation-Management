@@ -23,14 +23,15 @@ class ModuleResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'    => Security::encrypt($this->getKey()),
-            'name'  => $this->name,
-            'panel' => $this->panel,
-            'state' => $this->durum,
-            'path'  => $this->path,
-            'icon'  => $this->icon,
-            'color' => $this->color,
-            'menu'  => MenuDefinitionBasicResource::collection($this->menu_data ?? [])
+            'id'         => $this->getKey(),
+            'encrypt_id' => Security::encrypt($this->getKey()),
+            'name'       => $this->name,
+            'panel'      => $this->panel,
+            'state'      => $this->durum,
+            'path'       => $this->path,
+            'icon'       => $this->icon,
+            'color'      => $this->color,
+            'menu'       => MenuDefinitionBasicResource::collection($this->menu_data ?? [])
         ];
     }
 }
