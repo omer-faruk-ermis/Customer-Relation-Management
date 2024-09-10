@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API\Enum;
 use App\Exceptions\InvalidEnumException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Enum\IndexEnumRequest;
-use App\Http\Resources\Enum\EnumCollection;
+use App\Http\Resources\SuccessDataResource;
 use App\Services\EnumService;
 
 /**
@@ -29,13 +29,13 @@ class EnumController extends Controller
     /**
      * @param IndexEnumRequest  $request
      *
-     * @return EnumCollection
+     * @return SuccessDataResource
      * @throws InvalidEnumException
      */
-    public function index(IndexEnumRequest $request): EnumCollection
+    public function index(IndexEnumRequest $request): SuccessDataResource
     {
         $enums = $this->enumService->index($request);
 
-        return new EnumCollection($enums, __('messages.' . self::class . '.INDEX'));
+        return new SuccessDataResource($enums, __('messages.' . self::class . '.INDEX'));
     }
 }

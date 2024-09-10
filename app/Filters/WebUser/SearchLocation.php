@@ -3,6 +3,7 @@
 namespace App\Filters\WebUser;
 
 use App\Enums\DefaultConstant;
+use App\Enums\RegexPattern;
 
 class SearchLocation
 {
@@ -68,7 +69,7 @@ class SearchLocation
                 },
                 function ($query) use ($value) {
                     $query
-                        ->when(preg_match(DefaultConstant::EMAIL_PATTERN, $value),
+                        ->when(preg_match(RegexPattern::EMAIL, $value),
                             // EMAIL
                             function ($q) use ($value) {
                                 $q->when(filter_var($value, FILTER_VALIDATE_EMAIL), function ($qq) use ($value) {

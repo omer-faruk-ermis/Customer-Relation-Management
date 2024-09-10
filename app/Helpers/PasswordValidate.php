@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Enums\DefaultConstant;
+use App\Enums\RegexPattern;
 use App\Exceptions\Auth\AgainPasswordException;
 use App\Exceptions\Auth\InvalidPasswordFormatException;
 use App\Exceptions\Auth\PasswordLengthException;
@@ -25,7 +26,7 @@ class PasswordValidate
             throw new PasswordLengthException();
         }
 
-        if (!preg_match('/^[^\x22\x27]+$/u', $newPassword) || !preg_match('/^[^\x22\x27]+$/u', $newPasswordAgain)) {
+        if (!preg_match(RegexPattern::PASSWORD, $newPassword) || !preg_match(RegexPattern::PASSWORD, $newPasswordAgain)) {
             throw new InvalidPasswordFormatException();
         }
 

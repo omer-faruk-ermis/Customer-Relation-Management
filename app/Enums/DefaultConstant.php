@@ -15,7 +15,6 @@ class DefaultConstant extends AbstractEnum
     const AUTHORIZATION = 324; // id = 324, url => php/main.php from url_tanim
     const HIDE_SIGN = '*';
     const HIDE_DATE_FORMAT = '****-**-**';
-    const EMAIL_PATTERN = '/[@.]|^(com|net|org|edu|gov|mil|co|biz|info|io)$/i';
     const IDENTITY_NO_LENGTH = 11;
     const TAX_IDENTIFICATION_NO_LENGTH = 10;
     const LOCAL_PHONE_LENGTH = 10;

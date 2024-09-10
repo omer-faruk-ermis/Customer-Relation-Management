@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Enums\RegexPattern;
 use App\Exceptions\Token\InvalidTokenException;
 use App\Exceptions\Token\InvalidTokenFormatException;
 use Exception;
@@ -16,7 +17,7 @@ class TokenValidate
      */
     public static function handle($token): void
     {
-        if (!preg_match('/^[a-zA-Z0-9]+$/', $token)) {
+        if (!preg_match(RegexPattern::TOKEN, $token)) {
             throw new InvalidTokenFormatException();
         }
 

@@ -4,7 +4,10 @@ namespace App\Services;
 
 use App\Exceptions\InvalidEnumException;
 use App\Factories\EnumFactory;
+use App\Http\Resources\Enum\EnumCollection;
+use App\Utils\ArrayUtil;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 /**
  * Class EnumService
@@ -16,11 +19,16 @@ class EnumService
     /**
      * @param Request  $request
      *
-     * @return object
+     * @return array
      * @throws InvalidEnumException
      */
-    public function index(Request $request): object
+    public function index(Request $request): array
     {
-        return (new EnumFactory)->create($request->input('enum_type'))::all();
+        $enums = [];
+        foreach (ArrayUtil::castArray($request->input('enum_type')) as $enumType) {
+            $enums = Arr::add($enums, $enumType, new EnumCollection((new EnumFactory)->create($enumType)::all()));
+        }
+
+        return $enums;
     }
 }
