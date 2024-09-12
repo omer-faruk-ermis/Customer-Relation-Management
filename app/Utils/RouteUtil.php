@@ -12,11 +12,19 @@ use Illuminate\Support\Facades\Route;
 final class RouteUtil
 {
     /**
-     * @return string
+     * @return string|null
      */
-    public static function currentRoute(): string
+    public static function currentRoute(): string|null
     {
-        return explode('@', Route::current()->getAction()['controller'])[1];
+        return !empty(Route::current()) ? explode('@', Route::current()?->getAction()['controller'])[1] : null;
+    }
+
+    /**
+     * @return string|null
+     */
+    public static function currentController(): string|null
+    {
+        return !empty(Route::current()) ? explode('@', Route::current()->getAction()['controller'])[0] : null;
     }
 
     /**

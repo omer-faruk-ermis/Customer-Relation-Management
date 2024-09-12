@@ -44,14 +44,10 @@ class Handler extends ExceptionHandler
 
     public function render($request, Exception|Throwable $e)
     {
-        (new KibanaLog())->send($e->getMessage(), $e->getFile(), $e->getLine());
+        (new KibanaLog())->send($e, LOG_ERR);
 
-        // This will replace our 404 response with
-        // a JSON response.
         if ($e instanceof ModelNotFoundException) {
-            return response()->json([
-                                        'error' => 'Resource not found'
-                                    ], 404);
+            return response()->json(['error' => 'Resource not found'], 404);
         }
 
         return parent::render($request, $e);

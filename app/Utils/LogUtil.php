@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Enums\Log;
+use App\Enums\RegexPattern;
 
 /**
  * Class LogUtil
@@ -38,5 +39,26 @@ final class LogUtil
             case LOG_DEBUG:
                 return Log::DEBUG;
         }
+    }
+
+    /**
+     *
+     * Get limited traces string.
+     *
+     * @param $e
+     * @param $length
+     *
+     * @return string|null
+     */
+    public static function getTraces($e, $length): string|null
+    {
+        if (!empty($e)) {
+            preg_match_all(RegexPattern::TRACE_LIST, strval($e->getTraceAsString()), $matches);
+            $firstTenTraces = array_slice($matches[0], 0, $length);
+
+            return implode(PHP_EOL, $firstTenTraces);
+        }
+
+        return null;
     }
 }

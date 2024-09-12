@@ -9,4 +9,5 @@ class RegexPattern extends AbstractEnum
     const PASSWORD = '/^[^\x22\x27]+$/u';
     const TOKEN = '/^[a-zA-Z0-9]+$/';
     const COMMA_SPLIT = '/\s*,\s*/';
+    const TRACE_LIST = '/#(\d+) .+/';
 }
