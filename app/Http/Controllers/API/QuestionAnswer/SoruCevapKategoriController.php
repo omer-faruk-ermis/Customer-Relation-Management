@@ -69,9 +69,9 @@ class SoruCevapKategoriController extends Controller
      */
     public function update(UpdateQuestionAnswerCategoryRequest $request, string $id): QuestionAnswerCategoryResource
     {
-        $questionAnswerCategorY = $this->questionAnswerCategoryService->update($request, $id);
+        $questionAnswerCategory = $this->questionAnswerCategoryService->update($request, $id);
 
-        return new QuestionAnswerCategoryResource($questionAnswerCategorY, __('messages.' . self::class . '.UPDATE'));
+        return new QuestionAnswerCategoryResource($questionAnswerCategory, __('messages.' . self::class . '.UPDATE'));
     }
 
     /**

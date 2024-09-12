@@ -184,7 +184,10 @@ return [
     ],
 
     KonuBilgiController::class => [
-        'INDEX' => 'Konu listesi',
+        'INDEX'   => 'Konu listesi',
+        'CREATE'  => 'Konu bilgi oluşturuldu.',
+        'UPDATE'  => 'Konu bilgi güncellendi.',
+        'DESTROY' => 'Konu bilgi silindi.',
     ],
 
     KonuBilgiKullanimYeriController::class => [

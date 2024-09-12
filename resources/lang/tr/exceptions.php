@@ -43,6 +43,7 @@ use App\Exceptions\Staff\StaffGroupAuthorizationMatchNotFoundException;
 use App\Exceptions\Staff\StaffGroupMatchAlreadyHaveException;
 use App\Exceptions\Staff\StaffGroupMatchNotFoundException;
 use App\Exceptions\Staff\StaffGroupNotFoundException;
+use App\Exceptions\Subject\SubjectInformationNotFoundException;
 use App\Exceptions\Token\InvalidTokenException;
 use App\Exceptions\Token\InvalidTokenFormatException;
 use App\Exceptions\Url\HaveAlreadyUrlDefinitionException;
@@ -104,5 +105,6 @@ return [
     HaveAlreadyEmployeeException::class                         => 'Girilen mail ile kayıtlı personel kaydı zaten mevcut!',
     EmployeeSipNotFoundException::class                         => 'Personel dahili numarası bulunamadı!',
     EmployeeNotFoundException::class                            => 'Personel kaydı bulunamadı!',
+    SubjectInformationNotFoundException::class                  => 'Konu bilgi kaydı bulunamadı!',
 
 ];

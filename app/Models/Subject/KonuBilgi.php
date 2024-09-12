@@ -43,6 +43,20 @@ class KonuBilgi extends AbstractModel
 
     use RecorderTrait;
 
+    protected $fillable = [
+        'ad',
+        'aciklama',
+        'tip',
+        'kullanim_yeri',
+        'kullanici_tipi',
+        'ust_id',
+        'durum',
+        'kullanim_durum',
+        'kayit_id',
+        'kayit_ip',
+        'kayit_tar'
+    ];
+
     /**
      * @return hasOne
      */

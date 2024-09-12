@@ -134,7 +134,10 @@ Route::group(['middleware' => 'auth_with_token'], function () {
     // Subject
     Route::prefix('subject')->group(function () {
         Route::get('/', [KonuBilgiController::class, 'index']);
+        Route::post('/', [KonuBilgiController::class, 'store']);
         Route::get('/use_place', [KonuBilgiKullanimYeriController::class, 'index']);
+        Route::put('/{id}', [KonuBilgiController::class, 'update']);
+        Route::delete('/{id}', [KonuBilgiController::class, 'destroy']);
     });
 
     // Module

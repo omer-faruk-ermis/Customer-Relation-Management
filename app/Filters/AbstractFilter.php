@@ -19,9 +19,14 @@ abstract class AbstractFilter
     public static function apply($query, $filter)
     {
         foreach ($filter as $field => $value) {
+            if ($value == '*') {
+                return $query;
+            }
+
             if (is_null($value)) {
                 continue;
             }
+
             (new static())->applyFilter($query, $field, $value);
         }
 
