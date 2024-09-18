@@ -3,8 +3,6 @@
 namespace App\Http\Resources\Subject;
 
 use App\Http\Resources\AbstractResource;
-use App\Http\Resources\Employee\EmployeeBasicResource;
-use App\Utils\Security;
 
 /**
  * Class SubjectInformationTypeResource
@@ -23,7 +21,7 @@ class SubjectInformationTypeResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'    => Security::encrypt($this->tipid),
+            'order' => $this->tipid,
             'color' => $this->color,
         ];
     }

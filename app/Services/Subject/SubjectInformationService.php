@@ -6,7 +6,6 @@ use App\Enums\DefaultConstant;
 use App\Enums\Status;
 use App\Exceptions\Subject\SubjectInformationNotFoundException;
 use App\Models\Subject\KonuBilgi;
-use App\Models\Subject\KonuBilgiTip;
 use App\Services\AbstractService;
 use App\Utils\DateUtil;
 use App\Utils\Security;
@@ -29,7 +28,6 @@ class SubjectInformationService extends AbstractService
     public function index(Request $request): Collection
     {
         return KonuBilgi::with(['type', 'recorder', 'subSubject'])
-                        ->where('kullanim_durum', '=', Status::ACTIVE)
                         ->where('kullanim_yeri', '=', $request->input('use_place_id'))
                         ->where('ust_id', '=', DefaultConstant::PARENT)
                         ->where(function ($query) use ($request) {
@@ -88,8 +86,9 @@ class SubjectInformationService extends AbstractService
         }
 
         $subjectInformation->update([
-                                        'ad'       => $request->input('name', $subjectInformation->ad),
-                                        'aciklama' => $request->input('description', $subjectInformation->aciklama),
+                                        'ad'             => $request->input('name', $subjectInformation->ad),
+                                        'aciklama'       => $request->input('description', $subjectInformation->aciklama),
+                                        'kullanim_durum' => $request->input('use_state', $subjectInformation->kullanim_durum),
 
                                         'kullanim_yeri'  => $request->input('use_place_id', $subjectInformation->kullanim_yeri),
                                         'kullanici_tipi' => $request->input('user_type_ids', $subjectInformation->kullanici_tipi),

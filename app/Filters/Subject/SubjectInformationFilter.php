@@ -10,6 +10,7 @@ class SubjectInformationFilter extends AbstractFilter
     {
         return [
             'name' => Name::class,
+            'use_state' => UseState::class,
         ];
     }
 }
