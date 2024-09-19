@@ -27,18 +27,15 @@ class SubjectInformationService extends AbstractService
      */
     public function index(Request $request): Collection
     {
-        return KonuBilgi::with(['type', 'recorder', 'subSubject'])
+        return KonuBilgi::with([
+                                   'type',
+                                   'recorder',
+                                   'subSubject' => function ($q) use ($request) {
+                                       $q->filter($request->all());
+                                   }])
+                        ->filter($request->all())
                         ->where('kullanim_yeri', '=', $request->input('use_place_id'))
                         ->where('ust_id', '=', DefaultConstant::PARENT)
-                        ->where(function ($query) use ($request) {
-                            $userType = $request->input('user_type');
-                            $query
-                                ->where('kullanici_tipi', 'LIKE', '%,' . $userType . ',%')
-                                ->orWhere('kullanici_tipi', 'LIKE', $userType . ',%')
-                                ->orWhere('kullanici_tipi', 'LIKE', '%,' . $userType)
-                                ->orWhere('kullanici_tipi', $userType)
-                                ->orWhereNull('kullanici_tipi');
-                        })
                         ->active()
                         ->orderBy('ad')
                         ->get();

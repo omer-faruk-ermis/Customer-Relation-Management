@@ -6,6 +6,8 @@ class Name
 {
     public function apply($query, $value): void
     {
-        $query->whereLike('name', $value);
+        $query->whereHas('subSubject', function ($qq) use ($value) {
+            $qq->whereLike('ad', $value);
+        });
     }
 }

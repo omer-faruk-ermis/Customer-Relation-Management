@@ -71,7 +71,12 @@ class KonuBilgi extends AbstractModel
     public function subSubject(): hasMany
     {
         return $this->hasMany(KonuBilgi::class, 'ust_id', 'id')
-                    ->with('subSubject','type')
+                    ->with([
+                               'subSubject' => function ($q) {
+                                   $q->filter(request()->all());
+                               },
+                               'type'
+                           ])
                     ->active()
                     ->where('kullanim_durum', '=', Status::ACTIVE);
     }

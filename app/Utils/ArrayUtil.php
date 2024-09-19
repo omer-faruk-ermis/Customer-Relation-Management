@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Enums\RegexPattern;
+use App\Exceptions\InvalidParameterException;
 use Illuminate\Support\Arr;
 
 /**
@@ -35,6 +36,28 @@ final class ArrayUtil
         }
 
         return Arr::wrap($value);
+    }
+
+    /**
+     * @param $value
+     *
+     * @return array|null
+     * @throws InvalidParameterException
+     */
+    public static function numericalCommaToArray($value): array|null
+    {
+        if (empty($value)) {
+            return null;
+        }
+
+        if (str_contains($value, ',')) {
+            return Arr::wrap(array_filter(array_map('trim', explode(',', $value))));
+        }
+        else if(is_numeric($value)) {
+            return Arr::wrap($value);
+        }
+
+        throw new InvalidParameterException();
     }
 
     /**

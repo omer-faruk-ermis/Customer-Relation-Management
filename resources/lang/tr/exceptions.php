@@ -25,6 +25,7 @@ use App\Exceptions\Employee\EmployeeSipNotFoundException;
 use App\Exceptions\Employee\HaveAlreadyEmployeeException;
 use App\Exceptions\ForbiddenException;
 use App\Exceptions\InvalidEnumException;
+use App\Exceptions\InvalidParameterException;
 use App\Exceptions\Log\LogReasonRecordNotFoundException;
 use App\Exceptions\Log\LogRecordNotFoundException;
 use App\Exceptions\Log\MeetingOperatorLogNotFoundException;
@@ -76,6 +77,7 @@ return [
     EmployeeAuthorizationAlreadyHaveException::class            => 'Personel yetki kaydı zaten mevcut!',
     RelationHaveException::class                                => 'Alt ilişki kaydı mevcut! İşlem yapılamaz.',
     InvalidEnumException::class                                 => 'Enum Tipi Uygun Değildir!',
+    InvalidParameterException::class                            => 'Parametre Uygun Değildir!',
     ForbiddenException::class                                   => 'Forbidden!',
     WebUserNotFoundException::class                             => 'Müşteri kaydı bulunamadı!',
     WebPortalAuthorizationPermissionNotFoundException::class    => 'Web Portal izni bulunamadı!',

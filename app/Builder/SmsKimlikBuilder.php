@@ -42,6 +42,8 @@ class SmsKimlikBuilder
         $smsKimlik = Arr::add($smsKimlik, 'user_authenticated', 540);
 
         $smsKimlik = Arr::add($smsKimlik, 'authorizations', $authorization->getAuthorizations());
+        // TODO: authorizations kaldırılacak, process_authorizations, module altına geçirilecek.
+
         $smsKimlik = Arr::add($smsKimlik, 'service_authorizations', $serviceAuthorizations);
         $smsKimlik = Arr::add($smsKimlik, 'yetki_string', $authorizationWithPluck->getAuthorizationString());
         $smsKimlik = Arr::add($smsKimlik, 'module', $modules);
