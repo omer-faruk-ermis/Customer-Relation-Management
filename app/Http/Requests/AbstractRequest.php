@@ -74,13 +74,36 @@ abstract class AbstractRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator): mixed
     {
+        $errors = $validator->errors()->toArray();
+
+        $detailedErrors = [];
+        foreach ($errors as $field => $messages) {
+            foreach ($messages as $message) {
+                $attributeName = __(sprintf('validation.attributes.%s', $field));
+                if (str_contains($message, 'required')) {
+                    $translatedMessage = __('validation.required', ['attribute' => $attributeName]);
+                } elseif (str_contains($message, 'boolean')) {
+                    $translatedMessage = __('validation.boolean', ['attribute' => $attributeName]);
+                } else {
+                    $translatedMessage = $message;
+                }
+
+                $detailedErrors[] = [
+                    'field'   => $field,
+                    'message' => $translatedMessage,
+                ];
+            }
+        }
+
         throw new HttpResponseException(
             response()->json(
                 [
                     'success' => false,
                     'message' => 'Validation error',
-                    'errors'  => $validator->errors(),
-                ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY)
+                    'errors'  => $detailedErrors,
+                ],
+                JsonResponse::HTTP_UNPROCESSABLE_ENTITY
+            )
         );
     }
 }

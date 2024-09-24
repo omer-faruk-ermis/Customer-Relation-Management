@@ -13,13 +13,13 @@ class StoreEmployeeRequest extends AbstractRequest
         $storeEmployeeSipRules = (new StoreEmployeeSipRequest())->rules();
 
         return array_merge([
-                               'full_name'        => 'required|string',
-                               'password'         => 'required|string',
+                               'full_name'        => 'required|string|min:3|max:255',
+                               'password'         => 'required|string|min:6|max:255',
                                'login_permission' => 'required|boolean',
-                               'unit_id'          => 'required|string',
+                               'unit_id'          => 'required|string|max:255',
                                'currency_limit'   => 'required|numeric',
                                'mobile_phone'     => 'required|integer',
-                               'email'            => 'required|email',
+                               'email'            => 'required|email|max:255',
                                'home_phone'       => 'sometimes|integer',
                            ],
                            $storeEmployeeSipRules);

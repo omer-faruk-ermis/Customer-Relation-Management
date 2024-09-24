@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\WebPortal;
 
+use App\Enums\Status;
 use App\Http\Resources\AbstractCollection;
 use App\Services\Authorization\AuthorizationService;
 use App\Utils\Security;
@@ -26,6 +27,7 @@ class WebPortalAuthorizationPageCollection extends AbstractCollection
             $authorizatedIds =
                 (new AuthorizationService(Security::decrypt($request->input('employee_id'))))
                     ->authorization()
+                    ->where('main_authorization_state', '=', Status::ACTIVE)
                     ->pluck('id')
                     ->toArray();
 
