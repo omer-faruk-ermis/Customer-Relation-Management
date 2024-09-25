@@ -56,8 +56,8 @@ class AuthorizationService
     public function getAuthorizationsGrouped(): array
     {
         return [
-            AuthorizationTypeName::SMS_MANAGEMENT    => $this->mergeAuthorization($this->smsManagement(), AuthorizationType::SMS_MANAGEMENT),
-            AuthorizationTypeName::BLUE_SCREEN       => $this->mergeAuthorization($this->blueScreen(), AuthorizationType::BLUE_SCREEN),
+            AuthorizationTypeName::SMS_MANAGEMENT    => $this->mergeAuthorization($this->smsManagement(), AuthorizationType::SMS_MANAGEMENT)[AuthorizationType::SMS_MANAGEMENT],
+            AuthorizationTypeName::BLUE_SCREEN       => $this->mergeAuthorization($this->smsManagement(), AuthorizationType::SMS_MANAGEMENT)[AuthorizationType::BLUE_SCREEN],
             AuthorizationTypeName::AUTHORIZATION     => $this->mergeAuthorization($this->authorization(), AuthorizationType::AUTHORIZATION),
             AuthorizationTypeName::SUBSCRIBER_BILLET => $this->mergeAuthorization($this->subscriberBillet(), AuthorizationType::SUBSCRIBER_BILLET),
             self::USER_AUTHORIZATION                 => $this->userAuthorization(),
@@ -72,7 +72,7 @@ class AuthorizationService
         return array_merge(
             $this->mergeAuthorization($this->smsManagement(), AuthorizationType::SMS_MANAGEMENT),
             [
-                AuthorizationTypeName::BLUE_SCREEN       => $this->mergeAuthorization($this->blueScreen(), AuthorizationType::BLUE_SCREEN),
+                //    AuthorizationTypeName::BLUE_SCREEN       => $this->mergeAuthorization($this->blueScreen(), AuthorizationType::BLUE_SCREEN),
                 AuthorizationTypeName::SUBSCRIBER_BILLET => $this->mergeAuthorization($this->subscriberBillet(), AuthorizationType::SUBSCRIBER_BILLET),
                 self::USER_AUTHORIZATION                 => $this->userAuthorization(),
             ]
@@ -191,7 +191,14 @@ class AuthorizationService
         if (AuthorizationType::SMS_MANAGEMENT == $type) {
             $employeeGroup = $this->authorizationMatch($this->smsManagement($employeeGroups), $authorizations);
             if ($this->pluck) {
-                return $employeeGroup->pluck('id');
+                $blueScreen = $employeeGroup->filter(function ($employee) {
+                    return $employee['module_id'] == 11;
+                });
+
+                return [
+                    AuthorizationType::SMS_MANAGEMENT => $employeeGroup->pluck('id'),
+                    AuthorizationType::BLUE_SCREEN    => $blueScreen->pluck('id')
+                ];
             }
 
             return $this->addProcessAuthorization($employeeGroup->groupBy('menu')->toArray(), $this->getProcessAuthorizations(AuthorizationTypeTrName::SMS_MANAGEMENT));
@@ -239,12 +246,18 @@ class AuthorizationService
         $existingIds = $employeeGroup->pluck('id')->all();
 
         foreach ($authorizations as $authorization) {
-            if (!in_array($authorization['id'], $existingIds) && $authorization['main_authorization_state'] == Status::ACTIVE) {
+            $authorizationId = Arr::get($authorization, 'id');
+            $authorizationState = Arr::get($authorization, 'main_authorization_state');
+
+            if (!in_array($authorizationId, $existingIds) && $authorizationState == Status::ACTIVE) {
                 $employeeGroup->push($authorization);
-                $existingIds[] = $authorization['id'];
-            } else if (in_array($authorization['id'], $existingIds) && $authorization['main_authorization_state'] == Status::PASSIVE) {
-                $employeeGroup = $employeeGroup->reject(function ($item) use ($authorization) {
-                    return $item['id'] == $authorization['id'];
+                $existingIds[] = $authorizationId;
+            } else if (in_array($authorizationId, $existingIds) && $authorizationState == Status::ACTIVE) {
+                // TODO:: PROBLEM VAR İSE BURADA VEYA BİR ALT SATIRDA MEVCUTTUR. KAYDEDİLİP SİLİNİYOR OLABİLİR.
+                continue;
+            } else if (in_array($authorizationId, $existingIds) && $authorizationState == Status::PASSIVE) {
+                $employeeGroup = $employeeGroup->reject(function ($item) use ($authorizationId) {
+                    return $item['id'] == $authorizationId;
                 });
             }
         }
@@ -328,11 +341,10 @@ class AuthorizationService
 
     /**
      * @param array  $ids
-     * @param bool   $fullList
      *
      * @return Collection
      */
-    public function smsManagement(array $ids = [], bool $fullList = false): Collection
+    public function smsManagement(array $ids = []): Collection
     {
         $urlTanim = UrlTanim::getModel();
         $menuTanim = MenuTanim::getModel();
@@ -346,25 +358,24 @@ class AuthorizationService
             $urlTanim->qualifyColumn('icon'),
             $urlTanim->qualifyColumn('color'),
             $menuTanim->qualifyColumn('menu'),
+            $menuTanim->qualifyColumn('module_id'),
         ];
 
-        return UrlTanim::select(!$fullList && empty($ids)
+        return UrlTanim::select(empty($ids)
                                     ? array_merge($select, [$smsKimlikYetki->qualifyColumn('durum') . ' as main_authorization_state'])
                                     : $select)
                        ->join($menuTanim->getTable(),
                               $urlTanim->qualifyColumn('ust_id'),
                               '=',
                               $menuTanim->getQualifiedKeyName())
-                       ->when(!$fullList, function ($q) use ($smsKimlikYetki, $urlTanim, $ids) {
-                           $q->when(empty($ids), function ($qq) use ($smsKimlikYetki, $urlTanim) {
-                               $qq->join($smsKimlikYetki->getTable(),
-                                         $urlTanim->getQualifiedKeyName(),
-                                         '=',
-                                         $smsKimlikYetki->qualifyColumn('url_id'))
-                                  ->where($smsKimlikYetki->qualifyColumn('sms_kimlik'), '=', $this->id);
-                           }, function ($qq) use ($ids, $urlTanim) {
-                               $qq->whereIn($urlTanim->getQualifiedKeyName(), $ids);
-                           });
+                       ->when(empty($ids), function ($qq) use ($smsKimlikYetki, $urlTanim) {
+                           $qq->join($smsKimlikYetki->getTable(),
+                                     $urlTanim->getQualifiedKeyName(),
+                                     '=',
+                                     $smsKimlikYetki->qualifyColumn('url_id'))
+                              ->where($smsKimlikYetki->qualifyColumn('sms_kimlik'), '=', $this->id);
+                       }, function ($qq) use ($ids, $urlTanim) {
+                           $qq->whereIn($urlTanim->getQualifiedKeyName(), $ids);
                        })
                        ->where($urlTanim->qualifyColumn('durum'), '=', Status::ACTIVE)
                        ->where($menuTanim->qualifyColumn('durum'), '=', Status::ACTIVE)
@@ -374,11 +385,10 @@ class AuthorizationService
 
     /**
      * @param array  $ids
-     * @param bool   $fullList
      *
      * @return Collection
      */
-    public function blueScreen(array $ids = [], bool $fullList = false): Collection
+    public function blueScreen(array $ids = []): Collection
     {
         $detailMenu = DetayMenu::getModel();
         $detailMenuUser = DetayMenuUser::getModel();
@@ -390,19 +400,17 @@ class AuthorizationService
             $detailMenu->qualifyColumn('menu_url') . ' as url',
         ];
 
-        return DetayMenu::select(!$fullList && empty($ids)
+        return DetayMenu::select(empty($ids)
                                      ? array_merge($select, [$detailMenuUser->qualifyColumn('durum') . ' as main_authorization_state'])
                                      : $select)
-                        ->when(!$fullList, function ($q) use ($detailMenuUser, $detailMenu, $ids) {
-                            $q->when(empty($ids), function ($qq) use ($detailMenuUser, $detailMenu) {
-                                $qq->join($detailMenuUser->getTable(),
-                                          $detailMenu->getQualifiedKeyName(),
-                                          '=',
-                                          $detailMenuUser->qualifyColumn('menu_id'))
-                                   ->where($detailMenuUser->qualifyColumn('userid'), '=', $this->id);
-                            }, function ($qq) use ($ids, $detailMenu) {
-                                $qq->whereIn($detailMenu->getQualifiedKeyName(), $ids);
-                            });
+                        ->when(empty($ids), function ($qq) use ($detailMenuUser, $detailMenu) {
+                            $qq->join($detailMenuUser->getTable(),
+                                      $detailMenu->getQualifiedKeyName(),
+                                      '=',
+                                      $detailMenuUser->qualifyColumn('menu_id'))
+                               ->where($detailMenuUser->qualifyColumn('userid'), '=', $this->id);
+                        }, function ($qq) use ($ids, $detailMenu) {
+                            $qq->whereIn($detailMenu->getQualifiedKeyName(), $ids);
                         })
                         ->where($detailMenu->qualifyColumn('durum'), '=', Status::ACTIVE)
                         ->get();
@@ -410,11 +418,10 @@ class AuthorizationService
 
     /**
      * @param array  $ids
-     * @param bool   $fullList
      *
      * @return Collection
      */
-    public function authorization(array $ids = [], bool $fullList = false): Collection
+    public function authorization(array $ids = []): Collection
     {
         $webPortalYetki = WebPortalYetki::getModel();
         $webPortalYetkiIzin = WebPortalYetkiIzin::getModel();
@@ -427,20 +434,18 @@ class AuthorizationService
             $webPortalYetki->qualifyColumn('yetki_detay') . ' as menu',
         ];
 
-        return WebPortalYetki::select(!$fullList && empty($ids)
+        return WebPortalYetki::select(empty($ids)
                                           ? array_merge($select, [$webPortalYetkiIzin->qualifyColumn('durum') . ' as main_authorization_state'])
                                           : $select)
-                             ->when(!$fullList, function ($q) use ($webPortalYetkiIzin, $webPortalYetki, $ids) {
-                                 $q->when(empty($ids), function ($qq) use ($webPortalYetkiIzin, $webPortalYetki) {
-                                     $qq->join($webPortalYetkiIzin->getTable(),
-                                               $webPortalYetki->getQualifiedKeyName(),
-                                               '=',
-                                               $webPortalYetkiIzin->qualifyColumn('yetki_id'))
-                                        ->where($webPortalYetkiIzin->qualifyColumn('userid'), '=', $this->id)
-                                        ->where($webPortalYetkiIzin->qualifyColumn('usermi'), '=', AuthorizationUserType::AGENT);
-                                 }, function ($qq) use ($ids, $webPortalYetki) {
-                                     $qq->whereIn($webPortalYetki->getQualifiedKeyName(), $ids);
-                                 });
+                             ->when(empty($ids), function ($qq) use ($webPortalYetkiIzin, $webPortalYetki) {
+                                 $qq->join($webPortalYetkiIzin->getTable(),
+                                           $webPortalYetki->getQualifiedKeyName(),
+                                           '=',
+                                           $webPortalYetkiIzin->qualifyColumn('yetki_id'))
+                                    ->where($webPortalYetkiIzin->qualifyColumn('userid'), '=', $this->id)
+                                    ->where($webPortalYetkiIzin->qualifyColumn('usermi'), '=', AuthorizationUserType::AGENT);
+                             }, function ($qq) use ($ids, $webPortalYetki) {
+                                 $qq->whereIn($webPortalYetki->getQualifiedKeyName(), $ids);
                              })
                              ->where($webPortalYetki->qualifyColumn('durum'), '=', Status::ACTIVE)
                              ->get();
