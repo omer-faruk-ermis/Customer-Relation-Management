@@ -192,7 +192,7 @@ class AuthorizationService
             $employeeGroup = $this->authorizationMatch($this->smsManagement($employeeGroups), $authorizations);
             if ($this->pluck) {
                 $blueScreen = $employeeGroup->filter(function ($employee) {
-                    return $employee['module_id'] == 11;
+                    return $employee['module_id'] == 12;
                 });
 
                 return [
