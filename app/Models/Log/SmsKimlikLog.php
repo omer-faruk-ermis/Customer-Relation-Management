@@ -6,6 +6,7 @@ use App\Filters\SmsKimlikLog\SmsKimlikLogFilter;
 use App\Models\AbstractModel;
 use App\Models\Sebep\SebepIstenecekler;
 use App\Models\SmsKimlik\SmsKimlik;
+use App\Models\WebUser\WebUser;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @version April 19, 2024, 2:21 pm UTC
  *
  * @property int            $id
- * @property int            $user_id
+ * @property int            $userid
  * @property string         $tabloadi
  * @property string         $alanadi
  * @property int            $kayitid
@@ -34,6 +35,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property bool           $bakildi
  * @property int            $ekuserid
  *
+ * @property-read WebUser   $webUser
  * @property-read SebepLog  $reasonLog
  * @property-read SmsKimlik $employee
  *
@@ -66,6 +68,14 @@ class SmsKimlikLog extends AbstractModel
     public function reasonWanted(): hasOne
     {
         return $this->hasOne(SebepIstenecekler::class, 'tablo_adi', 'tabloadi');
+    }
+
+    /**
+     * @return hasOne
+     */
+    public function webUser(): hasOne
+    {
+        return $this->hasOne(WebUser::class, 'id', 'userid');
     }
 
     /**

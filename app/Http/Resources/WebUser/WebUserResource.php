@@ -3,7 +3,6 @@
 namespace App\Http\Resources\WebUser;
 
 use App\Http\Resources\AbstractResource;
-use App\Http\Resources\Employee\EmployeeResource;
 use App\Utils\Security;
 
 /**

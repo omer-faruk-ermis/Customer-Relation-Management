@@ -26,6 +26,7 @@ class LogService extends AbstractService
         $logs = SmsKimlikLog::with([
                                        'employee',
                                        'reasonLog',
+                                       'webUser',
                                        'reasonLog.reason',
                                        'reasonWanted'
                                    ])
