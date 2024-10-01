@@ -10,4 +10,5 @@ class Model extends AbstractEnum
     const CALL = 'Cagri';
     const STAFF_GROUP = 'PersonelGruplari';
     const URL_DEFINITION = 'UrlTanim';
+    const REASON = 'Sebepler';
 }

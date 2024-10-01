@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Reason\StoreReasonRequest;
 use App\Http\Requests\Reason\UpdateReasonRequest;
 use App\Http\Requests\Reason\IndexReasonRequest;
+use App\Http\Resources\PaginationResource;
 use App\Http\Resources\Reason\ReasonCollection;
 use App\Http\Resources\Reason\ReasonResource;
 use App\Http\Resources\SuccessResource;
@@ -38,14 +39,16 @@ class SebeplerController extends Controller
     /**
      * @param IndexReasonRequest  $request
      *
-     * @return ReasonCollection
+     * @return PaginationResource|ReasonCollection
      * @throws Exception
      */
-    public function index(IndexReasonRequest $request): ReasonCollection
+    public function index(IndexReasonRequest $request): PaginationResource|ReasonCollection
     {
         $reasons = $this->reasonService->index($request);
 
-        return new ReasonCollection($reasons, __('messages.' . self::class . '.INDEX'));
+        return $request->input('page')
+            ? new PaginationResource($reasons, __('messages.' . self::class . '.INDEX'))
+            : new ReasonCollection($reasons, __('messages.' . self::class . '.INDEX'));
     }
 
     /**

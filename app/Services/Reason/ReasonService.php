@@ -9,6 +9,7 @@ use App\Services\AbstractService;
 use App\Utils\Security;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 /**
@@ -21,15 +22,17 @@ class ReasonService extends AbstractService
     /**
      * @param Request  $request
      *
-     * @return Collection
+     * @return Collection|LengthAwarePaginator
      * @throws Exception
      */
-    public function index(Request $request): Collection
+    public function index(Request $request): Collection|LengthAwarePaginator
     {
-        return Sebepler::with('reasonWanted')
-                       ->filter($request->all())
-                       ->limit(DefaultConstant::SEARCH_LIST_LIMIT)
-                       ->get();
+        $reasons = Sebepler::with('reasonWanted')
+                           ->filter($request->all());
+
+        return $request->input('page')
+            ? $reasons->paginate(DefaultConstant::PAGINATE)
+            : $reasons->get();
     }
 
     /**
