@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string                 $kaydeden_ip
  * @property string                 $kayit_tarih
  *
- * @property-read SoruCevapKategori $employee
+ * @property-read SoruCevapKategori $category
  *
  * @method static Builder|SoruCevap filter(array $filters = [])
  */

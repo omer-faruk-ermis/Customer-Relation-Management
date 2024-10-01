@@ -8,7 +8,7 @@ use App\Models\AbstractModel;
  * Class KonuBilgiKullanimYeri
  *
  * @package App\Models\Subject
- * @version June 25, 2024, 9:25 pm UTC
+ * @version June 25, 2024, 9:25 am UTC
  *
  * @property int    $id
  * @property string $adi

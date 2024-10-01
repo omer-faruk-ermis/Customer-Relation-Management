@@ -59,6 +59,12 @@ Route::group(['middleware' => 'auth_with_token'], function () {
 
     // Reason
     Route::get('reasons', [SebeplerController::class, 'index']);
+
+    Route::prefix('reason')->group(function () {
+        Route::get('/', [SebeplerController::class, 'index']);
+        Route::post('/', [SebeplerController::class, 'store']);
+        Route::put('/{id}', [SebeplerController::class, 'update']);
+    });
     Route::get('reason_wanted', [SebepIsteneceklerController::class, 'index']);
 
     // Operator

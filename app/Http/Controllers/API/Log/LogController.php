@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API\Log;
 use App\Exceptions\ForbiddenException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Log\IndexLogRequest;
-use App\Http\Requests\Reason\UpdateReasonRequest;
+use App\Http\Requests\Reason\UpdateReasonLogRequest;
 use App\Http\Resources\Log\ReasonLogResource;
 use App\Http\Resources\PaginationResource;
 use App\Services\Log\LogService;
@@ -45,12 +45,12 @@ class LogController extends Controller
     }
 
     /**
-     * @param UpdateReasonRequest  $request
+     * @param UpdateReasonLogRequest  $request
      *
      * @return ReasonLogResource
      * @throws Exception
      */
-    public function updateReasonLog(UpdateReasonRequest $request): ReasonLogResource
+    public function updateReasonLog(UpdateReasonLogRequest $request): ReasonLogResource
     {
         $reasonLogs = $this->logService->updateReasonLog($request);
 

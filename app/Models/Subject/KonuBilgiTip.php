@@ -8,7 +8,7 @@ use App\Models\AbstractModel;
  * Class KonuBilgiTip
  *
  * @package App\Models\Subject
- * @version June 25, 2024, 11:29 pm UTC
+ * @version June 25, 2024, 11:29 am UTC
  *
  * @property int    $tipid
  * @property string $color

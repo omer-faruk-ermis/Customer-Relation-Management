@@ -7,7 +7,7 @@ class DefaultConstant extends AbstractEnum
     const DEFAULT_DATETIME_FORMAT = 'd.m.Y H:i:s';
     const DEFAULT_DATE_FORMAT = 'd.m.Y';
     const DATE_YMD_LINK_FORMAT = 'Y/m/d';
-    const SEARCH_LIST_LIMIT = 1000;
+    const SEARCH_LIST_LIMIT = 100;
     const PAGINATE = 25;
     const CACHE_ONE_DAY = 86400;
     const MIN_PASSWORD_LENGTH = 8;
@@ -23,4 +23,5 @@ class DefaultConstant extends AbstractEnum
     const PARENT = 0;
     const AUTHORIZATION_GROUP = 'Default Group';
     const CUSTOMER_AGENT_MANAGEMENT = 'Müşteri Temsilci Yönetimi';
+    const HAVE_NOT_REASON_WANTED = 0;
 }

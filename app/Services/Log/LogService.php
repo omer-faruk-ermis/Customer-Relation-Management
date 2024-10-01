@@ -54,16 +54,16 @@ class LogService extends AbstractService
      */
     public function updateReasonLog(Request $request): SebepLog
     {
-        $sebepLog = SebepLog::where('logid', '=', $request->input('log_id'))->first();
-        if (empty($sebepLog)) {
+        $reasonLog = SebepLog::where('logid', '=', $request->input('log_id'))->first();
+        if (empty($reasonLog)) {
             throw new LogReasonRecordNotFoundException();
         }
 
-        $sebepLog->update([
-                              'sebep_id' => $request->input('reason_id', $sebepLog->sebep_id),
-                              'aciklama' => $request->input('description', $sebepLog->aciklama),
+        $reasonLog->update([
+                              'sebep_id' => $request->input('reason_id', $reasonLog->sebep_id),
+                              'aciklama' => $request->input('description', $reasonLog->aciklama),
                           ]);
 
-        return $sebepLog;
+        return $reasonLog;
     }
 }

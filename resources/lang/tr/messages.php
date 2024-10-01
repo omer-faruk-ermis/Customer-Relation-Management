@@ -151,7 +151,9 @@ return [
     ],
 
     SebeplerController::class => [
-        'INDEX' => 'Sebepler listesi',
+        'INDEX'  => 'Sebepler listesi',
+        'CREATE' => 'Sebep oluşturuldu.',
+        'UPDATE' => 'Sebep güncellendi.',
     ],
 
     SebepIstenecekler::class => [

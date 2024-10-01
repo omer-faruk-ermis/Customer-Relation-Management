@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * Class KonuBilgi
  *
  * @package App\Models\Subject
- * @version June 25, 2024, 9:21 pm UTC
+ * @version June 25, 2024, 9:21 am UTC
  *
  * @property int               $id
  * @property string            $ad

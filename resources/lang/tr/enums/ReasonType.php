@@ -2,9 +2,14 @@
 
 return [
 
-    'meeting_detail' => [
-        'label'       => 'Görüşme Detayları',
-        'description' => 'Görüşme detayları değeri',
+    'general' => [
+        'label'       => 'Genel',
+        'description' => 'Genel Sebep',
+    ],
+
+    'functional' => [
+        'label'       => 'İşlemsel',
+        'description' => 'İşlemsel Sebep',
     ],
 
 ];

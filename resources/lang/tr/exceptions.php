@@ -36,6 +36,7 @@ use App\Exceptions\Module\ModuleAlreadyHaveException;
 use App\Exceptions\Module\ModuleNotFoundException;
 use App\Exceptions\QuestionAnswer\QuestionAnswerCategoryNotFoundException;
 use App\Exceptions\QuestionAnswer\QuestionAnswerNotFoundException;
+use App\Exceptions\Reason\ReasonNotFoundException;
 use App\Exceptions\RelationHaveException;
 use App\Exceptions\Sms\OtpMessageNotSendException;
 use App\Exceptions\Sms\SmsIdentityNotVerifiedException;
@@ -108,5 +109,6 @@ return [
     EmployeeSipNotFoundException::class                         => 'Personel dahili numarası bulunamadı!',
     EmployeeNotFoundException::class                            => 'Personel kaydı bulunamadı!',
     SubjectInformationNotFoundException::class                  => 'Konu bilgi kaydı bulunamadı!',
+    ReasonNotFoundException::class                              => 'Sebep kaydı bulunamadı!',
 
 ];

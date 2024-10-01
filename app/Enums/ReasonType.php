@@ -4,5 +4,6 @@ namespace App\Enums;
 
 class ReasonType extends AbstractEnum
 {
-    public const MEETING_DETAIL = 67;
+    public const GENERAL = 0;
+    public const FUNCTIONAL = '*';
 }
