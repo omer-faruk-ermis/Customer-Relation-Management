@@ -11,4 +11,5 @@ class Model extends AbstractEnum
     const STAFF_GROUP = 'PersonelGruplari';
     const URL_DEFINITION = 'UrlTanim';
     const REASON = 'Sebepler';
+    const CUSTOMER_PRIORITY_MATCH = 'VipOzelMusteriEslestir';
 }

@@ -25,6 +25,7 @@ use App\Http\Controllers\API\Staff\PersonelGrupYetkiEslestirController;
 use App\Http\Controllers\API\Subject\KonuBilgiController;
 use App\Http\Controllers\API\Subject\KonuBilgiKullanimYeriController;
 use App\Http\Controllers\API\Subscriber\AboneKutukYetkiController;
+use App\Http\Controllers\API\Subscriber\VipOzelMusteriEslestirController;
 use App\Http\Controllers\API\Token\DocSignatureController;
 use App\Http\Controllers\API\Url\UrlTanimController;
 use App\Http\Controllers\API\VoiceUser\VoiceUserController;
@@ -203,6 +204,13 @@ return [
         'PAGE' => [
             'INDEX' => 'Abone Kütük Sayfa listesi',
         ],
+    ],
+
+    VipOzelMusteriEslestirController::class => [
+        'INDEX'   => 'Vip ve Özel Müşteri Temsilcisi listesi',
+        'CREATE'  => 'Müşteri\'ye Vip veya Özel Müşteri Temsilcisi özelliği tanımlandı.',
+        'UPDATE'  => 'Özel Müşteri Temsilcisi güncellendi',
+        'DESTROY' => 'Müşteri\'den Vip veya Özel Müşteri Temsilcisi özelliği kaldırıldı.',
     ],
 
     DocSignatureController::class => [

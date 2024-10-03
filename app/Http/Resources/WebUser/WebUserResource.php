@@ -3,6 +3,7 @@
 namespace App\Http\Resources\WebUser;
 
 use App\Http\Resources\AbstractResource;
+use App\Http\Resources\Subscriber\SubscriberNoResource;
 use App\Utils\Security;
 
 /**
@@ -32,6 +33,7 @@ class WebUserResource extends AbstractResource
             'subscription_no'   => $this->abone_no,
             'subscription_type' => $this->abonetip,
             'corporation_name'  => $this->kurumadi,
+            'subscriber'        => SubscriberNoResource::collection($this->whenLoaded('subscriberNo')),
         ];
     }
 }

@@ -26,6 +26,7 @@ class EmployeeSipResource extends AbstractResource
             'sip'              => $this->sip_id,
             'employee_id'      => Security::encrypt($this->sms_kimlik),
             'not_send_message' => $this->mesajgitmesin,
+            'employee'         => EmployeeResource::make($this->whenLoaded('employee')),
         ];
     }
 }

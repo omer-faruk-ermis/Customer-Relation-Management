@@ -6,6 +6,7 @@ use App\Enums\Authorization\AuthorizationType;
 use App\Enums\Brand;
 use App\Enums\Call\CallDirection;
 use App\Enums\Call\PairStatus;
+use App\Enums\CustomerPriority;
 use App\Enums\MeetingTypeSpecies;
 use App\Enums\ReasonType;
 use App\Enums\Status;
@@ -30,6 +31,7 @@ class EnumFactory
         'meeting_type_species' => MeetingTypeSpecies::class,
         'reason_type'          => ReasonType::class,
         'authorization_type'   => AuthorizationType::class,
+        'customer_priority'    => CustomerPriority::class,
     ];
 
     /**

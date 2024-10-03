@@ -27,6 +27,7 @@ use App\Http\Controllers\API\Staff\PersonelGrupYetkiEslestirController;
 use App\Http\Controllers\API\Subject\KonuBilgiController;
 use App\Http\Controllers\API\Subject\KonuBilgiKullanimYeriController;
 use App\Http\Controllers\API\Subscriber\AboneKutukYetkiController;
+use App\Http\Controllers\API\Subscriber\VipOzelMusteriEslestirController;
 use App\Http\Controllers\API\Token\DocSignatureController;
 use App\Http\Controllers\API\Url\UrlTanimController;
 use App\Http\Controllers\API\VoiceUser\VoiceUserController;
@@ -144,6 +145,14 @@ Route::group(['middleware' => 'auth_with_token'], function () {
         Route::get('/use_place', [KonuBilgiKullanimYeriController::class, 'index']);
         Route::put('/{id}', [KonuBilgiController::class, 'update']);
         Route::delete('/{id}', [KonuBilgiController::class, 'destroy']);
+    });
+
+    // Vip Special Customer Match
+    Route::prefix('customer_priority')->group(function () {
+        Route::get('/', [VipOzelMusteriEslestirController::class, 'index']);
+        Route::post('/', [VipOzelMusteriEslestirController::class, 'store']);
+        Route::put('/{id}', [VipOzelMusteriEslestirController::class, 'update']);
+        Route::delete('/{id}', [VipOzelMusteriEslestirController::class, 'destroy']);
     });
 
     // Module

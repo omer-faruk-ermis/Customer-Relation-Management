@@ -46,6 +46,9 @@ use App\Exceptions\Staff\StaffGroupMatchAlreadyHaveException;
 use App\Exceptions\Staff\StaffGroupMatchNotFoundException;
 use App\Exceptions\Staff\StaffGroupNotFoundException;
 use App\Exceptions\Subject\SubjectInformationNotFoundException;
+use App\Exceptions\Subscriber\CustomerPriorityNotFoundException;
+use App\Exceptions\Subscriber\SpecialCustomerAlreadyHaveException;
+use App\Exceptions\Subscriber\SpecialCustomerNotFoundException;
 use App\Exceptions\Token\InvalidTokenException;
 use App\Exceptions\Token\InvalidTokenFormatException;
 use App\Exceptions\Url\HaveAlreadyUrlDefinitionException;
@@ -110,5 +113,8 @@ return [
     EmployeeNotFoundException::class                            => 'Personel kaydı bulunamadı!',
     SubjectInformationNotFoundException::class                  => 'Konu bilgi kaydı bulunamadı!',
     ReasonNotFoundException::class                              => 'Sebep kaydı bulunamadı!',
+    SpecialCustomerNotFoundException::class                     => 'Özel Müşteri Temsilci kaydı bulunamadı!',
+    CustomerPriorityNotFoundException::class                    => 'Özel Müşteri Temsilci veya Vip Müşteri kaydı bulunamadı!',
+    SpecialCustomerAlreadyHaveException::class                  => 'Özel Müşteri Temsilci kaydı zaten mevcut!',
 
 ];
