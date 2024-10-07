@@ -28,6 +28,7 @@ class CustomerPriorityResource extends AbstractResource
             'description' => $this->aciklama,
             'state'       => $this->durum,
             'date'        => $this->tarih,
+            'web_user_id' => $this->userid,
             'web_user'    => WebUserResource::make($this->whenLoaded('webUser')),
             'sip'         => EmployeeSipResource::collection($this->whenLoaded('sip')),
         ];
