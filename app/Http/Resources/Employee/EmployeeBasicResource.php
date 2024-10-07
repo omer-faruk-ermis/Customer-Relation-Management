@@ -32,7 +32,8 @@ class EmployeeBasicResource extends AbstractResource
         return [
             'id'         => $this->getKey(),
             'encrypt_id' => Security::encrypt($this->getKey()),
-            'full_name'  => $this->ad_soyad
+            'full_name'  => $this->ad_soyad,
+            'sip'        => $this?->sip?->first()->sip_id ?? null
         ];
     }
 }
