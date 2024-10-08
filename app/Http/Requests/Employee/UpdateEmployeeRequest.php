@@ -11,13 +11,13 @@ class UpdateEmployeeRequest extends AbstractRequest
     public function rules(): array
     {
         return [
-            'full_name'        => 'sometimes|string',
-            'login_permission' => 'sometimes|boolean',
+            'full_name'        => ['sometimes', 'string', ...$this->getEncryptRules()],
+            'login_permission' => 'required|boolean',
             'unit_id'          => 'sometimes|string',
             'currency_limit'   => 'sometimes|numeric',
-            'mobile_phone'     => 'sometimes|integer',
-            'email'            => 'sometimes|email',
-            'home_phone'       => 'sometimes|integer',
+            'mobile_phone'     => ['sometimes', 'string', ...$this->getEncryptRules()],
+            'email'            => ['sometimes', 'string', ...$this->getEncryptRules()],
+            'home_phone'       => ['sometimes', 'string', ...$this->getEncryptRules()],
         ];
     }
 }

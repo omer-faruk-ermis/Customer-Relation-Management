@@ -45,6 +45,7 @@ return [
     'ip'          => ':attribute geçerli bir IP adresi olmalıdır.',
     'ipv4'        => ':attribute geçerli bir IPv4 adresi olmalıdır.',
     'ipv6'        => ':attribute geçerli bir IPv6 adresi olmalıdır.',
+    'encrpyt_fields' => ':attribute alanı üç veya daha fazla \'*\' karakteri içermemelidir.',
 
     'attributes' => [
         'name'                                   => 'İsim',

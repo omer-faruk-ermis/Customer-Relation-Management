@@ -7,6 +7,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\Rule;
 
 /**
  * Abstract class AbstractRequest
@@ -105,5 +106,17 @@ abstract class AbstractRequest extends FormRequest
                 JsonResponse::HTTP_UNPROCESSABLE_ENTITY
             )
         );
+    }
+
+    /**
+     * @return array
+     */
+    protected function getEncryptRules(): array
+    {
+        return [
+            Rule::notIn(['*', '**']),
+            fn($attribute, $value, $fail) => substr_count($value, '*') >= 3
+                && $fail(__('validation.encrpyt_fields', ['attribute' => $attribute])),
+        ];
     }
 }
