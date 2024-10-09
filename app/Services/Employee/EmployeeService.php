@@ -140,13 +140,13 @@ class EmployeeService extends AbstractService
         }
 
         $employee->update([
-                              'ad_soyad'                  => $request->input('full_name'),
-                              'loginpage'                 => $request->input('login_permission'),
-                              'birim_id'                  => $request->input('unit'),
-                              'para_limit'                => $request->input('currency_limit'),
-                              'ceptel'                    => $request->input('mobile_phone'),
-                              'sms_kimlik_email'          => $request->input('email'),
-                              'evtel'                     => $request->input('home_phone'),
+                              'ad_soyad'                  => $request->input('full_name', $employee->ad_soyad),
+                              'loginpage'                 => $request->input('login_permission', $employee->loginpage),
+                              'birim_id'                  => $request->input('unit', $employee->birim_id),
+                              'para_limit'                => $request->input('currency_limit', $employee->para_limit),
+                              'ceptel'                    => $request->input('mobile_phone', $employee->ceptel),
+                              'sms_kimlik_email'          => $request->input('email', $employee->sms_kimlik_email),
+                              'evtel'                     => $request->input('home_phone', $employee->evtel),
                           ]);
 
         return $employee;
