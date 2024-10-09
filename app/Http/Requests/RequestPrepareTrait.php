@@ -26,7 +26,7 @@ trait RequestPrepareTrait
      */
     protected function hasInvalidCharacters($value): bool
     {
-        return substr_count($value, '*') >= 3 || in_array($value, ['*', '**']);
+        return is_string($value) && substr_count($value, '*') >= 3 || in_array($value, ['*', '**']);
     }
 
     /**
