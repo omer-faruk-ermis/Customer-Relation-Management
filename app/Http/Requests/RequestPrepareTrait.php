@@ -61,7 +61,7 @@ trait RequestPrepareTrait
     {
         return [
             Rule::notIn(['*', '**']),
-            fn($attribute, $value, $fail) => substr_count($value, '*') >= 3
+            fn($attribute, $value, $fail) => is_string($value) && substr_count($value, '*') >= 3
                 && $fail(__('validation.encrpyt_fields', ['attribute' => $attribute])),
         ];
     }
