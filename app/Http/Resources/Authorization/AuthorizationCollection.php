@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Authorization;
 
+use App\Enums\Status;
 use App\Http\Resources\AbstractCollection;
 
 /**
@@ -23,6 +24,7 @@ class AuthorizationCollection extends AbstractCollection
         return
             $this
                 ->collection
+                ->where('main_authorization_state', '=', Status::ACTIVE)
                 ->groupBy('menu');
     }
 }
