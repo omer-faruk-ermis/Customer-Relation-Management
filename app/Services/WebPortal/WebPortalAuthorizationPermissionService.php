@@ -35,11 +35,20 @@ class WebPortalAuthorizationPermissionService extends AbstractService
     {
         $webPortalAuthorizationPermission = WebPortalYetkiIzin::where('yetki_id', '=', $request->input('authorization_id'))
                                                               ->where('userid', '=', $request->input('employee_id'))
-                                                              ->active()
                                                               ->first();
 
-        if ($webPortalAuthorizationPermission) {
-            throw new WebPortalAuthorizationPermissionAlreadyHaveException();
+        if ($webPortalAuthorizationPermission && $webPortalAuthorizationPermission->durum == Status::ACTIVE) {
+            if (Method::STORE === RouteUtil::currentRoute()) {
+                throw new WebPortalAuthorizationPermissionAlreadyHaveException();
+            } else {
+                return;
+            }
+        }
+
+        if ($webPortalAuthorizationPermission && $webPortalAuthorizationPermission->durum != Status::ACTIVE) {
+            $webPortalAuthorizationPermission->durum = Status::ACTIVE;
+            $webPortalAuthorizationPermission->update();
+            return;
         }
 
         WebPortalYetkiIzin::create([

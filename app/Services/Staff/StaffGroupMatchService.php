@@ -38,11 +38,20 @@ class StaffGroupMatchService extends AbstractService
     {
         $staffGroupMatch = PersonelGrupEslestir::where('personel_grup_id', '=', $request->input('staff_group_id'))
                                                ->where('personel_id', '=', $request->input('staff_id'))
-                                               ->active()
                                                ->first();
 
-        if ($staffGroupMatch) {
-            throw new StaffGroupMatchAlreadyHaveException();
+        if ($staffGroupMatch && $staffGroupMatch->durum == Status::ACTIVE) {
+            if (Method::STORE === RouteUtil::currentRoute()) {
+                throw new StaffGroupMatchAlreadyHaveException();
+            } else {
+                return $staffGroupMatch;
+            }
+        }
+
+        if ($staffGroupMatch && $staffGroupMatch->durum != Status::ACTIVE) {
+            $staffGroupMatch->durum = Status::ACTIVE;
+            $staffGroupMatch->update();
+            return $staffGroupMatch;
         }
 
         $staffGroupMatchData = PersonelGrupEslestir::create([

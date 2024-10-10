@@ -37,11 +37,20 @@ class StaffGroupAuthorizationMatchService extends AbstractService
             PersonelGrupYetkiEslestir::where('personel_grup_id', '=', $request->input('staff_group_id'))
                                      ->where('yetki_id', '=', $request->input('authorization_id'))
                                      ->where('tip', '=', $request->input('type'))
-                                     ->active()
                                      ->first();
 
-        if ($staffGroupAuthorizationMatch) {
-            throw new StaffGroupAuthorizationMatchNotFoundException();
+        if ($staffGroupAuthorizationMatch && $staffGroupAuthorizationMatch->durum == Status::ACTIVE) {
+            if (Method::STORE === RouteUtil::currentRoute()) {
+                throw new StaffGroupAuthorizationMatchNotFoundException();
+            } else {
+                return;
+            }
+        }
+
+        if ($staffGroupAuthorizationMatch && $staffGroupAuthorizationMatch->durum != Status::ACTIVE) {
+            $staffGroupAuthorizationMatch->durum = Status::ACTIVE;
+            $staffGroupAuthorizationMatch->update();
+            return;
         }
 
         PersonelGrupYetkiEslestir::create([
