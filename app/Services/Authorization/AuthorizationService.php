@@ -462,6 +462,7 @@ class AuthorizationService
         return AboneKutukYetkileri::select([
                                                'id',
                                                'aciklama as name',
+                                               'durum as main_authorization_state',
                                            ])
                                   ->when(!$fullList, function ($q) use ($ids) {
                                       $q->whereIn('id', $ids);
