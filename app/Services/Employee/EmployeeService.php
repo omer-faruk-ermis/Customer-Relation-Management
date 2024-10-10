@@ -60,7 +60,6 @@ class EmployeeService extends AbstractService
                         ->filter($request->all())
                         ->active()
                         ->where('loginpage', '=', Status::ACTIVE)
-                        ->limit(DefaultConstant::SEARCH_LIST_LIMIT)
                         ->get();
     }
 
