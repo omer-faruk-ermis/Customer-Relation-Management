@@ -89,11 +89,14 @@ class StaffGroupService extends AbstractService
             $authorizations[$type] = $authorizationService->$type([], true);
 
             foreach ($authorizations[$type] as $key => $authorization) {
-                $matching = PersonelGrupYetkiEslestir::with('recorder')
-                                                     ->where('personel_grup_id', Security::decrypt($id))
-                                                     ->where('yetki_id', '=', $authorization['id'])
-                                                     ->where('tip', '=', $value)
-                                                     ->first();
+                if (Status::ACTIVE === $authorization->main_authorization_state) {
+                    $matching = PersonelGrupYetkiEslestir::with('recorder')
+                                                         ->where('personel_grup_id', Security::decrypt($id))
+                                                         ->where('yetki_id', '=', $authorization['id'])
+                                                         ->where('tip', '=', $value)
+                                                         ->where('durum', '=', Status::ACTIVE)
+                                                         ->first();
+                }
 
                 $authorizations[$type][$key]->is_authorized = !empty($matching);
 
