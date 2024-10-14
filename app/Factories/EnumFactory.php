@@ -2,6 +2,7 @@
 
 namespace App\Factories;
 
+use App\Enums\AgreementType;
 use App\Enums\Authorization\AuthorizationType;
 use App\Enums\Brand;
 use App\Enums\Call\CallDirection;
@@ -10,7 +11,9 @@ use App\Enums\CustomerPriority;
 use App\Enums\MeetingTypeSpecies;
 use App\Enums\ReasonType;
 use App\Enums\Status;
+use App\Enums\UserModel;
 use App\Enums\UserType;
+use App\Enums\UserUseType;
 use App\Exceptions\InvalidEnumException;
 
 /**
@@ -32,6 +35,9 @@ class EnumFactory
         'reason_type'          => ReasonType::class,
         'authorization_type'   => AuthorizationType::class,
         'customer_priority'    => CustomerPriority::class,
+        'user_model'           => UserModel::class,
+        'agreement_type'       => AgreementType::class,
+        'user_use_type'        => UserUseType::class,
     ];
 
     /**

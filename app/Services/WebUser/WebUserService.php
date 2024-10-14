@@ -35,13 +35,12 @@ class WebUserService extends AbstractService
 
         return WebUser::with([
                                  'userType',
+                                 'corporationType',
                                  'simCard',
                                  'subscriberNo',
                                  'dealer',
-                                 'dealerUser',
                                  'special',
                                  'vip',
-                                 'subscriber',
                                  'pilot'
                              ])
                       ->select($webUserSelect)

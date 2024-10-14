@@ -13,6 +13,7 @@ use App\Models\AbstractModel;
  * @property int    $ktip
  * @property string $kaciklama
  * @property string $kcolor
+ * @property string $kicon
  */
 class WebUserKullaniciTipleri extends AbstractModel
 {

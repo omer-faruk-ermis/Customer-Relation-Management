@@ -3,7 +3,6 @@
 namespace App\Models\WebUser;
 
 use App\Enums\CustomerPriority;
-use App\Enums\WebUserType;
 use App\Models\Subscriber\AboneNo;
 use App\Models\Subscriber\Pilot\PilotAbone;
 use App\Models\Subscriber\VipOzelMusteriEslestir;
@@ -21,8 +20,7 @@ trait UserModelTrait
      */
     public function dealerUser(): hasOne
     {
-        return $this->hasOne(WebUser::class, 'ust_id', 'id')
-                    ->whereIn('kullanici_tipi', [WebUserType::DEALER, WebUserType::BUSINESS_PARTNERSHIP]);
+        return $this->hasOne(WebUser::class, 'ust_id', 'id');
     }
 
     /**

@@ -90,6 +90,7 @@ use Illuminate\Database\Query\Builder;
  * @property-read WebUser                 $dealer
  * @property-read SimKart                 $simCard
  * @property-read AboneNo                 $subscriberNo
+ * @property-read WebUserKurumTurleri     $corporationType
  * @property-read WebUserKullaniciTipleri $userType
  *
  * @method static Builder|WebUser filter(array $filters = [])
@@ -162,6 +163,14 @@ class WebUser extends AbstractModel
     /**
      * @return hasOne
      */
+    public function corporationType(): hasOne
+    {
+        return $this->hasOne(WebUserKurumTurleri::class, 'id', 'kurumturu');
+    }
+
+    /**
+     * @return hasOne
+     */
     public function userType(): hasOne
     {
         return $this->hasOne(WebUserKullaniciTipleri::class, 'ktip', 'kullanici_tipi');
@@ -181,7 +190,8 @@ class WebUser extends AbstractModel
      */
     public function dealer(): hasOne
     {
-        return $this->hasOne(WebUser::class, 'id', 'ust_id');
+        return $this->hasOne(WebUser::class, 'id', 'ust_id')
+                    ->with('userType');
     }
 
     /**

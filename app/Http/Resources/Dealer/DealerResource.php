@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Dealer;
 
 use App\Http\Resources\AbstractResource;
+use App\Http\Resources\WebUser\WebUserTypeResource;
 use App\Utils\Security;
 
 /**
@@ -26,10 +27,10 @@ class DealerResource extends AbstractResource
             'name'              => $this->ad,
             'surname'           => $this->soyad,
             'full_name'         => $this->full_name,
-            'user_type'         => $this->kullanici_tipi,
             'subscription_no'   => $this->abone_no,
             'subscription_type' => $this->abonetip,
             'corporation_name'  => $this->kurumadi,
+            'user_type'         => WebUserTypeResource::make($this->whenLoaded('userType')),
         ];
     }
 }
