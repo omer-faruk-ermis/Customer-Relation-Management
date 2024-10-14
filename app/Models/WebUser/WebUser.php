@@ -2,6 +2,10 @@
 
 namespace App\Models\WebUser;
 
+use App\Enums\AgreementType;
+use App\Enums\Status;
+use App\Enums\UserModel;
+use App\Enums\UserUseType;
 use App\Filters\WebUser\WebUserFilter;
 use App\Models\AbstractModel;
 use App\Models\MaskableTrait;
@@ -83,15 +87,16 @@ use Illuminate\Database\Query\Builder;
  *
  * @property string                       $full_name
  *
- * @property-read WebUserKullaniciTipleri $userType
- * @property-read AboneNo                 $subscriberNo
+ * @property-read WebUser                 $dealer
  * @property-read SimKart                 $simCard
+ * @property-read AboneNo                 $subscriberNo
+ * @property-read WebUserKullaniciTipleri $userType
  *
  * @method static Builder|WebUser filter(array $filters = [])
  */
 class WebUser extends AbstractModel
 {
-    use MaskableTrait;
+    use MaskableTrait, UserModelTrait;
 
     protected $table = 'kaynaksms.dbo.webuser';
 
@@ -109,7 +114,49 @@ class WebUser extends AbstractModel
      */
     public function getFullNameAttribute(): string
     {
-        return $this->ad . ' ' . $this->soyad;
+        return trim("{$this->ad} {$this->soyad}");
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAgreementTypeAttribute(): string|null
+    {
+        if ($this->sozlesme == Status::ACTIVE) {
+            return AgreementType::ACTIVE;
+        } elseif ($this->sozlesme == Status::PASSIVE && is_null($this->sozlesme_tarih)) {
+            return AgreementType::MEMBER;
+        } elseif ($this->sozlesme == Status::PASSIVE && !is_null($this->sozlesme_tarih)) {
+            return AgreementType::PASSIVE;
+        }
+
+        return null;
+    }
+
+    /**
+     * @return array|int[]|string[]
+     */
+    public function getUserModelAttribute(): array
+    {
+        // Mevcut rolleri kontrol edip diziyi filtreleyin
+        $userModel = array_filter([
+                                      UserModel::VIP        => $this->whenLoaded(UserModel::VIP),
+                                      UserModel::PILOT      => $this->whenLoaded(UserModel::PILOT),
+                                      UserModel::SPECIAL    => $this->whenLoaded(UserModel::SPECIAL),
+                                      UserModel::SUBSCRIBER => $this->whenLoaded(UserModel::SUBSCRIBER),
+                                      UserModel::DEALER     => $this->whenLoaded(UserModel::DEALER),
+                                  ]);
+
+        // Eğer `$userModel` boşsa, NORMAL rolünü ekleyin
+        return empty($userModel) ? [UserModel::NORMAL] : array_keys($userModel);
+    }
+
+    /**
+     * @return string
+     */
+    public function getUseTypeAttribute(): string
+    {
+        return $this->abonetip ? UserUseType::CORPORATE : UserUseType::INDIVIDUAL;
     }
 
     /**
@@ -127,6 +174,14 @@ class WebUser extends AbstractModel
     {
         return $this->hasOne(AboneNo::class, 'userid', 'id')
                     ->where('durum', '=', 2);
+    }
+
+    /**
+     * @return hasOne
+     */
+    public function dealer(): hasOne
+    {
+        return $this->hasOne(WebUser::class, 'id', 'ust_id');
     }
 
     /**

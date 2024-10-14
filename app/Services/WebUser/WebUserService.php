@@ -28,25 +28,36 @@ class WebUserService extends AbstractService
      */
     public function index(Request $request): mixed
     {
+        // TODO: NEED REFACTOR
         $webUserSelect = [DefaultConstant::ALL_COLUMN, 'aboneNoThk.*'];
-        $select = ['id', 'userid', 'durum', 'telno'];
-        $selectX = ['id as idx', 'userid as useridx', 'durum as durumx', 'telno'];
+        $selectUserTypeOthers = ['id', 'userid', 'durum', 'telno'];
+        $selectUserType12 = ['id as idx', 'userid as useridx', 'durum as durumx', 'telno'];
 
-        return WebUser::with(['userType', 'simCard'])
+        return WebUser::with([
+                                 'userType',
+                                 'simCard',
+                                 'subscriberNo',
+                                 'dealer',
+                                 'dealerUser',
+                                 'special',
+                                 'vip',
+                                 'subscriber',
+                                 'pilot'
+                             ])
                       ->select($webUserSelect)
-                      ->when($request->input('user_type') == 12, function ($q) use ($selectX) {
-                          $q->leftJoinSub(function ($query) use ($selectX) {
-                              $query->select($selectX)->from(AboneNoThk::getModel()->getTable());
+                      ->when($request->input('user_type') == 12, function ($q) use ($selectUserType12) {
+                          $q->leftJoinSub(function ($query) use ($selectUserType12) {
+                              $query->select($selectUserType12)->from(AboneNoThk::getModel()->getTable());
                           }, 'aboneNoThk', function ($join) {
                               $join->on('aboneNoThk.useridx', '=', WebUser::getModel()->getQualifiedKeyName());
                           });
-                      }, function ($q) use ($select, $selectX) {
-                          $q->leftJoinSub(function ($query) use ($select, $selectX) {
-                              $query->select($selectX)
-                                    ->fromSub(function ($sub) use ($select) {
-                                        $sub->select($select)->from(AboneNo::getModel()->getTable())
+                      }, function ($q) use ($selectUserTypeOthers, $selectUserType12) {
+                          $q->leftJoinSub(function ($query) use ($selectUserTypeOthers, $selectUserType12) {
+                              $query->select($selectUserType12)
+                                    ->fromSub(function ($sub) use ($selectUserTypeOthers) {
+                                        $sub->select($selectUserTypeOthers)->from(AboneNo::getModel()->getTable())
                                             ->union(DB::table(AboneNoThk::getModel()->getTable())
-                                                      ->select($select)
+                                                      ->select($selectUserTypeOthers)
                                             );
                                     }, 'aboneNoThk');
                           }, 'aboneNoThk', function ($join) {
