@@ -62,7 +62,7 @@ class CallService extends AbstractService
                                               ELSE ' . $webUser->qualifyColumn('ceptel') . '
                                                     END) as user_phone'),
                                   ])
-                         ->join(
+                         ->leftJoin(
                              $sesUser->getTable(),
                              $cagri->getQualifiedKeyName(),
                              '=',
