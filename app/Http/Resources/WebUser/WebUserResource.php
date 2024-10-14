@@ -33,7 +33,7 @@ class WebUserResource extends AbstractResource
         return [
             'id'                => Security::encrypt($this->getKey()),
             'web_user_id'       => $this->getKey(),
-            'username'          => $this->name,
+            'user_name'          => $this->name,
             'name'              => $this->ad,
             'surname'           => $this->soyad,
             'full_name'         => $this->full_name,
