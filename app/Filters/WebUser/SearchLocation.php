@@ -66,28 +66,27 @@ class SearchLocation
                             function ($q) use ($value) {
                                 $q->whereLike('verginumarasi', $value);
                             });
-                },
-                function ($query) use ($value) {
-                    $query
-                        ->when(preg_match(RegexPattern::EMAIL, $value),
-                            // EMAIL
-                            function ($q) use ($value) {
-                                $q->when(filter_var($value, FILTER_VALIDATE_EMAIL), function ($qq) use ($value) {
-                                    $qq->where('email', '=', $value);
-                                }, function ($qq) use ($value) {
-                                    $qq->whereLike('email', $value);
-                                });
-                            },
-                            // GENERAL STRING MATCH
-                            function ($q) use ($value) {
-                                $q
-                                    // USERNAME
-                                    ->orWhere('name', 'LIKE', '%' . $value . '%')
-                                    // NAME AND SURNAME
-                                    ->orWhereRaw("CONCAT(ad, ' ', soyad) LIKE ?", ['%' . $value . '%'])
-                                    // CORPORATION NAME
-                                    ->orWhere('kurumadi', 'LIKE', '%' . $value . '%');
-                            });
                 });
+
+        // GENERAL STRING MATCH
+        $query->orWhere(function($q) use ($value) {
+            $q
+                ->where('name', 'LIKE', '%' . $value . '%') // USERNAME
+                ->orWhereRaw("CONCAT(ad, ' ', soyad) LIKE ?", ['%' . $value . '%']) // NAME AND SURNAME
+                ->orWhere('kurumadi', 'LIKE', '%' . $value . '%'); // CORPORATION NAME
+        });
+
+        // EMAIL
+        $query
+            ->when(!is_numeric($value), function ($query) use ($value) {
+                $query->when(preg_match(RegexPattern::EMAIL, $value), function ($q) use ($value) {
+                    $q->when(filter_var($value, FILTER_VALIDATE_EMAIL), function ($qq) use ($value) {
+                        $qq->where('email', '=', $value);
+                    }, function ($qq) use ($value) {
+                        $qq->whereLike('email', $value);
+                    });
+                });
+            });
     }
+
 }
