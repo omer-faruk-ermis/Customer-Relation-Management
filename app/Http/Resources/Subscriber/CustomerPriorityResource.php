@@ -24,7 +24,7 @@ class CustomerPriorityResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'          => Security::encrypt($this->getKey()),
+            'id'          => $this->getKey(),
             'description' => $this->aciklama,
             'state'       => $this->durum,
             'date'        => $this->tarih,

@@ -89,7 +89,7 @@ class WebUserService extends AbstractService
      */
     public function show(string $id): WebUser
     {
-        $webUser = WebUser::find(Security::decrypt($id));
+        $webUser = WebUser::find($id);
         if (empty($webUser)) {
             throw new WebUserNotFoundException();
         }

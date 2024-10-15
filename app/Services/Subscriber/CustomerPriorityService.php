@@ -77,7 +77,7 @@ class CustomerPriorityService extends AbstractService
      */
     public function update(Request $request, string $id): VipOzelMusteriEslestir
     {
-        $specialCustomer = VipOzelMusteriEslestir::find(Security::decrypt($id));
+        $specialCustomer = VipOzelMusteriEslestir::find($id);
         if (empty($specialCustomer)) {
             throw new SpecialCustomerNotFoundException();
         }
@@ -99,7 +99,7 @@ class CustomerPriorityService extends AbstractService
      */
     public function destroy(string $id): void
     {
-        $specialCustomer = VipOzelMusteriEslestir::find(Security::decrypt($id));
+        $specialCustomer = VipOzelMusteriEslestir::find($id);
         if (empty($specialCustomer)) {
             throw new CustomerPriorityNotFoundException();
         }

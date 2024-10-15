@@ -82,7 +82,7 @@ class EmployeeService extends AbstractService
      */
     public function show(string $id): Model
     {
-        $employee = SmsKimlik::with(['unit', 'sip'])->find(Security::decrypt($id));
+        $employee = SmsKimlik::with(['unit', 'sip'])->find($id);
         if (empty($employee)) {
             throw new EmployeeNotFoundException();
         }
@@ -133,7 +133,7 @@ class EmployeeService extends AbstractService
      */
     public function update(UpdateEmployeeRequest $request, string $id): SmsKimlik
     {
-        $employee = SmsKimlik::find(Security::decrypt($id));
+        $employee = SmsKimlik::find($id);
         if (empty($employee)) {
             throw new EmployeeNotFoundException();
         }
@@ -160,7 +160,7 @@ class EmployeeService extends AbstractService
      */
     public function changePassword(ChangePasswordEmployeeRequest $request, string $id): void
     {
-        $employee = SmsKimlik::find(Security::decrypt($id));
+        $employee = SmsKimlik::find($id);
         if (empty($employee)) {
             throw new EmployeeNotFoundException();
         }
@@ -176,7 +176,7 @@ class EmployeeService extends AbstractService
      */
     public function destroy(string $id): void
     {
-        $employee = SmsKimlik::find(Security::decrypt($id));
+        $employee = SmsKimlik::find($id);
         if (empty($employee)) {
             throw new EmployeeNotFoundException();
         }

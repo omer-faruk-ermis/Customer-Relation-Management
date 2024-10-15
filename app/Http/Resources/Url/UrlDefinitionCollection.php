@@ -25,7 +25,7 @@ class UrlDefinitionCollection extends AbstractCollection
     {
         if ($request->input('employee_id')) {
             $authorizatedIds =
-                (new AuthorizationService(Security::decrypt($request->input('employee_id'))))
+                (new AuthorizationService($request->input('employee_id')))
                     ->smsManagement()
                     ->where('main_authorization_state', '=', Status::ACTIVE)
                     ->pluck('id')

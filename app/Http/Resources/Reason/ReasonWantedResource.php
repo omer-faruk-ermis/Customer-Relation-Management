@@ -22,7 +22,7 @@ class ReasonWantedResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'              => Security::encrypt($this->getKey()),
+            'id'              => $this->getKey(),
             'phrase'          => $this->ifade,
         ];
     }

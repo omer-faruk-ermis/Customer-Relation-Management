@@ -79,7 +79,7 @@ class MenuDefinitionService extends AbstractService
      */
     public function update(Request $request, string $id): MenuTanim
     {
-        $menuDefinition = MenuTanim::find(Security::decrypt($id));
+        $menuDefinition = MenuTanim::find($id);
         if (empty($menuDefinition)) {
             throw new MenuNotFoundException();
         }
@@ -104,7 +104,7 @@ class MenuDefinitionService extends AbstractService
      */
     public function destroy(string $id): void
     {
-        $menuDefinition = MenuTanim::with('pages')->where('id', Security::decrypt($id))->first();
+        $menuDefinition = MenuTanim::with('pages')->where('id', $id)->first();
         if (empty($menuDefinition)) {
             throw new MenuNotFoundException();
         }

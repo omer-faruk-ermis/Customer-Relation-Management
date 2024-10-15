@@ -6,7 +6,9 @@ use App\Http\Requests\AbstractRequest;
 
 class IndexMenuDefinitionRequest extends AbstractRequest
 {
+    /*
     protected $fieldsToDecrypt = ['employee_id'];
+    */
 
     public function rules(): array
     {

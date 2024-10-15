@@ -24,9 +24,9 @@ class VoiceUserResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'        => Security::encrypt($this->id),
-            'call_id'   => Security::encrypt($this->cagri_id),
-            'user_id'   => Security::encrypt($this->userid),
+            'id'        => $this->id,
+            'call_id'   => $this->cagri_id,
+            'user_id'   => $this->userid,
             'pair_date' => DateUtil::dateFormat($this->eslesme_tar),
             'type'      => $this->tip,
             'user_type' => $this->kul_tur,

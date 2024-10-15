@@ -6,7 +6,9 @@ use App\Http\Requests\AbstractRequest;
 
 class IndexSubjectInformationRequest extends AbstractRequest
 {
+    /*
     protected $fieldsToDecrypt = ['use_place_id'];
+    */
 
     public function rules(): array
     {

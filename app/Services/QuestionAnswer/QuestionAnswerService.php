@@ -82,7 +82,7 @@ class QuestionAnswerService extends AbstractService
      */
     public function update(UpdateQuestionAnswerRequest $request, string $id): SoruCevap
     {
-        $questionAnswer = SoruCevap::find(Security::decrypt($id));
+        $questionAnswer = SoruCevap::find($id);
         if (empty($questionAnswer)) {
             throw new QuestionAnswerNotFoundException();
         }
@@ -107,7 +107,7 @@ class QuestionAnswerService extends AbstractService
      */
     public function destroy(string $id): void
     {
-        $questionAnswer = SoruCevap::find(Security::decrypt($id));
+        $questionAnswer = SoruCevap::find($id);
         if (empty($questionAnswer)) {
             throw new QuestionAnswerNotFoundException();
         }

@@ -24,14 +24,12 @@ class EmployeeBasicResource extends AbstractResource
         if ($this->relationLoaded('members')) {
             return [
                 'id'         => $this->whenLoaded('members')?->id,
-                'encrypt_id' => Security::encrypt($this->whenLoaded('members')?->id),
                 'full_name'  => $this->whenLoaded('members')?->ad_soyad
             ];
         }
 
         return [
             'id'         => $this->getKey(),
-            'encrypt_id' => Security::encrypt($this->getKey()),
             'full_name'  => $this->ad_soyad,
             'sip'        => $this?->sip?->first()->sip_id ?? null
         ];

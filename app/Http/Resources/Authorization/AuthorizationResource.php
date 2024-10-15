@@ -23,10 +23,10 @@ class AuthorizationResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'               => Security::encrypt($this->match_id),
-            'staff_group_id'   => Security::encrypt($this->staff_group_id),
-            'authorization_id' => Security::encrypt($this->id),
-            'menu_id'          => isset($this->menu_id) ? Security::encrypt($this->menu_id) : null,
+            'id'               => $this->match_id,
+            'staff_group_id'   => $this->staff_group_id,
+            'authorization_id' => $this->id,
+            'menu_id'          => $this->menu_id ?? null,
             'name'             => $this->name,
             'url'              => $this->url ?? null,
             'menu'             => $this->menu,

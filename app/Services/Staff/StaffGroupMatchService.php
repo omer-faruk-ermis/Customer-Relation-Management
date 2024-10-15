@@ -78,7 +78,7 @@ class StaffGroupMatchService extends AbstractService
      */
     public function destroyStaff(string $id): void
     {
-        $staffGroupMatch = PersonelGrupEslestir::find(Security::decrypt($id));
+        $staffGroupMatch = PersonelGrupEslestir::find($id);
         if (empty($staffGroupMatch)) {
             throw new StaffGroupMatchNotFoundException();
         }

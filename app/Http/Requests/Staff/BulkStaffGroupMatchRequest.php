@@ -4,12 +4,14 @@ namespace App\Http\Requests\Staff;
 
 class BulkStaffGroupMatchRequest extends StoreStaffGroupMatchRequest
 {
+    /*
     protected $fieldsToDecrypt = [
         'bulk_authorizations' => [
             'staff_group_id',
             'staff_id'
         ]
     ];
+    */
 
     public function rules(): array
     {

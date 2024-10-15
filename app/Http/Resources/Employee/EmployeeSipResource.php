@@ -22,9 +22,9 @@ class EmployeeSipResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'               => Security::encrypt($this->getKey()),
+            'id'               => $this->getKey(),
             'sip'              => $this->sip_id,
-            'employee_id'      => Security::encrypt($this->sms_kimlik),
+            'employee_id'      => $this->sms_kimlik,
             'not_send_message' => $this->mesajgitmesin,
             'employee'         => EmployeeResource::make($this->whenLoaded('employee')),
         ];

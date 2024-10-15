@@ -6,7 +6,9 @@ use App\Http\Requests\AbstractRequest;
 
 class StoreStaffGroupMatchRequest extends AbstractRequest
 {
+    /*
     protected $fieldsToDecrypt = ['staff_id', 'staff_group_id'];
+    */
 
     public function rules(): array
     {

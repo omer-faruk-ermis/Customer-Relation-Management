@@ -6,7 +6,9 @@ use App\Http\Requests\AbstractRequest;
 
 class UpdateEmployeeRequest extends AbstractRequest
 {
+    /*
     protected $fieldsToDecrypt = ['unit_id'];
+    */
 
     public function rules(): array
     {

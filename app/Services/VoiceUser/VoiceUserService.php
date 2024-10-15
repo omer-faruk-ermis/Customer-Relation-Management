@@ -114,7 +114,7 @@ class VoiceUserService extends AbstractService
      */
     public function destroy(string $id): void
     {
-        $voiceUser = SesUser::find(Security::decrypt($id));
+        $voiceUser = SesUser::find($id);
         if (empty($voiceUser)) {
             throw new VoiceUserNotFoundException();
         }

@@ -6,7 +6,9 @@ use App\Http\Requests\AbstractRequest;
 
 class UpdateReasonLogRequest extends AbstractRequest
 {
+    /*
     protected $fieldsToDecrypt = ['log_id', 'reason_id'];
+    */
 
     public function rules(): array
     {

@@ -6,7 +6,9 @@ use App\Http\Requests\AbstractRequest;
 
 class IndexLogRequest extends AbstractRequest
 {
+    /*
     protected $fieldsToDecrypt = ['process_person', 'agent'];
+    */
 
     public function rules(): array
     {

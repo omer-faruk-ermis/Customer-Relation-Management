@@ -22,7 +22,7 @@ class SubjectInformationUsePlaceResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'    => Security::encrypt($this->getKey()),
+            'id'    => $this->getKey(),
             'name'  => $this->adi,
             'state' => $this->durum,
         ];

@@ -26,7 +26,7 @@ class CallResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'             => Security::encrypt($this->cagri_id),
+            'id'             => $this->cagri_id,
             'call_direction' => $this->cagri_yonu,
             'call_phone'     => $this->cagri_tel,
             'start_date'     => DateUtil::dateFormat($this->bas_tar),

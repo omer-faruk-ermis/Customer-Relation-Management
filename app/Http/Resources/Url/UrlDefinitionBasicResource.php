@@ -22,16 +22,16 @@ class UrlDefinitionBasicResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'            => Security::encrypt($this->getKey()),
+            'id'            => $this->getKey(),
             'name'          => $this->adi,
             'url'           => $this->url,
             'color'         => $this->color,
             'icon'          => $this->icon,
-            'menu_id'       => Security::encrypt($this->ust_id),
+            'menu_id'       => $this->ust_id,
             'state'         => $this->durum,
             'is_authorized' => $this->is_authorized,
-            'background_id' => Security::encrypt($this->arkaplan_id),
-            'tab_id'        => Security::encrypt($this->tab_id),
+            'background_id' => $this->arkaplan_id,
+            'tab_id'        => $this->tab_id,
         ];
     }
 }

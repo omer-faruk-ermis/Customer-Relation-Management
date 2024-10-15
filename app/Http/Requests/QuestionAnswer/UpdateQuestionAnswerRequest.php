@@ -6,7 +6,9 @@ use App\Http\Requests\AbstractRequest;
 
 class UpdateQuestionAnswerRequest extends AbstractRequest
 {
+    /*
     protected $fieldsToDecrypt = ['category_id'];
+    */
 
     public function rules(): array
     {

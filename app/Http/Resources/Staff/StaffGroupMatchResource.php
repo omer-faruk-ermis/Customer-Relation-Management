@@ -25,9 +25,9 @@ class StaffGroupMatchResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'             => Security::encrypt($this->getKey()),
-            'staff_id'       => Security::encrypt($this->personel_id),
-            'staff_group_id' => Security::encrypt($this->personel_grup_id),
+            'id'             => $this->getKey(),
+            'staff_id'       => $this->personel_id,
+            'staff_group_id' => $this->personel_grup_id,
             'state'          => $this->durum,
             'register_date'  => DateUtil::dateFormat($this->kayit_tarihi),
             'recorder'       => EmployeeBasicResource::make($this->whenLoaded('recorder')),

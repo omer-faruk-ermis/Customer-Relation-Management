@@ -22,7 +22,7 @@ class StaffGroupCollection extends AbstractCollection
     public function toArray($request): object
     {
         $this->collection = $this->collection->map(function ($menu) use ($request) {
-            $menu->is_authorized = in_array(Security::decrypt($request->input('employee_id')), $menu->members->pluck('personel_id')->toArray());
+            $menu->is_authorized = in_array($request->input('employee_id'), $menu->members->pluck('personel_id')->toArray());
 
             return $menu;
         });

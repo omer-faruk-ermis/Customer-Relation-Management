@@ -9,7 +9,9 @@ use Illuminate\Validation\Rule;
 
 class StoreStaffGroupAuthorizationMatchRequest extends AbstractRequest
 {
+    /*
     protected $fieldsToDecrypt = ['staff_group_id', 'authorization_id'];
+    */
 
     public function rules(): array
     {

@@ -70,7 +70,7 @@ class StaffGroupService extends AbstractService
                                                  'members.recorder'
                                              ])
                                       ->where('durum', '<>', Status::DESTROY)
-                                      ->find(Security::decrypt($id));
+                                      ->find($id);
         if (empty($staffGroup)) {
             throw new StaffGroupNotFoundException();
         }
@@ -80,7 +80,7 @@ class StaffGroupService extends AbstractService
         $authorizationIds = [];
 
         foreach (self::AUTHORIZATION_TYPES as $type => $value) {
-            $groupAuthorizations = $authorizationService->authorizationGroup($value, Security::decrypt($id));
+            $groupAuthorizations = $authorizationService->authorizationGroup($value, $id);
 
             $authorizationIds[$type] = !empty($groupAuthorizations)
                 ? $authorizationService->$type($groupAuthorizations)->pluck('id')->toArray()
@@ -90,7 +90,7 @@ class StaffGroupService extends AbstractService
 
             foreach ($authorizations[$type] as $key => $authorization) {
                 $matching = PersonelGrupYetkiEslestir::with('recorder')
-                                                     ->where('personel_grup_id', Security::decrypt($id))
+                                                     ->where('personel_grup_id', $id)
                                                      ->where('yetki_id', '=', $authorization['id'])
                                                      ->where('tip', '=', $value)
                                                      ->where('durum', '=', Status::ACTIVE)
@@ -139,7 +139,7 @@ class StaffGroupService extends AbstractService
      */
     public function update(Request $request, string $id): PersonelGruplari
     {
-        $staffGroup = PersonelGruplari::find(Security::decrypt($id));
+        $staffGroup = PersonelGruplari::find($id);
         if (empty($staffGroup)) {
             throw new StaffGroupNotFoundException();
         }
@@ -161,7 +161,7 @@ class StaffGroupService extends AbstractService
      */
     public function destroy(string $id): void
     {
-        $staffGroup = PersonelGruplari::find(Security::decrypt($id));
+        $staffGroup = PersonelGruplari::find($id);
         if (empty($staffGroup)) {
             throw new StaffGroupNotFoundException();
         }

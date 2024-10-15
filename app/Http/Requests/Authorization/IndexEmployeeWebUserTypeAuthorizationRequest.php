@@ -6,7 +6,9 @@ use App\Http\Requests\AbstractRequest;
 
 class IndexEmployeeWebUserTypeAuthorizationRequest extends AbstractRequest
 {
+    /*
     protected $fieldsToDecrypt = ['employee_id'];
+    */
 
     public function rules(): array
     {

@@ -73,7 +73,7 @@ class ModuleService extends AbstractService
      */
     public function update(Request $request, string $id): Module
     {
-        $module = Module::find(Security::decrypt($id));
+        $module = Module::find($id);
         if (empty($module)) {
             throw new ModuleNotFoundException();
         }
@@ -98,7 +98,7 @@ class ModuleService extends AbstractService
      */
     public function destroy(string $id): void
     {
-        $module = Module::with('menu')->where('id', Security::decrypt($id))->first();
+        $module = Module::with('menu')->where('id', $id)->first();
         if (empty($module)) {
             throw new ModuleNotFoundException();
         }

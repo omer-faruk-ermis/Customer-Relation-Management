@@ -25,7 +25,7 @@ class StaffGroupResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'                    => Security::encrypt($this->getKey()),
+            'id'                    => $this->getKey(),
             'name'                  => $this->grup_adi,
             'state'                 => $this->durum,
             'is_authorized'         => $this->is_authorized,

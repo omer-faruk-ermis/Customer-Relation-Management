@@ -24,11 +24,11 @@ class ReasonLogResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'            => Security::encrypt($this->getKey()),
+            'id'            => $this->getKey(),
             'description'   => $this->aciklama,
             'register_ip'   => $this->kayit_ip,
             'register_date' => DateUtil::dateFormat($this->kayit_tar),
-            'meeting_id'    => Security::encrypt($this->gorusme_id),
+            'meeting_id'    => $this->gorusme_id,
             'reason'        => ReasonResource::make($this->whenLoaded('reason')),
         ];
     }

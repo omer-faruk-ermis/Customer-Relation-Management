@@ -24,7 +24,7 @@ class QuestionAnswerCategoryResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'             => Security::encrypt($this->getKey()),
+            'id'             => $this->getKey(),
             'category_name'  => $this->kategori_adi,
             'category_state' => $this->kategori_durum,
         ];

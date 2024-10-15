@@ -6,12 +6,14 @@ use App\Http\Requests\Authorization\BulkEmployeeAuthorizationRequest;
 
 class BulkStaffGroupAuthorizationMatchRequest extends BulkEmployeeAuthorizationRequest
 {
+    /*
     protected $fieldsToDecrypt = [
         'bulk_authorizations' => [
             'staff_group_id',
             'authorization_id'
         ]
     ];
+    */
 
     public function rules(): array
     {

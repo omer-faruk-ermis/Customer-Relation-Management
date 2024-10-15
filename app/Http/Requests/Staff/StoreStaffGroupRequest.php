@@ -6,7 +6,9 @@ use App\Http\Requests\AbstractRequest;
 
 class StoreStaffGroupRequest extends AbstractRequest
 {
+    /*
     protected $fieldsToDecrypt = ['recorder_id'];
+    */
 
     public function rules(): array
     {

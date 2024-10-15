@@ -7,7 +7,9 @@ use App\Http\Requests\AbstractRequest;
 
 class UpdateCustomerPriorityRequest extends AbstractRequest
 {
+    /*
     protected $fieldsToDecrypt = ['web_user_id'];
+    */
 
     public function rules(): array
     {

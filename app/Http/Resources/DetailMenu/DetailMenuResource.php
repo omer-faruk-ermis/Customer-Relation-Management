@@ -24,16 +24,16 @@ class DetailMenuResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'            => Security::encrypt($this->getKey()),
+            'id'            => $this->getKey(),
             'name'          => $this->menu_adi,
             'url'           => $this->menu_url,
             'register_date' => DateUtil::dateFormat($this->kayit_tar),
             'register_ip'   => $this->kayit_ip,
-            'register_id'   => Security::encrypt($this->kayit_id),
+            'register_id'   => $this->kayit_id,
             'state'         => $this->durum,
             'is_authorized' => $this->is_authorized,
             'order'         => $this->sira,
-            'parent_id'     => Security::encrypt($this->parentid),
+            'parent_id'     => $this->parentid,
             'pages'         => DetailMenuCollection::make($this->whenLoaded('pages')),
             'members'       => $this->whenLoaded('detail', function ($data) {
                 return EmployeeBasicCollection::make($data);

@@ -23,9 +23,9 @@ class StaffGroupAuthorizationMatchResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'               => Security::encrypt($this->getKey()),
-            'staff_group_id'   => Security::encrypt($this->personel_grup_id),
-            'authorization_id' => Security::encrypt($this->yetki_id),
+            'id'               => $this->getKey(),
+            'staff_group_id'   => $this->personel_grup_id,
+            'authorization_id' => $this->yetki_id,
             'state'            => $this->durum,
             'type'             => $this->tip,
             'sms_management'   => UrlDefinitionResource::collection($this->whenLoaded('smsManagement')),

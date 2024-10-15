@@ -6,11 +6,13 @@ use App\Http\Requests\AbstractRequest;
 
 class BulkEmployeeWebUserTypeAuthorizationRequest extends AbstractRequest
 {
-    protected $fieldsToDecrypt = [
+    /*
+     * protected $fieldsToDecrypt = [
         'bulk_authorizations' => [
             'employee_id'
         ]
     ];
+    */
 
     public function rules(): array
     {

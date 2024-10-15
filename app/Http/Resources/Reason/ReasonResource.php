@@ -23,9 +23,9 @@ class ReasonResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'              => Security::encrypt($this->getKey()),
+            'id'              => $this->getKey(),
             'description'     => $this->aciklama,
-            'parent_id'       => Security::encrypt($this->ust_id),
+            'parent_id'       => $this->ust_id,
             'type'            => $this->ust_id == 0 ? ReasonType::all()[0]->description : ReasonType::all()[1]->description,
             'blacklist_level' => $this->karaliste_seviye,
             'meeting_id'      => $this->gorusme_id,

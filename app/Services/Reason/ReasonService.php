@@ -58,7 +58,7 @@ class ReasonService extends AbstractService
      */
     public function update(Request $request, string $id): Sebepler
     {
-        $reason = Sebepler::find(Security::decrypt($id));
+        $reason = Sebepler::find($id);
         if (empty($reason)) {
             throw new ReasonNotFoundException();
         }

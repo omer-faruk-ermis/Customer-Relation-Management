@@ -23,7 +23,7 @@ class MenuDefinitionBasicResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'    => Security::encrypt($this->getKey()),
+            'id'    => $this->getKey(),
             'name'  => $this->menu,
             'order' => $this->sira,
             'state' => $this->durum,

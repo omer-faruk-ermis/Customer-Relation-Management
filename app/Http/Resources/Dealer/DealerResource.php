@@ -23,7 +23,7 @@ class DealerResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'                => Security::encrypt($this->getKey()),
+            'id'                => $this->getKey(),
             'name'              => $this->ad,
             'surname'           => $this->soyad,
             'full_name'         => $this->full_name,

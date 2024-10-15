@@ -6,7 +6,9 @@ use App\Http\Requests\AbstractRequest;
 
 class BasicEmployeeRequest extends AbstractRequest
 {
+    /*
     protected $fieldsToDecrypt = ['sip', 'unit'];
+    */
 
     public function rules(): array
     {

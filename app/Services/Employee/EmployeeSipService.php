@@ -52,7 +52,7 @@ class EmployeeSipService extends AbstractService
      */
     public function destroy(string $id): void
     {
-        $employeeSip = SmsKimlikSip::find(Security::decrypt($id));
+        $employeeSip = SmsKimlikSip::find($id);
         if (empty($employeeSip)) {
             throw new EmployeeSipNotFoundException();
         }

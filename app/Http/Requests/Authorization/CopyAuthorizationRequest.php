@@ -6,7 +6,9 @@ use App\Http\Requests\AbstractRequest;
 
 class CopyAuthorizationRequest extends AbstractRequest
 {
+    /*
     protected $fieldsToDecrypt = ['employee_id', 'receiver_id'];
+    */
 
     public function rules(): array
     {

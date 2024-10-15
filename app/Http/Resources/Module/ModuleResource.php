@@ -24,7 +24,6 @@ class ModuleResource extends AbstractResource
     {
         return [
             'id'         => $this->getKey(),
-            'encrypt_id' => Security::encrypt($this->getKey()),
             'name'       => $this->name,
             'panel'      => $this->panel,
             'state'      => $this->durum,

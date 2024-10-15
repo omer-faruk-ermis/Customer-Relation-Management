@@ -54,7 +54,7 @@ class QuestionAnswerCategoryService extends AbstractService
      */
     public function update(UpdateQuestionAnswerCategoryRequest $request, string $id): SoruCevapKategori
     {
-        $category = SoruCevapKategori::find(Security::decrypt($id));
+        $category = SoruCevapKategori::find($id);
         if (empty($category)) {
             throw new QuestionAnswerCategoryNotFoundException();
         }
@@ -73,7 +73,7 @@ class QuestionAnswerCategoryService extends AbstractService
      */
     public function destroy(string $id): void
     {
-        $questionAnswerCategory = SoruCevapKategori::find(Security::decrypt($id));
+        $questionAnswerCategory = SoruCevapKategori::find($id);
         if (empty($questionAnswerCategory)) {
             throw new QuestionAnswerCategoryNotFoundException();
         }

@@ -6,7 +6,9 @@ use App\Http\Requests\AbstractRequest;
 
 class StoreEmployeeAuthorizationRequest extends AbstractRequest
 {
+    /*
     protected $fieldsToDecrypt = ['employee_id', 'authorization_id'];
+    */
 
     public function rules(): array
     {

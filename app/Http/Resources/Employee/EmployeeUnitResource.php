@@ -22,7 +22,7 @@ class EmployeeUnitResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'   => Security::encrypt($this->getKey()),
+            'id'   => $this->getKey(),
             'unit' => $this->birim
         ];
     }

@@ -22,7 +22,7 @@ class SubscriberNoResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'             => Security::encrypt($this->getKey()),
+            'id'             => $this->getKey(),
             'phone'          => $this->telno,
             'state'          => $this->durum,
             'web_user_id'    => $this->userid,

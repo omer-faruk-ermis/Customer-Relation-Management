@@ -22,7 +22,7 @@ class EnumResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'          => !is_array($this->id) ? Security::encrypt($this->id) : null,
+            'id'          => !is_array($this->id) ? $this->id : null,
             'key'         => $this->key,
             'label'       => $this->label,
             'description' => $this->description,

@@ -23,7 +23,7 @@ class EmployeeWebUserTypeAuthorizationResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'employee_id'         => Security::encrypt($this->sms_kimlik),
+            'employee_id'         => $this->sms_kimlik,
             'web_user_type'       => $this->webuser_tip,
             'operator_code'       => $this->kopkodu,
             'state'               => $this->durum,

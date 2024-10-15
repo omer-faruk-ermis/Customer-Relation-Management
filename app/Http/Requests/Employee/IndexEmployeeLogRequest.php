@@ -7,7 +7,9 @@ use App\Utils\Security;
 
 class IndexEmployeeLogRequest extends AbstractRequest
 {
+    /*
     protected $fieldsToDecrypt = ['agent'];
+    */
 
     public function rules(): array
     {

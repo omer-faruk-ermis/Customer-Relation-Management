@@ -6,7 +6,9 @@ use App\Http\Requests\AbstractRequest;
 
 class StoreMenuDefinitionRequest extends AbstractRequest
 {
+    /*
     protected $fieldsToDecrypt = ['module_id'];
+    */
 
     public function rules(): array
     {

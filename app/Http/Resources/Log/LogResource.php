@@ -26,9 +26,9 @@ class LogResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'            => Security::encrypt($this->getKey()),
-            'user_id'       => Security::encrypt($this->userid),
-            'register_id'   => Security::encrypt($this->kayitid),
+            'id'            => $this->getKey(),
+            'user_id'       => $this->userid,
+            'register_id'   => $this->kayitid,
             'before'        => $this->i1,
             'after'         => $this->i2,
             'ip'            => $this->ip,

@@ -6,7 +6,9 @@ use App\Http\Requests\AbstractRequest;
 
 class StoreSubjectInformationRequest extends AbstractRequest
 {
+    /*
     protected $fieldsToDecrypt = ['parent_id', 'use_place_id'];
+    */
 
     public function rules(): array
     {

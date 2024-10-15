@@ -86,7 +86,7 @@ class UrlDefinitionService extends AbstractService
      */
     public function update(Request $request, string $id): UrlTanim
     {
-        $urlDefinition = UrlTanim::find(Security::decrypt($id));
+        $urlDefinition = UrlTanim::find($id);
         if (empty($urlDefinition)) {
             throw new UrlDefinitionNotFoundException();
         }
@@ -111,7 +111,7 @@ class UrlDefinitionService extends AbstractService
      */
     public function destroy(string $id): void
     {
-        $urlDefinition = UrlTanim::find(Security::decrypt($id));
+        $urlDefinition = UrlTanim::find($id);
         if (empty($urlDefinition)) {
             throw new UrlDefinitionNotFoundException();
         }

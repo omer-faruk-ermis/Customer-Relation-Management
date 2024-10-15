@@ -24,14 +24,14 @@ class WebPortalAuthorizationResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'                   => Security::encrypt($this->getKey()),
+            'id'                   => $this->getKey(),
             'description'          => $this->aciklama,
             'state'                => $this->durum,
             'date'                 => DateUtil::dateFormat($this->tarih),
             'definition'           => $this->tanim,
             'authorization_detail' => $this->yetki_detay,
             'is_authorized'        => $this->is_authorized,
-            'menu_id'              => Security::encrypt($this->menu_id),
+            'menu_id'              => $this->menu_id,
             'type'                 => $this->tip,
             'members'              => EmployeeBasicResource::collection($this->whenLoaded('members')),
         ];

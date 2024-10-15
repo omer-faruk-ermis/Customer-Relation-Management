@@ -6,7 +6,9 @@ use App\Http\Requests\AbstractRequest;
 
 class UpdateUrlDefinitionRequest extends AbstractRequest
 {
+    /*
     protected $fieldsToDecrypt = ['menu_id', 'background_id'];
+    */
 
     public function rules(): array
     {

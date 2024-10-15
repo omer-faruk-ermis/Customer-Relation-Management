@@ -77,7 +77,7 @@ class SubjectInformationService extends AbstractService
      */
     public function update(Request $request, string $id): KonuBilgi
     {
-        $subjectInformation = KonuBilgi::find(Security::decrypt($id));
+        $subjectInformation = KonuBilgi::find($id);
         if (empty($subjectInformation)) {
             throw new SubjectInformationNotFoundException();
         }
@@ -103,7 +103,7 @@ class SubjectInformationService extends AbstractService
      */
     public function destroy(string $id): void
     {
-        $subjectInformation = KonuBilgi::find(Security::decrypt($id));
+        $subjectInformation = KonuBilgi::find($id);
         if (empty($subjectInformation)) {
             throw new SubjectInformationNotFoundException();
         }

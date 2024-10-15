@@ -23,15 +23,15 @@ class EmployeeResource extends AbstractResource
     public function toArray($request): array
     {
         return [
-            'id'                    => Security::encrypt($this->getKey()),
+            'id'                    => $this->getKey(),
             'full_name'             => $this->ad_soyad,
             'login_permission'      => $this->loginpage,
             'state'                 => $this->durum,
             'sip'                   => EmployeeSipResource::collection($this->whenLoaded('sip')),
             'unit'                  => EmployeeUnitResource::make($this->whenLoaded('unit')),
-            'unit_id'               => Security::encrypt($this->birim_id),
-            'sip_id'                => Security::encrypt($this->sip_id),
-            'web_user_id'           => Security::encrypt($this->webuserid),
+            'unit_id'               => $this->birim_id,
+            'sip_id'                => $this->sip_id,
+            'web_user_id'           => $this->webuserid,
             'currency_limit'        => $this->para_limit,
             'web_portal_permission' => $this->webportal_izin,
             'mobile_phone'          => $this->ceptel,

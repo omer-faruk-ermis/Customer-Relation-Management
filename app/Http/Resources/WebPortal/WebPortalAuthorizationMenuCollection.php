@@ -24,7 +24,7 @@ class WebPortalAuthorizationMenuCollection extends AbstractCollection
     public function toArray($request): object
     {
         $authorizatedIds = $request->input('employee_id')
-            ? (new AuthorizationService(Security::decrypt($request->input('employee_id'))))
+            ? (new AuthorizationService($request->input('employee_id')))
                 ->authorization()
                 ->where('main_authorization_state', '=', Status::ACTIVE)
                 ->pluck('id')
