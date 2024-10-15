@@ -13,6 +13,7 @@ use App\Exceptions\Authorization\EmployeeAuthorizationNotFoundException;
 use App\Exceptions\Authorization\EmployeeWebUserTypeAuthorizationAlreadyHaveException;
 use App\Exceptions\Authorization\EmployeeWebUserTypeAuthorizationNotFoundException;
 use App\Exceptions\Call\CallNotFoundException;
+use App\Exceptions\Call\VoiceUserAlreadyHaveException;
 use App\Exceptions\Code\InvalidSecurityCodeException;
 use App\Exceptions\Code\SecurityCodeIncorrectException;
 use App\Exceptions\Code\SecurityCodeMaxAttemptException;
@@ -116,5 +117,6 @@ return [
     SpecialCustomerNotFoundException::class                     => 'Özel Müşteri Temsilci kaydı bulunamadı!',
     CustomerPriorityNotFoundException::class                    => 'Özel Müşteri Temsilci veya Vip Müşteri kaydı bulunamadı!',
     SpecialCustomerAlreadyHaveException::class                  => 'Özel Müşteri Temsilci kaydı zaten mevcut!',
+    VoiceUserAlreadyHaveException::class                        => 'Ses eşleştirme kaydı zaten mevcut!',
 
 ];

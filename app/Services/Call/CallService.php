@@ -64,9 +64,12 @@ class CallService extends AbstractService
                                   ])
                          ->leftJoin(
                              $sesUser->getTable(),
-                             $cagri->getQualifiedKeyName(),
-                             '=',
-                             $sesUser->qualifyColumn('cagri_id'))
+                             function ($join) use ($cagri, $sesUser) {
+                                 $join->on($cagri->getQualifiedKeyName(),
+                                           '=',
+                                           $sesUser->qualifyColumn('cagri_id'))
+                                      ->where($sesUser->qualifyColumn('sildurum'), Status::PASSIVE);
+                             })
                          ->leftJoin($musteri->getTable(), function ($join) use ($sesUser, $musteri) {
                              $join->on($sesUser->qualifyColumn('userid'),
                                        '=',

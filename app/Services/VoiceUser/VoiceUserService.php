@@ -7,6 +7,7 @@ use App\Enums\NumericalConstant;
 use App\Enums\Status;
 use App\Enums\UserType;
 use App\Exceptions\Call\CallNotFoundException;
+use App\Exceptions\Call\VoiceUserAlreadyHaveException;
 use App\Exceptions\Voice\VoiceUserNotFoundException;
 use App\Exceptions\WebUser\WebUserNotFoundException;
 use App\Models\Call\Cagri;
@@ -33,12 +34,20 @@ class VoiceUserService extends AbstractService
      * @return void
      * @throws CallNotFoundException
      * @throws WebUserNotFoundException
+     * @throws VoiceUserAlreadyHaveException
      */
     public function store(Request $request): void
     {
         $call = Cagri::find($request->input('call_id'));
         if (empty($call)) {
             throw new CallNotFoundException();
+        }
+
+        $voiceUser = SesUser::where('cagri_id', $call->id)
+                            ->where('sildurum', Status::PASSIVE)
+                            ->first();
+        if (!empty($voiceUser)) {
+            throw new VoiceUserAlreadyHaveException();
         }
 
         $webUser = WebUser::find($request->input('user_id'));
@@ -91,7 +100,7 @@ class VoiceUserService extends AbstractService
                                        ->whereIn('cagri_id',
                                                  Cagri::select('id')
                                                       ->where('cid', $request->input('call_phone')))
-                      )
+        )
                       ->where('ceptel', '<>', (string)NumericalConstant::ZERO)
                       ->distinct()
                       ->get();

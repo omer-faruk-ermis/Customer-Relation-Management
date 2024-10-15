@@ -36,6 +36,11 @@ class SesUser extends AbstractModel
     protected $fillable = [
         'cagri_id',
         'userid',
+        'eslestiren_id',
+        'eslestiren_ip',
+        'eslesme_tar',
+        'sildurum',
+        'kul_tur',
         'tip'
     ];
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\VoiceUser;
 
 use App\Exceptions\Call\CallNotFoundException;
+use App\Exceptions\Call\VoiceUserAlreadyHaveException;
 use App\Exceptions\ForbiddenException;
 use App\Exceptions\Voice\VoiceUserNotFoundException;
 use App\Exceptions\WebUser\WebUserNotFoundException;
@@ -42,6 +43,7 @@ class VoiceUserController extends Controller
      * @return SuccessResource
      * @throws CallNotFoundException
      * @throws WebUserNotFoundException
+     * @throws VoiceUserAlreadyHaveException
      */
     public function store(StoreVoiceUserRequest $request): SuccessResource
     {
