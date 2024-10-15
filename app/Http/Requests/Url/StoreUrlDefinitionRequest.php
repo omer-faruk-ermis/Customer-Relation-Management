@@ -15,8 +15,8 @@ class StoreUrlDefinitionRequest extends AbstractRequest
         return [
             'url'           => 'required|string',
             'name'          => 'required|string',
-            'menu_id'       => 'required|string',
-            'background_id' => 'required|string',
+            'menu_id'       => 'required|integer',
+            'background_id' => 'required|integer',
             'icon'          => 'sometimes|string',
             'color'         => 'sometimes|string',
         ];

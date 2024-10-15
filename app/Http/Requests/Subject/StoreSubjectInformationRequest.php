@@ -15,8 +15,8 @@ class StoreSubjectInformationRequest extends AbstractRequest
         return [
             'name'          => 'required|string',
             'description'   => 'sometimes|string',
-            'parent_id'     => 'required|string',
-            'use_place_id'  => 'required|string',
+            'parent_id'     => 'required|integer',
+            'use_place_id'  => 'required|integer',
             'user_type_ids' => 'sometimes|string',
         ];
     }

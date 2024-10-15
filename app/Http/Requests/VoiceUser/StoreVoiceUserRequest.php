@@ -13,8 +13,8 @@ class StoreVoiceUserRequest extends AbstractRequest
     public function rules(): array
     {
         return [
-            'call_id' => 'required|string',
-            'user_id' => 'required|string',
+            'call_id' => 'required|integer',
+            'user_id' => 'required|integer',
             'type'    => 'sometimes|integer',
         ];
     }

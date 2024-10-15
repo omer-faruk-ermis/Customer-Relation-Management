@@ -15,8 +15,8 @@ class UpdateUrlDefinitionRequest extends AbstractRequest
         return [
             'url'           => 'required|string',
             'name'          => 'required|string',
-            'menu_id'       => 'sometimes|string',
-            'background_id' => 'sometimes|string',
+            'menu_id'       => 'sometimes|integer',
+            'background_id' => 'sometimes|integer',
             'icon'          => 'sometimes|string',
             'color'         => 'sometimes|string',
         ];

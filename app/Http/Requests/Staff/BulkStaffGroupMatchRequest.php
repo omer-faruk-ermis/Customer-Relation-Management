@@ -17,8 +17,8 @@ class BulkStaffGroupMatchRequest extends StoreStaffGroupMatchRequest
     {
         return [
             'bulk_authorizations'                  => 'required|array',
-            'bulk_authorizations.*.staff_group_id' => 'required|string',
-            'bulk_authorizations.*.staff_id'       => 'required|string',
+            'bulk_authorizations.*.staff_group_id' => 'required|integer',
+            'bulk_authorizations.*.staff_id'       => 'required|integer',
             'bulk_authorizations.*.is_authorized'  => 'required|boolean',
         ];
     }

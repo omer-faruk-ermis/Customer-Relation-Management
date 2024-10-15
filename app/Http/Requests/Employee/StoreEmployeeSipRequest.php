@@ -14,7 +14,7 @@ class StoreEmployeeSipRequest extends AbstractRequest
     {
         return [
             'sip'              => 'sometimes|integer',
-            'employee_id'      => 'sometimes|string',
+            'employee_id'      => 'sometimes|integer',
             'not_send_message' => 'sometimes|boolean',
         ];
     }

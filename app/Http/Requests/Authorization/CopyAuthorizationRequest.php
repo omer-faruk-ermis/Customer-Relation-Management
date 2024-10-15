@@ -13,7 +13,7 @@ class CopyAuthorizationRequest extends AbstractRequest
     public function rules(): array
     {
         return [
-            'employee_id' => 'required|string',
+            'employee_id' => 'required|integer',
             'receiver_id' => 'required|integer',
         ];
     }

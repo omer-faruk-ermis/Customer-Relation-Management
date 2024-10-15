@@ -13,7 +13,7 @@ class UpdateQuestionAnswerRequest extends AbstractRequest
     public function rules(): array
     {
         return [
-            'category_id'       => 'sometimes|string',
+            'category_id'       => 'sometimes|integer',
             'question'          => 'sometimes|string',
             'answer'            => 'sometimes|string',
             'question_keywords' => 'sometimes|string',

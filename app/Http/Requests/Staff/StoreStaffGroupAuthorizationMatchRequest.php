@@ -16,8 +16,8 @@ class StoreStaffGroupAuthorizationMatchRequest extends AbstractRequest
     public function rules(): array
     {
         $extraRules = [
-            'staff_group_id'   => ['string', 'required'],
-            'authorization_id' => ['string', 'required'],
+            'staff_group_id'   => ['integer', 'required'],
+            'authorization_id' => ['integer', 'required'],
             'type'             => ['integer', 'required'],
         ];
 

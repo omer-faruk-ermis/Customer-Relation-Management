@@ -19,7 +19,7 @@ class IndexEmployeeLogRequest extends AbstractRequest
             'min_date'          => 'sometimes|date',
             'log_subject'       => 'sometimes|string',
             'page'              => 'sometimes|integer',
-            'agent'             => 'required|string',
+            'agent'             => 'required|integer',
             'description'       => 'sometimes|string',
             'reason'            => 'sometimes|string',
             'empty_reason'      => 'sometimes|boolean',

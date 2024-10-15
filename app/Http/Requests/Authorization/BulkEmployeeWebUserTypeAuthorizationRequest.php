@@ -18,7 +18,7 @@ class BulkEmployeeWebUserTypeAuthorizationRequest extends AbstractRequest
     {
         return [
             'bulk_authorizations'                 => 'required|array',
-            'bulk_authorizations.*.employee_id'   => 'required|string',
+            'bulk_authorizations.*.employee_id'   => 'required|integer',
             'bulk_authorizations.*.web_user_type' => 'required|integer',
             'bulk_authorizations.*.operator_code' => 'required|integer',
             'bulk_authorizations.*.is_authorized' => 'required|boolean'

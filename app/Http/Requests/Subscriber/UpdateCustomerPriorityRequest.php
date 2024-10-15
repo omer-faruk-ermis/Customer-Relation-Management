@@ -17,7 +17,7 @@ class UpdateCustomerPriorityRequest extends AbstractRequest
             'type'        => 'required|integer|in:' . CustomerPriority::SPECIAL,
             'sip'         => 'sometimes|integer',
             'description' => 'sometimes|string',
-            'web_user_id' => 'required|string'
+            'web_user_id' => 'required|integer'
         ];
     }
 }

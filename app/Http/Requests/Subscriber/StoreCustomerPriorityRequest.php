@@ -17,7 +17,7 @@ class StoreCustomerPriorityRequest extends AbstractRequest
             'type'        => 'required|integer|in:' . implode(',', [CustomerPriority::SPECIAL, CustomerPriority::VIP]),
             'sip'         => 'required|integer',
             'description' => 'sometimes|string',
-            'web_user_id' => 'required|string'
+            'web_user_id' => 'required|integer'
         ];
     }
 }

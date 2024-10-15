@@ -13,7 +13,7 @@ class IndexReasonRequest extends AbstractRequest
     public function rules(): array
     {
         return [
-            'type' => 'sometimes|string',
+            'type' => 'sometimes|integer',
         ];
     }
 }

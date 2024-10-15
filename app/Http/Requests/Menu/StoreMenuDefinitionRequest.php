@@ -17,7 +17,7 @@ class StoreMenuDefinitionRequest extends AbstractRequest
             'path'      => 'sometimes|string',
             'icon'      => 'sometimes|string',
             'color'     => 'sometimes|string',
-            'module_id' => 'required|string',
+            'module_id' => 'required|integer',
         ];
     }
 }

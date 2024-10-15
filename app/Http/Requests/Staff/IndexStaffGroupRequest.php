@@ -13,7 +13,7 @@ class IndexStaffGroupRequest extends AbstractRequest
     public function rules(): array
     {
         return [
-            'employee_id' => 'sometimes|string',
+            'employee_id' => 'sometimes|integer',
         ];
     }
 }

@@ -13,7 +13,7 @@ class IndexSubjectInformationRequest extends AbstractRequest
     public function rules(): array
     {
         return [
-            'use_place_id' => 'required|string',
+            'use_place_id' => 'required|integer',
         ];
     }
 }

@@ -13,7 +13,7 @@ class StoreQuestionAnswerRequest extends AbstractRequest
     public function rules(): array
     {
         return [
-            'category_id'       => 'required|string',
+            'category_id'       => 'required|integer',
             'question'          => 'required|string',
             'answer'            => 'required|string',
             'question_keywords' => 'required|string',

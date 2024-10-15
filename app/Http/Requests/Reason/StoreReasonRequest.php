@@ -14,7 +14,7 @@ class StoreReasonRequest extends AbstractRequest
     {
         return [
             'description' => 'sometimes|string',
-            'parent_id'   => 'sometimes|string',
+            'parent_id'   => 'sometimes|integer',
         ];
     }
 }

@@ -15,7 +15,7 @@ class UpdateEmployeeRequest extends AbstractRequest
         return [
             'full_name'        => 'sometimes|string',
             'login_permission' => 'required|boolean',
-            'unit_id'          => 'sometimes|string',
+            'unit_id'          => 'sometimes|integer',
             'currency_limit'   => 'sometimes|numeric',
             'mobile_phone'     => 'sometimes|string',
             'email'            => 'sometimes|string',

@@ -13,8 +13,8 @@ class StoreStaffGroupMatchRequest extends AbstractRequest
     public function rules(): array
     {
         return [
-            'staff_id'       => 'required|string',
-            'staff_group_id' => 'required|string',
+            'staff_id'       => 'required|integer',
+            'staff_group_id' => 'required|integer',
         ];
     }
 }

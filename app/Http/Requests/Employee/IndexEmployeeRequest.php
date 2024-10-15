@@ -15,8 +15,8 @@ class IndexEmployeeRequest extends AbstractRequest
         return [
             'full_name'        => 'sometimes|string',
             'login_permission' => 'sometimes|boolean',
-            'unit'             => 'sometimes|string',
-            'sip'              => 'sometimes|string',
+            'unit'             => 'sometimes|integer',
+            'sip'              => 'sometimes|integer',
             'currency_limit'   => 'sometimes|numeric',
             'mobile_phone'     => 'sometimes|integer',
             'email'            => 'sometimes|email',

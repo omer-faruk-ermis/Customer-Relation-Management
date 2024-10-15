@@ -13,8 +13,8 @@ class StoreDetailMenuUserRequest extends AbstractRequest
     public function rules(): array
     {
         return [
-            'authorization_id' => 'required|string',
-            'employee_id'      => 'required|string',
+            'authorization_id' => 'required|integer',
+            'employee_id'      => 'required|integer',
         ];
     }
 }

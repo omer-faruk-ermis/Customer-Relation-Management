@@ -15,7 +15,7 @@ class UpdateSubjectInformationRequest extends AbstractRequest
         return [
             'name'          => 'sometimes|string',
             'description'   => 'sometimes|string',
-            'use_place_id'  => 'sometimes|string',
+            'use_place_id'  => 'sometimes|integer',
             'use_state'     => 'sometimes|integer',
             'user_type_ids' => 'sometimes|string',
         ];

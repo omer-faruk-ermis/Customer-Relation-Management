@@ -17,7 +17,7 @@ class UpdateMenuDefinitionRequest extends AbstractRequest
             'path'      => 'sometimes|string',
             'icon'      => 'sometimes|string',
             'color'     => 'sometimes|string',
-            'module_id' => 'sometimes|string',
+            'module_id' => 'sometimes|integer',
         ];
     }
 }
