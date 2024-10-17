@@ -47,6 +47,7 @@ class SmsKimlikBuilder
         $smsKimlik = Arr::add($smsKimlik, 'service_authorizations', $serviceAuthorizations);
         $smsKimlik = Arr::add($smsKimlik, 'yetki_string', $authorizationWithPluck->getAuthorizationString());
         $smsKimlik = Arr::add($smsKimlik, 'module', $modules);
+        $smsKimlik = Arr::add($smsKimlik, 'un_categorized_pages_string', $pages->where('ust_id', 0)->pluck('id'));
 
         return $smsKimlik;
     }

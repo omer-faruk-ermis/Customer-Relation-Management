@@ -352,35 +352,59 @@ class AuthorizationService
 
         $select = [
             $urlTanim->getQualifiedKeyName(),
-            $urlTanim->qualifyColumn('ust_id') . ' as menu_id',
             $urlTanim->qualifyColumn('adi') . ' as name',
             $urlTanim->qualifyColumn('url'),
             $urlTanim->qualifyColumn('icon'),
             $urlTanim->qualifyColumn('color'),
-            $menuTanim->qualifyColumn('menu'),
-            $menuTanim->qualifyColumn('module_id'),
         ];
 
-        return UrlTanim::select(empty($ids)
-                                    ? array_merge($select, [$smsKimlikYetki->qualifyColumn('durum') . ' as main_authorization_state'])
-                                    : $select)
-                       ->join($menuTanim->getTable(),
-                              $urlTanim->qualifyColumn('ust_id'),
-                              '=',
-                              $menuTanim->getQualifiedKeyName())
-                       ->when(empty($ids), function ($qq) use ($smsKimlikYetki, $urlTanim) {
-                           $qq->join($smsKimlikYetki->getTable(),
-                                     $urlTanim->getQualifiedKeyName(),
-                                     '=',
-                                     $smsKimlikYetki->qualifyColumn('url_id'))
-                              ->where($smsKimlikYetki->qualifyColumn('sms_kimlik'), '=', $this->id);
-                       }, function ($qq) use ($ids, $urlTanim) {
-                           $qq->whereIn($urlTanim->getQualifiedKeyName(), $ids);
-                       })
-                       ->where($urlTanim->qualifyColumn('durum'), '=', Status::ACTIVE)
-                       ->where($menuTanim->qualifyColumn('durum'), '=', Status::ACTIVE)
-                       ->orderBy($menuTanim->qualifyColumn('sira'))
-                       ->get();
+        $withCategorizedPages = UrlTanim::select(
+            empty($ids) ? array_merge($select,
+                                      [
+                                          $urlTanim->qualifyColumn('ust_id') . ' as menu_id',
+                                          $smsKimlikYetki->qualifyColumn('durum') . ' as main_authorization_state',
+                                          $menuTanim->qualifyColumn('menu'),
+                                          $menuTanim->qualifyColumn('module_id'),
+                                          $menuTanim->qualifyColumn('sira'),
+                                      ]) : $select)
+                                        ->join($menuTanim->getTable(),
+                                               $urlTanim->qualifyColumn('ust_id'),
+                                               '=',
+                                               $menuTanim->getQualifiedKeyName())
+                                        ->when(empty($ids), function ($qq) use ($smsKimlikYetki, $urlTanim) {
+                                            $qq->join($smsKimlikYetki->getTable(),
+                                                      $urlTanim->getQualifiedKeyName(),
+                                                      '=',
+                                                      $smsKimlikYetki->qualifyColumn('url_id'))
+                                               ->where($smsKimlikYetki->qualifyColumn('sms_kimlik'), '=', $this->id);
+                                        }, function ($qq) use ($ids, $urlTanim) {
+                                            $qq->whereIn($urlTanim->getQualifiedKeyName(), $ids);
+                                        })
+                                        ->where($urlTanim->qualifyColumn('durum'), '=', Status::ACTIVE)
+                                        ->where($menuTanim->qualifyColumn('durum'), '=', Status::ACTIVE);
+
+        $uncategorizedPages = UrlTanim::select(
+            empty($ids) ? array_merge($select,
+                                      [
+                                          DB::raw('0 as menu_id'),
+                                          $smsKimlikYetki->qualifyColumn('durum') . ' as main_authorization_state',
+                                          DB::raw("'Kategorisiz Uygulamalar' as menu"),
+                                          DB::raw('11 as module_id'),
+                                          DB::raw('0 as sira'),
+                                      ]) : $select)
+                                      ->when(empty($ids), function ($qq) use ($smsKimlikYetki, $urlTanim) {
+                                          $qq->join($smsKimlikYetki->getTable(),
+                                                    $urlTanim->getQualifiedKeyName(),
+                                                    '=',
+                                                    $smsKimlikYetki->qualifyColumn('url_id'))
+                                             ->where($smsKimlikYetki->qualifyColumn('sms_kimlik'), '=', $this->id);
+                                      }, function ($qq) use ($ids, $urlTanim) {
+                                          $qq->whereIn($urlTanim->getQualifiedKeyName(), $ids);
+                                      })
+                                      ->where($urlTanim->qualifyColumn('ust_id'), '=', 0)
+                                      ->where($urlTanim->qualifyColumn('durum'), '=', Status::ACTIVE);
+
+        return $withCategorizedPages->union($uncategorizedPages)->get();
     }
 
     /**
