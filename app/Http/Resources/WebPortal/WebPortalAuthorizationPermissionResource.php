@@ -5,7 +5,6 @@ namespace App\Http\Resources\WebPortal;
 use App\Http\Resources\AbstractResource;
 use App\Http\Resources\Employee\EmployeeBasicResource;
 use App\Utils\DateUtil;
-use App\Utils\Security;
 
 /**
  * Class WebPortalAuthorizationPermissionResource

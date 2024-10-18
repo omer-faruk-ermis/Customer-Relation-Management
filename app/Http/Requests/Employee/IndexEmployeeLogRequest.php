@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Employee;
 
 use App\Http\Requests\AbstractRequest;
-use App\Utils\Security;
 
 class IndexEmployeeLogRequest extends AbstractRequest
 {

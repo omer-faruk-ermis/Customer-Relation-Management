@@ -11,7 +11,6 @@ use App\Models\Staff\PersonelGrupYetkiEslestir;
 use App\Services\AbstractService;
 use App\Services\Authorization\AuthorizationService;
 use App\Utils\DateUtil;
-use App\Utils\Security;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;

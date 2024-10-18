@@ -20,7 +20,6 @@ use App\Models\SmsKimlik\SmsKimlik;
 use App\Services\AbstractService;
 use App\Services\Authorization\EmployeeAuthorizationService;
 use App\Services\Log\LogService;
-use App\Utils\Security;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;

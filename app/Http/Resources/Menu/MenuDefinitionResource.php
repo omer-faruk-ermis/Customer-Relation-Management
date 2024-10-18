@@ -4,7 +4,6 @@ namespace App\Http\Resources\Menu;
 
 use App\Http\Resources\AbstractResource;
 use App\Http\Resources\Url\UrlDefinitionCollection;
-use App\Utils\Security;
 
 /**
  * Class MenuDefinitionResource

@@ -11,7 +11,6 @@ use App\Exceptions\Subscriber\SpecialCustomerNotFoundException;
 use App\Models\Subscriber\VipOzelMusteriEslestir;
 use App\Services\AbstractService;
 use App\Utils\DateUtil;
-use App\Utils\Security;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;

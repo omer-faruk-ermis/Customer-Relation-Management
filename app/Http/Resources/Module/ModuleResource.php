@@ -4,7 +4,6 @@ namespace App\Http\Resources\Module;
 
 use App\Http\Resources\AbstractResource;
 use App\Http\Resources\Menu\MenuDefinitionBasicResource;
-use App\Utils\Security;
 
 /**
  * Class ModuleResource

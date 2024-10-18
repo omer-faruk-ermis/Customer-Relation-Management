@@ -4,7 +4,6 @@ namespace App\Http\Resources\Employee;
 
 use App\Http\Resources\AbstractResource;
 use App\Http\Resources\Module\ModuleResource;
-use App\Utils\Security;
 
 /**
  * Class EmployeeResource

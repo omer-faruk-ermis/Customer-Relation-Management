@@ -2,6 +2,7 @@
 
 namespace App\Services\Log;
 
+use App\Constants\WidgetId;
 use App\Enums\DefaultConstant;
 use App\Exceptions\Log\LogReasonRecordNotFoundException;
 use App\Models\Log\SebepLog;
@@ -16,6 +17,11 @@ use Illuminate\Http\Request;
  */
 class LogService extends AbstractService
 {
+    protected array $privateMethods = [
+        'index'             => WidgetId::EMPLOYEE_LOG,
+        'update_reason_log' => WidgetId::EMPLOYEE_LOG
+    ];
+
     /**
      * @param Request  $request
      *
@@ -60,9 +66,9 @@ class LogService extends AbstractService
         }
 
         $reasonLog->update([
-                              'sebep_id' => $request->input('reason_id', $reasonLog->sebep_id),
-                              'aciklama' => $request->input('description', $reasonLog->aciklama),
-                          ]);
+                               'sebep_id' => $request->input('reason_id', $reasonLog->sebep_id),
+                               'aciklama' => $request->input('description', $reasonLog->aciklama),
+                           ]);
 
         return $reasonLog;
     }

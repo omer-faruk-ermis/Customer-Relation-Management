@@ -3,7 +3,6 @@
 namespace App\Http\Resources\Staff;
 
 use App\Http\Resources\AbstractCollection;
-use App\Utils\Security;
 
 /**
  * Class StaffGroupCollection

@@ -5,7 +5,6 @@ namespace App\Http\Resources\DetailMenu;
 use App\Http\Resources\AbstractResource;
 use App\Http\Resources\Employee\EmployeeBasicCollection;
 use App\Utils\DateUtil;
-use App\Utils\Security;
 
 /**
  * Class DetailMenuResource

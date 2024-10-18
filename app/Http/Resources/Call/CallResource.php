@@ -6,7 +6,6 @@ use App\Http\Resources\AbstractResource;
 use App\Http\Resources\Employee\EmployeeResource;
 use App\Http\Resources\VoiceUser\VoiceUserResource;
 use App\Utils\DateUtil;
-use App\Utils\Security;
 use Illuminate\Support\Carbon;
 
 /**

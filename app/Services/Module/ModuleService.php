@@ -8,7 +8,6 @@ use App\Exceptions\Module\ModuleNotFoundException;
 use App\Exceptions\RelationHaveException;
 use App\Models\Module\Module;
 use App\Services\AbstractService;
-use App\Utils\Security;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;

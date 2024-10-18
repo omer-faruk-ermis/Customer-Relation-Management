@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use Illuminate\Support\Facades\Route;
+use App\Constants\Route as ConstantRoute;
 
 /**
  * Class RouteUtil
@@ -35,7 +36,7 @@ final class RouteUtil
         $path = request()->headers->get('Page-Pathname');
 
         $basePaths = [
-            '/panel2/agent/'
+            ConstantRoute::AGENT
         ];
 
         /** Loop through each base path and check if the current path starts with one of them */

@@ -4,7 +4,6 @@ namespace App\Http\Resources\Reason;
 
 use App\Enums\ReasonType;
 use App\Http\Resources\AbstractResource;
-use App\Utils\Security;
 
 /**
  * Class ReasonResource

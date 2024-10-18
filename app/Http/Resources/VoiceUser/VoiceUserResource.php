@@ -5,7 +5,6 @@ namespace App\Http\Resources\VoiceUser;
 use App\Http\Resources\AbstractResource;
 use App\Http\Resources\Employee\EmployeeResource;
 use App\Utils\DateUtil;
-use App\Utils\Security;
 
 /**
  * Class VoiceUserResource

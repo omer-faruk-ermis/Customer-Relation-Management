@@ -2,6 +2,7 @@
 
 namespace App\Services\QuestionAnswer;
 
+use App\Constants\WidgetId;
 use App\Enums\DefaultConstant;
 use App\Enums\NumericalConstant;
 use App\Enums\Status;
@@ -13,7 +14,6 @@ use App\Models\QuestionAnswer\SoruCevap;
 use App\Models\QuestionAnswer\SoruCevapKategori;
 use App\Services\AbstractService;
 use App\Utils\DateUtil;
-use App\Utils\Security;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -23,6 +23,10 @@ use Illuminate\Support\Facades\DB;
  */
 class QuestionAnswerService extends AbstractService
 {
+    protected array $privateMethods = [
+        'index' => WidgetId::QUICKLY_QUESTION_ANSWER
+    ];
+
     /**
      * @param IndexQuestionAnswerRequest  $request
      *

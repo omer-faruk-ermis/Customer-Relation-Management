@@ -2,11 +2,11 @@
 
 namespace App\Services\Reason;
 
+use App\Constants\WidgetId;
 use App\Enums\DefaultConstant;
 use App\Exceptions\Reason\ReasonNotFoundException;
 use App\Models\Sebep\Sebepler;
 use App\Services\AbstractService;
-use App\Utils\Security;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -19,6 +19,10 @@ use Illuminate\Support\Collection;
  */
 class ReasonService extends AbstractService
 {
+    protected array $privateMethods = [
+        'index' => WidgetId::EMPLOYEE_LOG,
+    ];
+
     /**
      * @param Request  $request
      *

@@ -6,7 +6,6 @@ use App\Enums\UserModel;
 use App\Http\Resources\AbstractResource;
 use App\Http\Resources\Dealer\DealerResource;
 use App\Http\Resources\Subscriber\SubscriberNoResource;
-use App\Utils\Security;
 
 /**
  * Class WebUserResource

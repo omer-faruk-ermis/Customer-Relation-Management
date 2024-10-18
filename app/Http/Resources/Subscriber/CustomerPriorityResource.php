@@ -5,7 +5,6 @@ namespace App\Http\Resources\Subscriber;
 use App\Http\Resources\AbstractResource;
 use App\Http\Resources\Employee\EmployeeSipResource;
 use App\Http\Resources\WebUser\WebUserResource;
-use App\Utils\Security;
 
 /**
  * Class CustomerPriorityResource

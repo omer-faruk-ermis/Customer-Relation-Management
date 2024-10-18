@@ -2,6 +2,7 @@
 
 namespace App\Services\WebUser;
 
+use App\Constants\WidgetId;
 use App\Enums\DefaultConstant;
 use App\Exceptions\WebUser\WebUserNotFoundException;
 use App\Models\Subscriber\AboneNo;
@@ -9,7 +10,6 @@ use App\Models\Subscriber\AboneNoThk;
 use App\Models\WebUser\WebUser;
 use App\Models\WebUser\WebUserKullaniciTipleri;
 use App\Services\AbstractService;
-use App\Utils\Security;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +21,11 @@ use Illuminate\Support\Facades\DB;
  */
 class WebUserService extends AbstractService
 {
+    protected array $privateMethods = [
+        'index' => WidgetId::GENERAL_SEARCH,
+        'type'  => WidgetId::GENERAL_SEARCH
+    ];
+
     /**
      * @param Request  $request
      *

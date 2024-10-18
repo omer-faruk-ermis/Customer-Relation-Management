@@ -5,7 +5,6 @@ namespace App\Http\Resources\Url;
 use App\Enums\Status;
 use App\Http\Resources\AbstractCollection;
 use App\Services\Authorization\AuthorizationService;
-use App\Utils\Security;
 
 /**
  * Class UrlDefinitionCollection

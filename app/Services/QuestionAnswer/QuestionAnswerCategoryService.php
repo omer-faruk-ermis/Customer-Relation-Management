@@ -2,6 +2,7 @@
 
 namespace App\Services\QuestionAnswer;
 
+use App\Constants\WidgetId;
 use App\Enums\Status;
 use App\Exceptions\QuestionAnswer\QuestionAnswerCategoryNotFoundException;
 use App\Http\Requests\QuestionAnswerCategory\IndexQuestionAnswerCategoryRequest;
@@ -9,7 +10,6 @@ use App\Http\Requests\QuestionAnswerCategory\StoreQuestionAnswerCategoryRequest;
 use App\Http\Requests\QuestionAnswerCategory\UpdateQuestionAnswerCategoryRequest;
 use App\Models\QuestionAnswer\SoruCevapKategori;
 use App\Services\AbstractService;
-use App\Utils\Security;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -20,6 +20,10 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class QuestionAnswerCategoryService extends AbstractService
 {
+    protected array $privateMethods = [
+        'index' => WidgetId::QUICKLY_QUESTION_ANSWER
+    ];
+
     /**
      * @param IndexQuestionAnswerCategoryRequest  $request
      *

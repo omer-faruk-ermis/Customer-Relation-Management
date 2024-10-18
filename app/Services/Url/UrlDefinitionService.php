@@ -10,7 +10,6 @@ use App\Exceptions\Url\UrlDefinitionNotFoundException;
 use App\Models\Url\UrlTanim;
 use App\Services\AbstractService;
 use App\Utils\DateUtil;
-use App\Utils\Security;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;

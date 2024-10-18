@@ -4,9 +4,7 @@ namespace App\Http\Resources\Staff;
 
 use App\Http\Resources\AbstractResource;
 use App\Http\Resources\Employee\EmployeeBasicResource;
-use App\Http\Resources\Employee\EmployeeResource;
 use App\Utils\DateUtil;
-use App\Utils\Security;
 
 /**
  * Class StaffGroupMatchResource

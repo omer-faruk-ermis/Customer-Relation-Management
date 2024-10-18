@@ -3,7 +3,6 @@
 namespace App\Http\Resources\Reason;
 
 use App\Http\Resources\AbstractResource;
-use App\Utils\Security;
 
 /**
  * Class ReasonWantedResource

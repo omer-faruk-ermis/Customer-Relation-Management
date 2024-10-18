@@ -7,7 +7,6 @@ use App\Http\Resources\Employee\EmployeeResource;
 use App\Http\Resources\Reason\ReasonWantedResource;
 use App\Http\Resources\WebUser\WebUserResource;
 use App\Utils\DateUtil;
-use App\Utils\Security;
 
 /**
  * Class LogResource

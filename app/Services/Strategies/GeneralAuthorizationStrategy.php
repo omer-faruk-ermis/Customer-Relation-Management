@@ -2,11 +2,11 @@
 
 namespace App\Services\Strategies;
 
-use App\Enums\Authorization\Authorization;
+use App\Constants\Route;
 use App\Enums\Authorization\AuthorizationTypeName;
 use App\Exceptions\ForbiddenException;
+use App\Utils\RouteUtil;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 
 class GeneralAuthorizationStrategy implements PermissionStrategy
 {
@@ -29,19 +29,22 @@ class GeneralAuthorizationStrategy implements PermissionStrategy
      */
     public function check(Request $request, array $authorizationIds, array $authorizations): bool
     {
-        if (in_array($this->method, $this->privateMethods)) {
-            if (Arr::get($authorizations, AuthorizationTypeName::AUTHORIZATION) && !empty($authorizationIds)) {
-                if (Authorization::hasValues(Arr::get($authorizations, AuthorizationTypeName::AUTHORIZATION))
-                    && !empty(array_intersect($authorizations[AuthorizationTypeName::AUTHORIZATION], $authorizationIds[AuthorizationTypeName::AUTHORIZATION]))) {
+        if (RouteUtil::currentPath() !== Route::WIDGET) {
+            return true;
+        }
+
+        if (in_array($this->method, array_keys($this->privateMethods))) {
+            if (!empty($authorizationIds)) {
+                if (!empty(array_intersect($authorizationIds[AuthorizationTypeName::AUTHORIZATION], [$this->privateMethods[$this->method]]))) {
                     return true;
                 }
 
                 throw new ForbiddenException();
             }
 
-            return true;
+            throw new ForbiddenException();
         }
 
-        return true;
+        throw new ForbiddenException();
     }
 }

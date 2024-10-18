@@ -4,7 +4,6 @@ namespace App\Http\Resources\Subject;
 
 use App\Http\Resources\AbstractResource;
 use App\Http\Resources\Employee\EmployeeBasicResource;
-use App\Utils\Security;
 
 /**
  * Class SubjectInformationResource

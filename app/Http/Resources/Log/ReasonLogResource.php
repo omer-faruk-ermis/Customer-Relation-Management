@@ -5,7 +5,6 @@ namespace App\Http\Resources\Log;
 use App\Http\Resources\AbstractResource;
 use App\Http\Resources\Reason\ReasonResource;
 use App\Utils\DateUtil;
-use App\Utils\Security;
 
 /**
  * Class ReasonLogResource

@@ -4,7 +4,6 @@ namespace App\Http\Resources\DetailMenu;
 
 use App\Http\Resources\AbstractCollection;
 use App\Services\Authorization\AuthorizationService;
-use App\Utils\Security;
 
 /**
  * Class DetailMenuCollection

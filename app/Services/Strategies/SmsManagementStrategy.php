@@ -2,6 +2,7 @@
 
 namespace App\Services\Strategies;
 
+use App\Constants\Route;
 use App\Enums\Authorization\AuthorizationTypeName;
 use App\Exceptions\ForbiddenException;
 use App\Models\Url\UrlTanim;
@@ -20,20 +21,22 @@ class SmsManagementStrategy implements PermissionStrategy
      */
     public function check(Request $request, array $authorizationIds, array $authorizations): bool
     {
+        if (RouteUtil::currentPath() === Route::WIDGET) {
+            return true;
+        }
+
         if (!empty($authorizations) && !empty($authorizationIds)) {
+
             if (!empty(array_intersect($authorizations, $authorizationIds[AuthorizationTypeName::SMS_MANAGEMENT]))) {
                 if (!empty(RouteUtil::currentPath()) &&
                     !empty(array_intersect(UrlTanim::where('url', RouteUtil::currentPath())->whereIn('id', $authorizations)->pluck('id')->toArray(),
                                            $authorizationIds[AuthorizationTypeName::SMS_MANAGEMENT]))) {
                     return true;
                 }
-                return true;
-             //   throw new ForbiddenException();
+                throw new ForbiddenException();
             }
-            return true;
-           // throw new ForbiddenException();
+            throw new ForbiddenException();
         }
-        return true;
-      //  throw new ForbiddenException();
+        throw new ForbiddenException();
     }
 }

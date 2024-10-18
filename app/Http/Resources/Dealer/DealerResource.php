@@ -4,7 +4,6 @@ namespace App\Http\Resources\Dealer;
 
 use App\Http\Resources\AbstractResource;
 use App\Http\Resources\WebUser\WebUserTypeResource;
-use App\Utils\Security;
 
 /**
  * Class DealerResource

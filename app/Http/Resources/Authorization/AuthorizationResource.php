@@ -4,7 +4,6 @@ namespace App\Http\Resources\Authorization;
 
 use App\Http\Resources\AbstractResource;
 use App\Http\Resources\Employee\EmployeeBasicResource;
-use App\Utils\Security;
 
 /**
  * Class StaffGroupAuthorizationMatchResource

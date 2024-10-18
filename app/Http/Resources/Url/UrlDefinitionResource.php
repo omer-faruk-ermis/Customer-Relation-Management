@@ -5,7 +5,6 @@ namespace App\Http\Resources\Url;
 use App\Http\Resources\AbstractResource;
 use App\Http\Resources\Employee\EmployeeBasicResource;
 use App\Http\Resources\Menu\MenuDefinitionResource;
-use App\Utils\Security;
 
 /**
  * Class UrlDefinitionResource

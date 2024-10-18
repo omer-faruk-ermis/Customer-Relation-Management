@@ -8,7 +8,6 @@ use App\Http\Requests\Employee\IndexEmployeeSipRequest;
 use App\Http\Requests\Employee\StoreEmployeeSipRequest;
 use App\Models\SmsKimlik\SmsKimlikSip;
 use App\Services\AbstractService;
-use App\Utils\Security;
 use Exception;
 use Illuminate\Support\Collection;
 

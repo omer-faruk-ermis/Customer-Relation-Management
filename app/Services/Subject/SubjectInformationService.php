@@ -8,7 +8,6 @@ use App\Exceptions\Subject\SubjectInformationNotFoundException;
 use App\Models\Subject\KonuBilgi;
 use App\Services\AbstractService;
 use App\Utils\DateUtil;
-use App\Utils\Security;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
