@@ -124,11 +124,11 @@ class WebUser extends AbstractModel
     public function getAgreementTypeAttribute(): string|null
     {
         if ($this->sozlesme == Status::ACTIVE) {
-            return AgreementType::ACTIVE;
+            return AgreementType::all()[1]->label;
         } elseif ($this->sozlesme == Status::PASSIVE && is_null($this->sozlesme_tarih)) {
-            return AgreementType::MEMBER;
+            return AgreementType::all()[2]->label;
         } elseif ($this->sozlesme == Status::PASSIVE && !is_null($this->sozlesme_tarih)) {
-            return AgreementType::PASSIVE;
+            return AgreementType::all()[0]->label;
         }
 
         return null;
@@ -139,17 +139,13 @@ class WebUser extends AbstractModel
      */
     public function getUserModelAttribute(): array
     {
-        // Mevcut rolleri kontrol edip diziyi filtreleyin
         $userModel = array_filter([
-                                      UserModel::VIP        => $this->whenLoaded(UserModel::VIP),
-                                      UserModel::PILOT      => $this->whenLoaded(UserModel::PILOT),
-                                      UserModel::SPECIAL    => $this->whenLoaded(UserModel::SPECIAL),
-                                      UserModel::SUBSCRIBER => $this->whenLoaded(UserModel::SUBSCRIBER),
-                                      UserModel::DEALER     => $this->whenLoaded(UserModel::DEALER),
+                                      UserModel::VIP     => $this->whenLoaded(UserModel::VIP),
+                                      UserModel::PILOT   => $this->whenLoaded(UserModel::PILOT),
+                                      UserModel::SPECIAL => $this->whenLoaded(UserModel::SPECIAL),
                                   ]);
 
-        // Eğer `$userModel` boşsa, NORMAL rolünü ekleyin
-        return empty($userModel) ? [UserModel::NORMAL] : array_keys($userModel);
+        return array_keys($userModel);
     }
 
     /**

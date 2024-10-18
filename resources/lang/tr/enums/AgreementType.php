@@ -2,6 +2,11 @@
 
 return [
 
+    'all' => [
+        'label'       => 'Tümü',
+        'description' => '',
+    ],
+
     'member' => [
         'label'       => 'Üye',
         'description' => '',

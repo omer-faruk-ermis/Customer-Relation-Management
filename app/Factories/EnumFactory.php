@@ -10,6 +10,7 @@ use App\Enums\Call\PairStatus;
 use App\Enums\CustomerPriority;
 use App\Enums\MeetingTypeSpecies;
 use App\Enums\ReasonType;
+use App\Enums\SearchLocation;
 use App\Enums\Status;
 use App\Enums\UserModel;
 use App\Enums\UserType;
@@ -38,6 +39,7 @@ class EnumFactory
         'user_model'           => UserModel::class,
         'agreement_type'       => AgreementType::class,
         'user_use_type'        => UserUseType::class,
+        'search_location'      => SearchLocation::class,
     ];
 
     /**
