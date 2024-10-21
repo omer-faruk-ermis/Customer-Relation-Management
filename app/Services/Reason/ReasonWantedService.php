@@ -22,6 +22,9 @@ class ReasonWantedService extends AbstractService
      */
     public function index(Request $request): Collection
     {
-        return SebepIstenecekler::limit(DefaultConstant::SEARCH_LIST_LIMIT)->get();
+        return SebepIstenecekler::whereNotNull('ifade')
+                                ->whereNot('ifade', '=', "")
+                                ->limit(DefaultConstant::SEARCH_LIST_LIMIT)
+                                ->get();
     }
 }
