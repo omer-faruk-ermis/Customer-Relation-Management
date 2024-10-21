@@ -21,7 +21,7 @@ class SmsManagementStrategy implements PermissionStrategy
      */
     public function check(Request $request, array $authorizationIds, array $authorizations): bool
     {
-        if (RouteUtil::currentPath() === Route::WIDGET) {
+        if (RouteUtil::currentPath() === Route::WIDGET || RouteUtil::currentPath() === Route::WIDGET_WITH_SLASH) {
             return true;
         }
 
