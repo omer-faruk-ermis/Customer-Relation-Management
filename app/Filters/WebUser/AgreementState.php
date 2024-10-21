@@ -9,16 +9,16 @@ class AgreementState
     public function apply($query, $value): void
     {
         $query
-            ->when(AgreementType::ACTIVE === $value, function ($q) use ($value) {
-                return $q->where('sozlesme', '=', $value);
+            ->when(AgreementType::ACTIVE == $value, function ($q) use ($value) {
+                return $q->where('sozlesme', '=', AgreementType::ACTIVE);
             })
-            ->when(AgreementType::PASSIVE === $value, function ($q) use ($value) {
-                return $q->where('sozlesme', '=', $value)
-                         ->whereNotNull('sozlesme_tarih');
-            })
-            ->when(AgreementType::MEMBER === $value, function ($q) use ($value) {
-                return $q->where('sozlesme', '=', $value)
+            ->when(AgreementType::MEMBER == $value, function ($q) use ($value) {
+                return $q->where('sozlesme', '=', AgreementType::PASSIVE)
                          ->whereNull('sozlesme_tarih');
+            })
+            ->when(AgreementType::PASSIVE == $value, function ($q) use ($value) {
+                return $q->where('sozlesme', '=', AgreementType::PASSIVE)
+                         ->whereNotNull('sozlesme_tarih');
             });
     }
 }

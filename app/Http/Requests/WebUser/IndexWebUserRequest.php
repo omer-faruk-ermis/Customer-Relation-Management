@@ -11,7 +11,16 @@ class IndexWebUserRequest extends FormRequest
         return [
             'location'        => 'sometimes|string',
             'user_type'       => 'sometimes|string',
-            'agreement_state' => 'sometimes|boolean',
+            'agreement_state' => [
+                'sometimes',
+                'string',
+                'in:0,1,2,*',
+                function ($attribute, $value) {
+                    if ($value == '*') {
+                        $this->request->remove($attribute);
+                    }
+                },
+            ],
         ];
     }
 }
