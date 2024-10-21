@@ -79,7 +79,7 @@ class WebUserService extends AbstractService
 
 
         return $request->input('page')
-            ? $webUser->paginate(DefaultConstant::PAGINATE)
+            ? $webUser->paginate(DefaultConstant::PAGINATE_FOR_MODAL)
             : $webUser->limit(DefaultConstant::SEARCH_LIST_LIMIT)->get();
     }
 

@@ -9,6 +9,7 @@ class DefaultConstant extends AbstractEnum
     const DATE_YMD_LINK_FORMAT = 'Y/m/d';
     const SEARCH_LIST_LIMIT = 100;
     const PAGINATE = 25;
+    const PAGINATE_FOR_MODAL = 8;
     const CACHE_ONE_DAY = 86400;
     const MIN_PASSWORD_LENGTH = 8;
     const ALL_COLUMN = '*';
