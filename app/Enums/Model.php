@@ -12,4 +12,5 @@ class Model extends AbstractEnum
     const URL_DEFINITION = 'UrlTanim';
     const REASON = 'Sebepler';
     const CUSTOMER_PRIORITY_MATCH = 'VipOzelMusteriEslestir';
+    const WEB_USER = 'WebUser';
 }

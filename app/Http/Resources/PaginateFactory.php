@@ -11,6 +11,7 @@ use App\Http\Resources\Reason\ReasonResource;
 use App\Http\Resources\Staff\StaffGroupResource;
 use App\Http\Resources\Subscriber\CustomerPriorityResource;
 use App\Http\Resources\Url\UrlDefinitionResource;
+use App\Http\Resources\WebUser\WebUserResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -35,6 +36,7 @@ class PaginateFactory
                 Model::URL_DEFINITION          => UrlDefinitionResource::class,
                 Model::REASON                  => ReasonResource::class,
                 Model::CUSTOMER_PRIORITY_MATCH => CustomerPriorityResource::class,
+                Model::WEB_USER                => WebUserResource::class,
             ];
 
             $resourceClass = $resourceList[class_basename($data->first())] ?? null;

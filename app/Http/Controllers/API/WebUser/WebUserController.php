@@ -7,6 +7,7 @@ use App\Exceptions\WebUser\WebUserNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\WebUser\IndexWebUserRequest;
 use App\Http\Requests\WebUser\IndexWebUserTypeRequest;
+use App\Http\Resources\PaginationResource;
 use App\Http\Resources\WebUser\WebUserCollection;
 use App\Http\Resources\WebUser\WebUserResource;
 use App\Http\Resources\WebUser\WebUserTypeCollection;
@@ -36,13 +37,15 @@ class WebUserController extends Controller
     /**
      * @param IndexWebUserRequest  $request
      *
-     * @return WebUserCollection
+     * @return WebUserCollection|PaginationResource
      */
-    public function index(IndexWebUserRequest $request): WebUserCollection
+    public function index(IndexWebUserRequest $request): WebUserCollection|PaginationResource
     {
         $webUsers = $this->webUserService->index($request);
 
-        return new WebUserCollection($webUsers, __('messages.' . self::class . '.INDEX'));
+        return $request->input('page')
+            ? new PaginationResource($webUsers, __('messages.' . self::class . '.INDEX'))
+            : new WebUserCollection($webUsers, __('messages.' . self::class . '.INDEX'));
     }
 
     /**
