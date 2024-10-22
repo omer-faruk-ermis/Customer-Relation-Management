@@ -49,6 +49,8 @@ class ReasonService extends AbstractService
         Sebepler::create([
                              'aciklama' => $request->input('description'),
                              'ust_id'   => $request->input('parent_id', DefaultConstant::HAVE_NOT_REASON_WANTED),
+                             'created_at' => now(),
+                             'updated_at' => now(),
                          ]);
     }
 
@@ -70,6 +72,7 @@ class ReasonService extends AbstractService
         $reason->update([
                             'aciklama' => $request->input('description', $reason->aciklama),
                             'ust_id'   => $request->input('parent_id', $reason->ust_id),
+                            'updated_at' => now(),
                         ]);
 
         return $reason;
