@@ -47,6 +47,7 @@ class SmsKimlik extends AbstractSmsKimlik
     protected $table = 'kaynaksms.dbo.sms_kimlik';
 
     protected $fillable = [
+        'id',
         'ad_soyad',
         'sifre',
         'loginpage',

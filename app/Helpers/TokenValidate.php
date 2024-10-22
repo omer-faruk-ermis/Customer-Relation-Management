@@ -2,16 +2,20 @@
 
 namespace App\Helpers;
 
+use App\Builder\SmsKimlikBuilder;
 use App\Enums\RegexPattern;
+use App\Enums\Url\ExcludeRoute;
 use App\Exceptions\Token\InvalidTokenException;
 use App\Exceptions\Token\InvalidTokenFormatException;
 use Exception;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
 class TokenValidate
 {
     /**
      * @param $token
+     *
      * @return void
      * @throws Exception
      */
@@ -24,11 +28,16 @@ class TokenValidate
         $sms_kimlik = Cache::get("sms_kimlik_$token");
         $sms_kimlik_password = Cache::get("sms_kimlik_password_$token");
 
-        if (empty($sms_kimlik) && empty($sms_kimlik_password)) {
+        if (empty($sms_kimlik)) {
             throw new InvalidTokenException();
         }
 
-        if (!empty($sms_kimlik) && $sms_kimlik['netgsmsessionid'] !== $token) {
+        if (Arr::get(Request()->server->all(), 'PATH_INFO') == ExcludeRoute::FORGOT_PASSWORD
+            && empty($sms_kimlik_password)) {
+            throw new InvalidTokenException();
+        }
+
+        if ($sms_kimlik['netgsmsessionid'] !== $token) {
             throw new InvalidTokenException();
         }
 

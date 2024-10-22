@@ -6,6 +6,7 @@ use App\Enums\Url\ExcludeRoute;
 use App\Exceptions\Auth\NotLoginException;
 use App\Helpers\CacheOperation;
 use App\Helpers\TokenValidate;
+use App\Models\SmsKimlik\SmsKimlik;
 use Closure;
 use Illuminate\Http\Request;
 use Exception;
@@ -76,10 +77,12 @@ class AuthWithTokenMiddleware
     private function authCheck(string $token): void
     {
         if (!empty(Cache::get("sms_kimlik_$token"))) {
-            Auth::login(Cache::get("sms_kimlik_$token"));
+            Auth::login(new SmsKimlik(Cache::get("sms_kimlik_$token")));
+            Cache::put("login_$token", Cache::get("sms_kimlik_$token"));
         } else {
             CacheOperation::refreshEmployeeSession($token);
-            Auth::login(Cache::get("sms_kimlik_$token"));
+            Auth::login(new SmsKimlik(Cache::get("sms_kimlik_$token")));
+            Cache::put("login_$token", Cache::get("sms_kimlik_$token"));
         }
     }
 }

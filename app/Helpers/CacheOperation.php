@@ -77,6 +77,6 @@ class CacheOperation
             throw new NotLoginException();
         }
 
-        Cache::put("sms_kimlik_$token", new SmsKimlik(ArrayUtil::castArray($redisEmployee)));
+        Cache::put("sms_kimlik_$token", ArrayUtil::castArray($redisEmployee));
     }
 }
