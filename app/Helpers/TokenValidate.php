@@ -2,7 +2,6 @@
 
 namespace App\Helpers;
 
-use App\Builder\SmsKimlikBuilder;
 use App\Enums\RegexPattern;
 use App\Enums\Url\ExcludeRoute;
 use App\Exceptions\Token\InvalidTokenException;

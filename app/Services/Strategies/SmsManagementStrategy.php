@@ -26,7 +26,6 @@ class SmsManagementStrategy implements PermissionStrategy
         }
 
         if (!empty($authorizations) && !empty($authorizationIds)) {
-
             if (!empty(array_intersect($authorizations, $authorizationIds[AuthorizationTypeName::SMS_MANAGEMENT]))) {
                 if (!empty(RouteUtil::currentPath()) &&
                     !empty(array_intersect(UrlTanim::where('url', RouteUtil::currentPath())->whereIn('id', $authorizations)->pluck('id')->toArray(),

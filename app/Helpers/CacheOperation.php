@@ -59,20 +59,20 @@ class CacheOperation
         $netgsmsessionid = $request->bearerToken();
         if (empty(Cache::get("login_$netgsmsessionid"))) {
             if (empty(Redis::connection('prod')->get("yonetimsession:$netgsmsessionid"))) {
-                throw new NotLoginException();
+                TokenValidate::handle($netgsmsessionid);
+                $sms_kimlik = SmsKimlikBuilder::handle(Cache::get("sms_kimlik_$netgsmsessionid"), $netgsmsessionid);
+
+                Cache::put("sms_kimlik_$netgsmsessionid", $sms_kimlik);
+                Redis::connection('prod')->set("yonetimsession:$netgsmsessionid", json_encode(Arr::except($sms_kimlik, ['unit', 'sip']), JSON_UNESCAPED_UNICODE));
+                Redis::connection('prod')->command('EXPIRE', ["yonetimsession:$netgsmsessionid", DefaultConstant::CACHE_ONE_DAY]);
+
+                return $sms_kimlik;
             } else {
                 throw new LoginAlreadyException();
             }
         }
 
-        TokenValidate::handle($netgsmsessionid);
-        $sms_kimlik = SmsKimlikBuilder::handle(Cache::get("sms_kimlik_$netgsmsessionid"), $netgsmsessionid);
-
-        Cache::put("sms_kimlik_$netgsmsessionid", $sms_kimlik);
-        Redis::connection('prod')->set("yonetimsession:$netgsmsessionid", json_encode(Arr::except($sms_kimlik, ['unit', 'sip']), JSON_UNESCAPED_UNICODE));
-        Redis::connection('prod')->command('EXPIRE', ["yonetimsession:$netgsmsessionid", DefaultConstant::CACHE_ONE_DAY]);
-
-        return $sms_kimlik;
+        throw new LoginAlreadyException();
     }
 
     /**
