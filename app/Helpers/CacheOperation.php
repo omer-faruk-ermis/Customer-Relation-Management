@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Builder\SmsKimlikBuilder;
 use App\Enums\DefaultConstant;
+use App\Exceptions\Auth\LoginAlreadyException;
 use App\Exceptions\Auth\NotLoginException;
 use App\Models\SmsKimlik\SmsKimlik;
 use App\Utils\ArrayUtil;
@@ -17,6 +18,7 @@ class CacheOperation
 {
     /**
      * @param $token
+     *
      * @return void
      * @throws Exception
      */
@@ -35,6 +37,7 @@ class CacheOperation
 
     /**
      * @param $token
+     *
      * @return void
      * @throws Exception
      */
@@ -53,12 +56,20 @@ class CacheOperation
      */
     public static function setSession($request): SmsKimlik
     {
-        TokenValidate::handle($request->bearerToken());
         $netgsmsessionid = $request->bearerToken();
-        $sms_kimlik = SmsKimlikBuilder::handle(Cache::get("sms_kimlik_$netgsmsessionid"));
+        if (empty(Cache::get("login_$netgsmsessionid"))) {
+            if (empty(Redis::connection('prod')->get("yonetimsession:$netgsmsessionid"))) {
+                throw new NotLoginException();
+            } else {
+                throw new LoginAlreadyException();
+            }
+        }
+
+        TokenValidate::handle($netgsmsessionid);
+        $sms_kimlik = SmsKimlikBuilder::handle(Cache::get("sms_kimlik_$netgsmsessionid"), $netgsmsessionid);
 
         Cache::put("sms_kimlik_$netgsmsessionid", $sms_kimlik);
-        Redis::connection('prod')->set("yonetimsession:$netgsmsessionid", json_encode(Arr::except($sms_kimlik, ['unit','sip']),JSON_UNESCAPED_UNICODE));
+        Redis::connection('prod')->set("yonetimsession:$netgsmsessionid", json_encode(Arr::except($sms_kimlik, ['unit', 'sip']), JSON_UNESCAPED_UNICODE));
         Redis::connection('prod')->command('EXPIRE', ["yonetimsession:$netgsmsessionid", DefaultConstant::CACHE_ONE_DAY]);
 
         return $sms_kimlik;

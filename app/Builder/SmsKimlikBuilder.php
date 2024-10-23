@@ -17,10 +17,11 @@ class SmsKimlikBuilder
     /**
      * @param $smsKimlik ,
      *
+     * @param string     $token
      *
      * @return SmsKimlik
      */
-    public static function handle($smsKimlik): SmsKimlik
+    public static function handle($smsKimlik, string $token): SmsKimlik
     {
         $authorization = (new AuthorizationService($smsKimlik['id']));
         $authorizationWithPluck = (new AuthorizationService($smsKimlik['id'], true));
@@ -35,11 +36,14 @@ class SmsKimlikBuilder
         Arr::forget($smsKimlik, 'yetki_string');
         Arr::forget($smsKimlik, 'module');
 
+        $sip = Arr::get(Arr::get($smsKimlik, 'sip')?->first(), 'sip_id', Arr::get($smsKimlik, 'sip_id'));
+
         $smsKimlik = Arr::add($smsKimlik, 'dbname', getenv('DSN'));
         $smsKimlik = Arr::add($smsKimlik, 'sms_kimlik', $smsKimlik['id']);
         $smsKimlik = Arr::add($smsKimlik, 'personelkimlik', $smsKimlik['id']);
-        $smsKimlik = Arr::add($smsKimlik, 'sipid', $smsKimlik['sip'][0]['sip_id']);
+        $smsKimlik = Arr::add($smsKimlik, 'sipid', $sip);
         $smsKimlik = Arr::add($smsKimlik, 'user_authenticated', 540);
+        $smsKimlik = Arr::add($smsKimlik, 'netgsmsessionid', $token);
 
         $smsKimlik = Arr::add($smsKimlik, 'authorizations', $authorization->getAuthorizations());
         // TODO: authorizations kaldırılacak, process_authorizations, module altına geçirilecek.
@@ -49,7 +53,7 @@ class SmsKimlikBuilder
         $smsKimlik = Arr::add($smsKimlik, 'module', $modules);
         $smsKimlik = Arr::add($smsKimlik, 'un_categorized_pages_string', $pages->where('ust_id', 0)->pluck('id'));
 
-        return $smsKimlik;
+        return is_array($smsKimlik) ? new SmsKimlik($smsKimlik) : $smsKimlik;
     }
 
     /**

@@ -63,7 +63,8 @@ return [
     ],
 
     YetkiController::class => [
-        'COPY' => 'Personel yetkisi kopyalandı.',
+        'COPY'                  => 'Personel yetkisi kopyalandı.',
+        'REFRESH_AUTHORIZATION' => 'Personel yetkileri güncellendi.',
     ],
 
     CagriController::class => [

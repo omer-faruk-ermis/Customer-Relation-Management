@@ -62,10 +62,6 @@ class AuthWithTokenMiddleware
         self::authCheck($token);
         TokenValidate::handle($token);
 
-        if (!Cache::get("login_$token")) {
-            throw new NotLoginException();
-        }
-
         return $next($request);
     }
 
@@ -77,19 +73,11 @@ class AuthWithTokenMiddleware
      */
     private function authCheck(string $token): void
     {
-        if (!empty(Cache::get("sms_kimlik_$token"))) {
-
-            try {
-                Auth::login(new SmsKimlik(Cache::get("sms_kimlik_$token")));
-            } catch (TypeError $e) {
-                Auth::login(Cache::get("sms_kimlik_$token"));
-            }
-
-            Cache::put("login_$token", Cache::get("sms_kimlik_$token"));
-        } else {
-            CacheOperation::refreshEmployeeSession($token);
+        CacheOperation::refreshEmployeeSession($token);
+        try {
             Auth::login(new SmsKimlik(Cache::get("sms_kimlik_$token")));
-            Cache::put("login_$token", Cache::get("sms_kimlik_$token"));
+        } catch (TypeError $e) {
+            Auth::login(Cache::get("sms_kimlik_$token"));
         }
     }
 }

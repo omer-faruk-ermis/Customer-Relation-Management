@@ -4,6 +4,7 @@ use App\Enums\DefaultConstant;
 use App\Exceptions\Auth\AgainPasswordException;
 use App\Exceptions\Auth\AuthInformationException;
 use App\Exceptions\Auth\InvalidPasswordFormatException;
+use App\Exceptions\Auth\LoginAlreadyException;
 use App\Exceptions\Auth\NotLoginException;
 use App\Exceptions\Auth\OldPasswordException;
 use App\Exceptions\Auth\PasswordLengthException;
@@ -65,6 +66,7 @@ return [
     AuthInformationException::class                             => 'Mail veya şifre bilgisi hatalı!',
     InvalidPasswordFormatException::class                       => 'Geçersiz Şifre Formatı!',
     NotLoginException::class                                    => 'Henüz oturum açılmadı!',
+    LoginAlreadyException::class                                => 'Oturum açılması zaten onaylandı!',
     OldPasswordException::class                                 => 'Eski şifreniz ile girilen eski şifre bilgisi uyuşmamaktadır.',
     PasswordLengthException::class                              => "Şifre minimum " . DefaultConstant::MIN_PASSWORD_LENGTH . "karakter uzunluğunda olmalıdır.",
     SessionTimeOutException::class                              => 'Oturum süresi doldu!',
