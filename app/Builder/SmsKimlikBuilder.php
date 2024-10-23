@@ -53,7 +53,7 @@ class SmsKimlikBuilder
         $smsKimlik = Arr::add($smsKimlik, 'module', $modules);
         $smsKimlik = Arr::add($smsKimlik, 'un_categorized_pages_string', $pages->where('ust_id', 0)->pluck('id'));
 
-        return is_array($smsKimlik) ? new SmsKimlik($smsKimlik) : $smsKimlik;
+        return $smsKimlik;
     }
 
     /**
