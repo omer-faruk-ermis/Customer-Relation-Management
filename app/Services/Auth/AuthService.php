@@ -88,7 +88,6 @@ class AuthService
         }
 
         if (empty(Redis::connection('prod')->get("yonetimsession:$netgsmsessionid"))) {
-            echo 3;
             return CacheOperation::setSession($request)->load('sip', 'unit');
         }
 
