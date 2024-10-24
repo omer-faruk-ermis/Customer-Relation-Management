@@ -51,7 +51,7 @@ class SubjectInformationService extends AbstractService
                               'ad'       => $request->input('name'),
                               'aciklama' => $request->input('description'),
 
-                              'tip'            => KonuBilgi::find($request->input('parent_id'))->tip + 1,
+                              'tip'            => ($request->input('parent_id') > DefaultConstant::PARENT ? KonuBilgi::find($request->input('parent_id'))?->tip : DefaultConstant::PARENT) + 1,
                               'kullanim_yeri'  => $request->input('use_place_id'),
                               'kullanici_tipi' => $request->input('user_type_ids'),
                               'ust_id'         => $request->input('parent_id'),
