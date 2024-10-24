@@ -88,7 +88,7 @@ class EmployeeWebUserTypeAuthorizationService extends AbstractService
                                          ]);
 
         if (Method::STORE === RouteUtil::currentRoute())
-            CacheOperation::setSession($request);
+            CacheOperation::refreshEmployeeSession($request->bearerToken());
     }
 
     /**
@@ -116,6 +116,6 @@ class EmployeeWebUserTypeAuthorizationService extends AbstractService
         $employeeWebUserTypeAuthorizationPermission->update();
 
         if (Method::DESTROY === RouteUtil::currentRoute())
-            CacheOperation::setSession($this->request);
+            CacheOperation::refreshEmployeeSession($request->bearerToken());
     }
 }

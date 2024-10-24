@@ -41,6 +41,6 @@ trait BulkAuthorizationTrait
             }
         }
 
-        CacheOperation::setSession($request);
+        CacheOperation::refreshEmployeeSession($request->bearerToken());
     }
 }

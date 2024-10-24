@@ -63,7 +63,7 @@ class StaffGroupMatchService extends AbstractService
                                      ]);
 
         if (Method::STORE === RouteUtil::currentRoute())
-        CacheOperation::setSession($request);
+            CacheOperation::refreshEmployeeSession($request->bearerToken());
 
         return $staffGroupMatchData;
     }
@@ -85,7 +85,7 @@ class StaffGroupMatchService extends AbstractService
         $staffGroupMatch->durum = Status::PASSIVE;
         $staffGroupMatch->update();
 
-        CacheOperation::setSession($this->request);
+        CacheOperation::refreshEmployeeSession($this->request->bearerToken());
     }
 
     /**

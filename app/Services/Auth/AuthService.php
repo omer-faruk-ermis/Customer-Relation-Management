@@ -2,8 +2,11 @@
 
 namespace App\Services\Auth;
 
+use App\Builder\SmsKimlikBuilder;
 use App\Enums\Status;
 use App\Exceptions\Auth\AuthInformationException;
+use App\Exceptions\Auth\LoginAlreadyException;
+use App\Exceptions\Auth\NotLoginException;
 use App\Exceptions\Auth\OldPasswordException;
 use App\Helpers\CacheOperation;
 use App\Helpers\CodeValidate;
@@ -72,7 +75,24 @@ class AuthService
      */
     public function loginVerification(LoginVerificationRequest $request): SmsKimlik
     {
-        return CacheOperation::setSession($request)->load('sip', 'unit');
+        $netgsmsessionid = $request->bearerToken();
+        if (empty(Cache::get("login_$netgsmsessionid"))) {
+            if (!empty(Redis::connection('prod')->get("yonetimsession:$netgsmsessionid"))) {
+                CacheOperation::refreshEmployeeSession($netgsmsessionid);
+                $smsKimlik = SmsKimlikBuilder::handle(new SmsKimlik(Cache::get("sms_kimlik_$netgsmsessionid")), $netgsmsessionid);
+                Cache::put("login_$netgsmsessionid", $smsKimlik);
+                return $smsKimlik;
+            } else {
+                throw new NotLoginException();
+            }
+        }
+
+        if (empty(Redis::connection('prod')->get("yonetimsession:$netgsmsessionid"))) {
+            echo 3;
+            return CacheOperation::setSession($request)->load('sip', 'unit');
+        }
+
+        throw new LoginAlreadyException();
     }
 
     /**
@@ -154,7 +174,7 @@ class AuthService
         $sms_kimlik->sifre = $user->sifre;
 
         Cache::put("sms_kimlik_$token", $sms_kimlik);
-        CacheOperation::setSession($request);
+        CacheOperation::refreshEmployeeSession($token);
     }
 
     /**
