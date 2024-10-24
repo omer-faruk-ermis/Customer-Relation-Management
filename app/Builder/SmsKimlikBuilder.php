@@ -43,6 +43,7 @@ class SmsKimlikBuilder
         $smsKimlik = Arr::add($smsKimlik, 'sms_kimlik', $smsKimlik['id']);
         $smsKimlik = Arr::add($smsKimlik, 'personelkimlik', $smsKimlik['id']);
         $smsKimlik = Arr::add($smsKimlik, 'sip_id', $sip);
+        $smsKimlik = Arr::add($smsKimlik, 'sipid', $sip);
         $smsKimlik = Arr::add($smsKimlik, 'unit_id', $unit);
         $smsKimlik = Arr::add($smsKimlik, 'user_authenticated', 540);
         $smsKimlik = Arr::add($smsKimlik, 'netgsmsessionid', $token);
