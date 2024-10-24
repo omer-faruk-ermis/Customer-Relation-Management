@@ -37,11 +37,13 @@ class SmsKimlikBuilder
         Arr::forget($smsKimlik, 'module');
 
         $sip = Arr::get(Arr::get($smsKimlik, 'sip')?->first(), 'sip_id', Arr::get($smsKimlik, 'sip_id'));
+        $unit = Arr::get(Arr::get($smsKimlik, 'unit')?->first(), 'id', Arr::get($smsKimlik, 'birim_id'));
 
         $smsKimlik = Arr::add($smsKimlik, 'dbname', getenv('DSN'));
         $smsKimlik = Arr::add($smsKimlik, 'sms_kimlik', $smsKimlik['id']);
         $smsKimlik = Arr::add($smsKimlik, 'personelkimlik', $smsKimlik['id']);
-        $smsKimlik = Arr::add($smsKimlik, 'sipid', $sip);
+        $smsKimlik = Arr::add($smsKimlik, 'sip_id', $sip);
+        $smsKimlik = Arr::add($smsKimlik, 'unit_id', $unit);
         $smsKimlik = Arr::add($smsKimlik, 'user_authenticated', 540);
         $smsKimlik = Arr::add($smsKimlik, 'netgsmsessionid', $token);
 
