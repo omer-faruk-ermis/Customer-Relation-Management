@@ -13,4 +13,8 @@ class Model extends AbstractEnum
     const REASON = 'Sebepler';
     const CUSTOMER_PRIORITY_MATCH = 'VipOzelMusteriEslestir';
     const WEB_USER = 'WebUser';
+    const BLOCKED_IDENTITY_NO = 'EngellenenKimlikNo';
+    const BLOCKED_PHONE = 'EngellenenTelNo';
+    const BLOCKED_EMAIL = 'EngellenenMail';
+    const BLOCKED_TAX_IDENTIFICATION_NO = 'EngellenenVergiNo';
 }

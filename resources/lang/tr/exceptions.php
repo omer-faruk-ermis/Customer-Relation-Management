@@ -13,6 +13,14 @@ use App\Exceptions\Authorization\AuthorizationTypeNotFoundException;
 use App\Exceptions\Authorization\EmployeeAuthorizationNotFoundException;
 use App\Exceptions\Authorization\EmployeeWebUserTypeAuthorizationAlreadyHaveException;
 use App\Exceptions\Authorization\EmployeeWebUserTypeAuthorizationNotFoundException;
+use App\Exceptions\Blocked\BlockedEmailAlreadyHaveException;
+use App\Exceptions\Blocked\BlockedEmailNotFoundException;
+use App\Exceptions\Blocked\BlockedIdentityNoAlreadyHaveException;
+use App\Exceptions\Blocked\BlockedIdentityNoNotFoundException;
+use App\Exceptions\Blocked\BlockedPhoneAlreadyHaveException;
+use App\Exceptions\Blocked\BlockedPhoneNotFoundException;
+use App\Exceptions\Blocked\BlockedTaxIdentificationNoAlreadyHaveException;
+use App\Exceptions\Blocked\BlockedTaxIdentificationNoNotFoundException;
 use App\Exceptions\Call\CallNotFoundException;
 use App\Exceptions\Call\VoiceUserAlreadyHaveException;
 use App\Exceptions\Code\InvalidSecurityCodeException;
@@ -120,5 +128,14 @@ return [
     CustomerPriorityNotFoundException::class                    => 'Özel Müşteri Temsilci veya Vip Müşteri kaydı bulunamadı!',
     SpecialCustomerAlreadyHaveException::class                  => 'Özel Müşteri Temsilci kaydı zaten mevcut!',
     VoiceUserAlreadyHaveException::class                        => 'Ses eşleştirme kaydı zaten mevcut!',
+
+    BlockedEmailAlreadyHaveException::class               => 'Email zaten engelli!',
+    BlockedEmailNotFoundException::class                  => 'Engellenen bir Email bulunamadı!',
+    BlockedIdentityNoAlreadyHaveException::class          => 'T.C. Kimlik Numarası zaten engelli!',
+    BlockedIdentityNoNotFoundException::class             => 'Engellenen bir T.C. Kimlik Numarası bulunamadı!',
+    BlockedPhoneAlreadyHaveException::class               => 'Telefon Numarası zaten engelli!',
+    BlockedPhoneNotFoundException::class                  => 'Engellenen bir Telefon Numarası bulunamadı!',
+    BlockedTaxIdentificationNoAlreadyHaveException::class => 'Vergi Numarası zaten engelli!',
+    BlockedTaxIdentificationNoNotFoundException::class    => 'Engellenen bir Vergi Numarası bulunamadı!',
 
 ];

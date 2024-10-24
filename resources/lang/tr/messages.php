@@ -4,6 +4,10 @@ use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Authorization\SmsKimlikWebUserTipYetkiController;
 use App\Http\Controllers\API\Authorization\SmsKimlikYetkiController;
 use App\Http\Controllers\API\Authorization\YetkiController;
+use App\Http\Controllers\API\Blocked\EngellenenKimlikNoController;
+use App\Http\Controllers\API\Blocked\EngellenenMailController;
+use App\Http\Controllers\API\Blocked\EngellenenTelNoController;
+use App\Http\Controllers\API\Blocked\EngellenenVergiNoController;
 use App\Http\Controllers\API\Call\CagriController;
 use App\Http\Controllers\API\Code\CodeController;
 use App\Http\Controllers\API\Employee\SmsKimlikController;
@@ -251,5 +255,29 @@ return [
         'INDEX' => 'Kullanıcılar listesi',
         'TYPE'  => 'Kullanıcı tipler listesi',
         'SHOW'  => 'Kullanıcı detayları'
+    ],
+
+    EngellenenKimlikNoController::class => [
+        'INDEX'   => 'Engellenen T.C. Kimlik Numaraları listesi',
+        'CREATE'  => 'İlgili T.C. Kimlik Numarası engellendi!',
+        'DESTROY' => 'İlgili T.C. Kimlik Numarasının engeli kaldırıldı.'
+    ],
+
+    EngellenenTelnoController::class => [
+        'INDEX'   => 'Engellenen Telefon Numaraları listesi',
+        'CREATE'  => 'İlgili Telefon Numarası engellendi!',
+        'DESTROY' => 'İlgili Telefon Numarasının engeli kaldırıldı.'
+    ],
+
+    EngellenenMailController::class => [
+        'INDEX'   => 'Engellenen Mail listesi',
+        'CREATE'  => 'İlgili Mail engellendi!',
+        'DESTROY' => 'İlgili Mail\'in engeli kaldırıldı.'
+    ],
+
+    EngellenenVergiNoController::class => [
+        'INDEX'   => 'Engellenen Vergi Numaraları listesi',
+        'CREATE'  => 'İlgili Vergi Numarası engellendi!',
+        'DESTROY' => 'İlgili Vergi Numarasının engeli kaldırıldı.'
     ],
 ];

@@ -24,6 +24,8 @@ return [
     'boolean'        => ':attribute alanı true veya false olmalıdır.',
     'numeric'        => ':attribute bir sayı olmalıdır.',
     'integer'        => ':attribute bir tam sayı olmalıdır.',
+    'digits_between' => ':attribute :min ile :max basamak arasında olmalıdır.',
+    'digits' => ':attribute :digits basamaklı olmalıdır.',
     'image'          => ':attribute bir resim olmalıdır (jpg, jpeg, png, bmp, gif veya svg).',
     'file'           => ':attribute bir dosya olmalıdır.',
     'array'          => ':attribute bir dizi olmalıdır.',

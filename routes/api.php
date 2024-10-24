@@ -4,6 +4,10 @@ use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Authorization\SmsKimlikWebUserTipYetkiController;
 use App\Http\Controllers\API\Authorization\SmsKimlikYetkiController;
 use App\Http\Controllers\API\Authorization\YetkiController;
+use App\Http\Controllers\API\Blocked\EngellenenKimlikNoController;
+use App\Http\Controllers\API\Blocked\EngellenenMailController;
+use App\Http\Controllers\API\Blocked\EngellenenTelNoController;
+use App\Http\Controllers\API\Blocked\EngellenenVergiNoController;
 use App\Http\Controllers\API\Call\CagriController;
 use App\Http\Controllers\API\Code\CodeController;
 use App\Http\Controllers\API\Employee\SmsKimlikController;
@@ -251,6 +255,33 @@ Route::group(['middleware' => 'auth_with_token'], function () {
             Route::delete('/', [PersonelGrupEslestirController::class, 'destroy']);
             Route::delete('/{id}', [PersonelGrupEslestirController::class, 'destroyStaff']);
             Route::post('/bulk', [PersonelGrupEslestirController::class, 'bulk']);
+        });
+    });
+
+    // Blocked
+    Route::prefix('/blocked')->group(function () {
+        Route::prefix('/identity_no')->group(function () {
+            Route::get('/', [EngellenenKimlikNoController::class, 'index']);
+            Route::post('/', [EngellenenKimlikNoController::class, 'store']);
+            Route::delete('/{id}', [EngellenenKimlikNoController::class, 'destroy']);
+        });
+
+        Route::prefix('/email')->group(function () {
+            Route::get('/', [EngellenenMailController::class, 'index']);
+            Route::post('/', [EngellenenMailController::class, 'store']);
+            Route::delete('/{id}', [EngellenenMailController::class, 'destroy']);
+        });
+
+        Route::prefix('/phone')->group(function () {
+            Route::get('/', [EngellenenTelNoController::class, 'index']);
+            Route::post('/', [EngellenenTelNoController::class, 'store']);
+            Route::delete('/{id}', [EngellenenTelNoController::class, 'destroy']);
+        });
+
+        Route::prefix('/tax_identification_no')->group(function () {
+            Route::get('/', [EngellenenVergiNoController::class, 'index']);
+            Route::post('/', [EngellenenVergiNoController::class, 'store']);
+            Route::delete('/{id}', [EngellenenVergiNoController::class, 'destroy']);
         });
     });
 });
